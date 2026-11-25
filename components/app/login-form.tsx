@@ -19,17 +19,17 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
   }, [state, callbackUrl, router]);
 
   return (
-    <form action={formAction} className="space-y-4">
+    <form action={formAction} className="space-y-3">
       {state?.error ? (
         <div className="rounded-md border border-destructive/40 bg-destructive/10 px-3 py-2 text-sm text-destructive">
           {state.error}
         </div>
       ) : null}
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <Label htmlFor="email">ایمیل</Label>
         <Input id="email" name="email" type="email" autoComplete="email" required />
       </div>
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         <div className="flex items-center justify-between">
           <Label htmlFor="password">رمز عبور</Label>
           <a href="/forgot-password" className="text-xs text-muted-foreground hover:text-primary">
