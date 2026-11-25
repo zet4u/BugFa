@@ -35,10 +35,8 @@ export default async function LandingPage() {
             <ShieldCheck className="ms-1.5 h-3.5 w-3.5 text-primary" />
             باگ بانتی و افشای هماهنگ آسیب‌پذیری
           </Badge>
-          <h1 className="animate-fade-up max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
-            باگ‌های واقعی پیدا کن.
-            <br />
-            <span className="text-primary">منصفانه جایزه</span> بگیر.
+          <h1 className="animate-fade-up mx-auto max-w-2xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+            شکار باگ‌های واقعی، <span className="text-primary">جایزه‌دهی منصفانه.</span>
           </h1>
           <p className="animate-fade-up mt-6 max-w-2xl text-lg leading-8 text-muted-foreground [animation-delay:120ms]">
             BugFa پژوهشگران امنیتی را با سازمان‌هایی که امنیت را جدی می‌گیرند متصل می‌کند.

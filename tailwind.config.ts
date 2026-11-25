@@ -23,6 +23,10 @@ const config: Config = {
           from: { opacity: "0", transform: "scale(0.96)" },
           to: { opacity: "1", transform: "scale(1)" },
         },
+        "page-enter": {
+          from: { opacity: "0", transform: "translateY(8px)" },
+          to: { opacity: "1", transform: "translateY(0)" },
+        },
         shimmer: {
           from: { backgroundPosition: "200% 0" },
           to: { backgroundPosition: "-200% 0" },
@@ -32,6 +36,7 @@ const config: Config = {
         "fade-in": "fade-in 0.5s ease-out both",
         "fade-up": "fade-up 0.5s ease-out both",
         "scale-in": "scale-in 0.25s ease-out both",
+        "page-enter": "page-enter 0.3s ease-out both",
         shimmer: "shimmer 1.6s linear infinite",
       },
       colors: {
