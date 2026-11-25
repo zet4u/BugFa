@@ -9,9 +9,10 @@
     "lint": "next lint",
     "db:start": "node scripts/db/up.mjs",
     "db:down": "node scripts/db/down.mjs",
-    "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy",
-    "db:seed": "prisma db seed"
+    "db:migrate": "node scripts/db/ensure.mjs && prisma migrate dev",
+    "db:deploy": "node scripts/db/ensure.mjs && prisma migrate deploy",
+    "db:seed": "node scripts/db/ensure.mjs && prisma db seed",
+    "db:setup": "npm run db:migrate && npm run db:seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
