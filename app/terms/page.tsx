@@ -1,60 +1,59 @@
 import type { Metadata } from "next";
 import { LegalPage } from "@/components/app/legal-page";
 
-export const metadata: Metadata = { title: "Terms of Service" };
+export const metadata: Metadata = { title: "شرایط استفاده" };
 
 export default function TermsPage() {
   return (
-    <LegalPage title="Terms of Service">
-      <p className="text-xs">Last updated: January 2025</p>
+    <LegalPage title="شرایط استفاده">
+      <p className="text-xs">آخرین به‌روزرسانی: ژانویه ۲۰۲۵</p>
 
-      <h2>1. Acceptance</h2>
+      <h2>۱. پذیرش</h2>
       <p>
-        By creating a BugFa account you agree to these terms. BugFa is a platform for coordinated
-        vulnerability disclosure and bug bounty. You may use it only for lawful security research that
-        respects the scope and rules of each program.
+        با ساخت حساب در BugFa، این شرایط را می‌پذیرید. BugFa پلتفرمی برای افشای هماهنگ
+        آسیب‌پذیری و باگ بانتی است. شما فقط مجاز به استفاده از آن برای پژوهش امنیتی قانونی و
+        احترام به محدوده و قوانین هر برنامه هستید.
       </p>
 
-      <h2>2. Accounts</h2>
+      <h2>۲. حساب‌ها</h2>
       <p>
-        You are responsible for your account credentials. One primary account per person.
-        Providing false identity information or evading platform bans may result in permanent removal.
+        مسئولیت اطلاعات ورود به حساب با شماست. برای هر فرد یک حساب اصلی.
+        ارائه اطلاعات هویتی نادرست یا دور زدن مسدودسازی پلتفرم می‌تواند به حذف دائمی منجر شود.
       </p>
 
-      <h2>3. Rules of engagement</h2>
+      <h2>۳. قوانین تعامل</h2>
       <ul>
-        <li>Only test assets listed in a program's scope.</li>
-        <li>Never exfiltrate, destroy, or modify data that is not yours.</li>
-        <li>Never use automated scanners against out-of-scope targets.</li>
-        <li>Do not demand payment or disclosure outside the program's stated policy.</li>
+        <li>فقط دارایی‌های داخل محدوده برنامه را تست کنید.</li>
+        <li>هرگز داده‌ای که متعلق به شما نیست را استخراج، تخریب یا تغییر ندهید.</li>
+        <li>هرگز اسکنرهای خودکار را به سمت разреш خارج از محدوده نشانه نروید.</li>
+        <li>پرداخت یا افشا را خارج از سیاست اعلام‌شده برنامه مطالبه نکنید.</li>
       </ul>
 
-      <h2>4. Reports and rewards</h2>
+      <h2>۴. گزارش‌ها و جوایز</h2>
       <p>
-        Submission of a report grants the organization a license to validate and remediate it.
-        Recognition and any monetary reward are governed by each program's reward table. BugFa
-        facilitates but does not itself guarantee payment; verified organizations are expected to pay
-        accepted bounty-eligible reports in a timely manner.
+        ارسال گزارش به سازمان اجازه اعتبارسنجی و رفع مشکل می‌دهد. تقدیر و هر جایزه مالی تابع
+        جدول جوایز همان برنامه است. BugFa واسط است و خودش پرداخت را تضمین نمی‌کند؛ از سازمان‌های
+        تأییدشده انتظار می‌رود گزارش‌های مشمول جایزه را به‌موقع پرداخت کنند.
       </p>
 
-      <h2>5. Marketplace discretion</h2>
+      <h2>۵. صلاحیت پلتفرم</h2>
       <p>
-        BugFa may pause programs, reject malicious or abusive reports, ban accounts, and resolve
-        disputes between researchers and organizations. Our decisions aim to be proportionate,
-        documented, and auditable.
+        BugFa می‌تواند برنامه‌ها را متوقف کند، گزارش‌ها را رد کند، حساب‌هایی را مسدود کند و
+        اختلافات بین پژوهشگران و سازمان‌ها را حل و فصل کند. تصمیم‌های ما متناسب، مستند و
+        قابل حسابرسی هستند.
       </p>
 
-      <h2>6. Termination</h2>
+      <h2>۶. خاتمه</h2>
       <p>
-        You may delete your account at any time. We may suspend or terminate accounts for rule
-        violations, fraud, or legal compliance reasons. Sections concerning records and audit logs
-        survive termination.
+        هر زمان می‌توانید حساب خود را حذف کنید. در صورت نقض قوانین، تقلب یا الزامات قانونی ممکن است
+        حساب‌ها معلق یا خاتمه یابند. بخش‌های مربوط به سوابق و لاگ‌های حسابرسی پس از خاتمه نیز معتبر
+        می‌مانند.
       </p>
 
-      <h2>7. Liability</h2>
+      <h2>۷. مسئولیت</h2>
       <p>
-        The platform is provided "as is" without warranties. To the maximum extent permitted by law,
-        BugFa is not liable for indirect or consequential damages.
+        پلتفرم «طبق وضع موجود» و بدون هیچ تضمینی ارائه می‌شود. تا حداکثر مجاز توسط قانون،
+        BugFa نسبت به خسارات غیرمستقیم یا تبعی مسئولیتی ندارد.
       </p>
     </LegalPage>
   );

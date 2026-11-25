@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { reportSchema, commentSchema, statusUpdateSchema, disputeSchema } from "@/lib/validation";
+import { STATUS_LABELS } from "@/lib/constants";
 import { auditLog } from "@/lib/audit";
 import { notify } from "@/lib/notifications";
 import { checkAchievements } from "@/lib/gamification";
@@ -38,9 +39,9 @@ export async function canAccessReport(reportId: string, userId: string, role: st
 
 export async function submitReportAction(_prev: unknown, formData: FormData): Promise<ActionState> {
   const session = await auth();
-  if (!session?.user?.id) return { error: "You must be signed in as a researcher" };
+  if (!session?.user?.id) return { error: "باید به‌عنوان پژوهشگر وارد شده باشید" };
   if (session.user.role !== "RESEARCHER" && session.user.role !== "ADMIN") {
-    return { error: "Only researcher accounts can submit reports" };
+    return { error: "فقط حساب‌های پژوهشگر می‌توانند گزارش ارسال کنند" };
   }
 
   const parsed = reportSchema.safeParse({
@@ -55,14 +56,14 @@ export async function submitReportAction(_prev: unknown, formData: FormData): Pr
     proofOfConcept: formData.get("proofOfConcept"),
     remediation: formData.get("remediation"),
   });
-  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
 
   const program = await prisma.program.findUnique({
     where: { id: parsed.data.programId },
     select: { id: true, status: true, title: true, slug: true },
   });
   if (!program || program.status !== "PUBLIC") {
-    return { error: "This program is not accepting submissions" };
+    return { error: "این برنامه در حال حاضر گزارش نمی‌پذیرد" };
   }
 
   const report = await prisma.report.create({
@@ -118,13 +119,13 @@ export async function submitReportAction(_prev: unknown, formData: FormData): Pr
 
 export async function addCommentAction(_prev: unknown, formData: FormData): Promise<ActionState> {
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: "دسترسی غیرمجاز" };
 
   const parsed = commentSchema.safeParse({
     reportId: formData.get("reportId"),
     body: formData.get("body"),
   });
-  if (!parsed.success) return { error: "Write a message first" };
+  if (!parsed.success) return { error: "ابتدا پیام را بنویسید" };
 
   const report = await prisma.report.findUnique({
     where: { id: parsed.data.reportId },
@@ -136,13 +137,13 @@ export async function addCommentAction(_prev: unknown, formData: FormData): Prom
       },
     },
   });
-  if (!report) return { error: "Report not found" };
+  if (!report) return { error: "گزارش پیدا نشد" };
 
   const isResearcher = report.researcherId === session.user.id;
   const isStaff =
     report.program.organization.ownerId === session.user.id ||
     report.program.organization.members.some((m) => m.userId === session.user.id);
-  if (!isResearcher && !isStaff) return { error: "Unauthorized" };
+  if (!isResearcher && !isStaff) return { error: "دسترسی غیرمجاز" };
 
   await prisma.reportComment.create({
     data: {
@@ -179,7 +180,7 @@ export async function addCommentAction(_prev: unknown, formData: FormData): Prom
 
   revalidatePath(`/org/reports/${parsed.data.reportId}`);
   revalidatePath(`/researcher/submissions/${parsed.data.reportId}`);
-  return { success: "Comment posted" };
+  return { success: "دیدگاه ثبت شد" };
 }
 
 export async function updateReportStatusAction(
@@ -187,7 +188,7 @@ export async function updateReportStatusAction(
   formData: FormData
 ): Promise<ActionState> {
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: "دسترسی غیرمجاز" };
 
   const parsed = statusUpdateSchema.safeParse({
     reportId: formData.get("reportId"),
@@ -197,7 +198,7 @@ export async function updateReportStatusAction(
       : undefined,
     note: formData.get("note") || undefined,
   });
-  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
 
   const report = await prisma.report.findUnique({
     where: { id: parsed.data.reportId },
@@ -221,13 +222,13 @@ export async function updateReportStatusAction(
       },
     },
   });
-  if (!report) return { error: "Report not found" };
+  if (!report) return { error: "گزارش پیدا نشد" };
 
   const isAdmin = session.user.role === "ADMIN";
   const isStaff =
     report.program.organization.ownerId === session.user.id ||
     report.program.organization.members.some((m) => m.userId === session.user.id);
-  if (!isStaff && !isAdmin) return { error: "Unauthorized" };
+  if (!isStaff && !isAdmin) return { error: "دسترسی غیرمجاز" };
 
   let rewardAmount: number | null | undefined = parsed.data.rewardAmount ?? null;
   if (parsed.data.status === "REWARDED") {
@@ -269,8 +270,8 @@ export async function updateReportStatusAction(
   await notify({
     userId: report.researcherId,
     type: parsed.data.status === "REWARDED" ? "REPORT_REWARD" : "REPORT_STATUS",
-    title: `Report ${parsed.data.status.charAt(0) + parsed.data.status.slice(1).toLowerCase()}: ${report.title}`,
-    body: parsed.data.status === "REWARDED" ? `Reward: ${rewardAmount}` : parsed.data.note,
+    title: `به‌روزرسانی گزارش (${STATUS_LABELS[parsed.data.status] ?? parsed.data.status}): ${report.title}`,
+    body: parsed.data.status === "REWARDED" ? `جایزه: ${rewardAmount}` : parsed.data.note,
     link: `/researcher/submissions/${report.id}`,
   });
 
@@ -292,25 +293,25 @@ export async function updateReportStatusAction(
   revalidatePath(`/org/reports/${report.id}`);
   revalidatePath(`/researcher/submissions/${report.id}`);
   revalidatePath("/leaderboard");
-  return { success: "Status updated" };
+  return { success: "وضعیت به‌روزرسانی شد" };
 }
 
 export async function openDisputeAction(_prev: unknown, formData: FormData): Promise<ActionState> {
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: "دسترسی غیرمجاز" };
 
   const parsed = disputeSchema.safeParse({
     reportId: formData.get("reportId"),
     reason: formData.get("reason"),
   });
-  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
 
   const report = await prisma.report.findUnique({
     where: { id: parsed.data.reportId },
     select: { id: true, researcherId: true, title: true, dispute: { select: { id: true } } },
   });
-  if (!report || report.researcherId !== session.user.id) return { error: "Unauthorized" };
-  if (report.dispute) return { error: "A dispute is already open for this report" };
+  if (!report || report.researcherId !== session.user.id) return { error: "دسترسی غیرمجاز" };
+  if (report.dispute) return { error: "برای این گزارش اختلافی ثبت شده است" };
 
   await prisma.dispute.create({
     data: {
@@ -327,5 +328,5 @@ export async function openDisputeAction(_prev: unknown, formData: FormData): Pro
     targetId: report.id,
   });
   revalidatePath(`/researcher/submissions/${report.id}`);
-  return { success: "Dispute submitted. The BugFa team will review it." };
+  return { success: "اختلاف ثبت شد. تیم BugFa بررسی می‌کند." };
 }

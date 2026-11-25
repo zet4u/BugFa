@@ -5,9 +5,9 @@ import { prisma } from "@/lib/prisma";
 import { markNotificationReadAction, markAllNotificationsReadAction } from "@/lib/actions/admin";
 import { Button } from "@/components/ui/button";
 import { Bell, CheckCheck } from "lucide-react";
-import { timeAgo } from "@/lib/utils";
+import { formatPoints, timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Notifications" };
+export const metadata: Metadata = { title: "اعلان‌ها" };
 
 export default async function NotificationsPage() {
   const user = await requireUser();
@@ -17,16 +17,16 @@ export default async function NotificationsPage() {
   ]);
 
   return (
-    <div className="container-app max-w-3xl py-10">
+    <div className="container-app max-w-3xl animate-fade-up py-10">
       <div className="mb-8 flex items-end justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Notifications</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{unreadCount} unread</p>
+          <h1 className="text-2xl font-bold tracking-tight">اعلان‌ها</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{formatPoints(unreadCount)} خوانده‌نشده</p>
         </div>
         {unreadCount > 0 ? (
           <form action={markAllNotificationsReadAction}>
             <Button type="submit" variant="outline" size="sm">
-              <CheckCheck className="mr-1 h-4 w-4" /> Mark all read
+              <CheckCheck className="ms-1 h-4 w-4" /> علامت‌گذاری همه به‌عنوان خوانده‌شده
             </Button>
           </form>
         ) : null}
@@ -35,7 +35,7 @@ export default async function NotificationsPage() {
       {notifications.length === 0 ? (
         <div className="rounded-lg border border-dashed bg-card/50 px-6 py-16 text-center">
           <Bell className="mx-auto mb-3 h-8 w-8 text-muted-foreground" />
-          <p className="text-sm text-muted-foreground">No notifications yet.</p>
+          <p className="text-sm text-muted-foreground">هنوز اعلانی وجود ندارد.</p>
         </div>
       ) : (
         <ul className="space-y-2">
@@ -58,21 +58,21 @@ export default async function NotificationsPage() {
                     <Button asChild variant="ghost" size="sm">
                       <div>
                         <Link href={n.link} className="text-primary hover:underline">
-                          Open
+                          باز کردن
                         </Link>
                       </div>
                     </Button>
                   </form>
                 ) : n.link ? (
                   <Link href={n.link} className="text-xs text-primary hover:underline">
-                    Open
+                    باز کردن
                   </Link>
                 ) : null}
                 {!n.read ? (
                   <form action={markNotificationReadAction}>
                     <input type="hidden" name="id" value={n.id} />
                     <Button type="submit" variant="ghost" size="sm">
-                      Mark read
+                      خواندم
                     </Button>
                   </form>
                 ) : null}

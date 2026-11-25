@@ -26,20 +26,20 @@ export function LoginForm({ callbackUrl }: { callbackUrl: string }) {
         </div>
       ) : null}
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">ایمیل</Label>
         <Input id="email" name="email" type="email" autoComplete="email" required />
       </div>
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">رمز عبور</Label>
           <a href="/forgot-password" className="text-xs text-muted-foreground hover:text-primary">
-            Forgot password?
+            رمز عبور را فراموش کرده‌اید؟
           </a>
         </div>
         <Input id="password" name="password" type="password" autoComplete="current-password" required />
       </div>
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? "Signing in…" : "Log in"}
+        {pending ? "در حال ورود…" : "ورود"}
       </Button>
     </form>
   );

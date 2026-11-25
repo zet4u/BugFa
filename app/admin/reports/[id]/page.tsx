@@ -8,7 +8,7 @@ import { BackLink } from "@/components/app/back-link";
 import { ReportView } from "@/components/app/report-view";
 import { StatusControls } from "@/components/app/report-controls";
 
-export const metadata: Metadata = { title: "Review report" };
+export const metadata: Metadata = { title: "بررسی گزارش" };
 
 export default async function AdminReportPage({
   params,
@@ -27,8 +27,8 @@ export default async function AdminReportPage({
   const rewards = report.program.severityRewards as Record<string, number>;
 
   return (
-    <DashboardShell title="Report oversight" nav={ADMIN_NAV} currentPath="/admin/reports">
-      <BackLink href="/admin/reports" label="Back to reports" />
+    <DashboardShell title="نظارت بر گزارش‌ها" nav={ADMIN_NAV} currentPath="/admin/reports">
+      <BackLink href="/admin/reports" label="بازگشت به گزارش‌ها" />
       <ReportView reportId={id} viewerId="" isStaff={true}
         controls={
           <StatusControls

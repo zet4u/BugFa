@@ -3,6 +3,7 @@ import { ShieldCheck, Lock, PauseCircle, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { formatMoney } from "@/lib/utils";
 import type { ScopeAsset } from "@/lib/constants";
+import { CATEGORY_LABELS } from "@/lib/constants";
 
 export type ProgramCardData = {
   id: string;
@@ -35,13 +36,13 @@ export function ProgramStatusPill({ status }: { status: string }) {
   if (status === "PRIVATE")
     return (
       <Badge variant="secondary" className="gap-1">
-        <Lock className="h-3 w-3" /> Private
+        <Lock className="h-3 w-3" /> خصوصی
       </Badge>
     );
   if (status === "PAUSED")
     return (
       <Badge variant="secondary" className="gap-1 text-amber-400">
-        <PauseCircle className="h-3 w-3" /> Paused
+        <PauseCircle className="h-3 w-3" /> متوقف‌شده
       </Badge>
     );
   return null;
@@ -51,7 +52,7 @@ export function ProgramCard({ program }: { program: ProgramCardData }) {
   return (
     <Link
       href={`/programs/${program.slug}`}
-      className="group flex flex-col rounded-lg border bg-card p-5 transition-colors hover:border-primary/40"
+      className="group card-hover flex flex-col rounded-lg border bg-card p-5"
     >
       <div className="flex items-start gap-3">
         <ProgramTileIcon name={program.organization.name} />
@@ -75,7 +76,7 @@ export function ProgramCard({ program }: { program: ProgramCardData }) {
       <div className="mt-4 flex flex-wrap items-center gap-1.5">
         {program.categories.slice(0, 3).map((c) => (
           <Badge key={c} variant="secondary" className="font-normal">
-            {c}
+            {CATEGORY_LABELS[c] ?? c}
           </Badge>
         ))}
         {program.categories.length > 3 ? (
@@ -91,7 +92,7 @@ export function ProgramCard({ program }: { program: ProgramCardData }) {
             {formatMoney(program.maxBounty, program.currency)}
           </span>
         ) : (
-          <span className="text-sm text-muted-foreground">Thanks / VDP</span>
+          <span className="text-sm text-muted-foreground">تشویقی / برنامه افشا</span>
         )}
       </div>
     </Link>

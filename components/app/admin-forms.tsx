@@ -27,7 +27,7 @@ export function OrgVerifyForm({ organizationId, verified }: { organizationId: st
       <input type="hidden" name="organizationId" value={organizationId} />
       <input type="hidden" name="verified" value={verified ? "false" : "true"} />
       <Button type="submit" size="sm" variant={verified ? "outline" : "default"}>
-        {verified ? "Remove verification" : "Verify"}
+        {verified ? "لغو تأیید" : "تأیید"}
       </Button>
     </form>
   );
@@ -39,7 +39,7 @@ export function UserBanForm({ userId, forbidden }: { userId: string; forbidden: 
       <input type="hidden" name="userId" value={userId} />
       <input type="hidden" name="forbidden" value={forbidden ? "false" : "true"} />
       <Button type="submit" size="sm" variant={forbidden ? "outline" : "ghost"} className={forbidden ? "" : "text-destructive"}>
-        {forbidden ? "Unban" : "Ban"}
+        {forbidden ? "رفع مسدودی" : "مسدودسازی"}
       </Button>
     </form>
   );
@@ -50,17 +50,17 @@ export function UserRoleForm({ userId, role }: { userId: string; role: string })
     <form action={setUserRoleAction} className="flex items-center gap-2">
       <input type="hidden" name="userId" value={userId} />
       <Select name="role" defaultValue={role}>
-        <SelectTrigger className="h-8 w-36" aria-label="Role">
+        <SelectTrigger className="h-8 w-36" aria-label="نقش">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="RESEARCHER">Researcher</SelectItem>
-          <SelectItem value="ORGANIZATION">Organization</SelectItem>
-          <SelectItem value="ADMIN">Admin</SelectItem>
+          <SelectItem value="RESEARCHER">پژوهشگر</SelectItem>
+          <SelectItem value="ORGANIZATION">سازمان</SelectItem>
+          <SelectItem value="ADMIN">مدیر</SelectItem>
         </SelectContent>
       </Select>
       <Button type="submit" size="sm" variant="outline">
-        Set
+        اعمال
       </Button>
     </form>
   );
@@ -71,18 +71,18 @@ export function ProgramModerateForm({ programId, status }: { programId: string; 
     <form action={moderateProgramAction} className="flex items-center gap-2">
       <input type="hidden" name="programId" value={programId} />
       <Select name="status" defaultValue={status}>
-        <SelectTrigger className="h-8 w-32" aria-label="Program status">
+        <SelectTrigger className="h-8 w-32" aria-label="وضعیت برنامه">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="DRAFT">Draft</SelectItem>
-          <SelectItem value="PUBLIC">Public</SelectItem>
-          <SelectItem value="PRIVATE">Private</SelectItem>
-          <SelectItem value="PAUSED">Paused</SelectItem>
+          <SelectItem value="DRAFT">پیش‌نویس</SelectItem>
+          <SelectItem value="PUBLIC">عمومی</SelectItem>
+          <SelectItem value="PRIVATE">خصوصی</SelectItem>
+          <SelectItem value="PAUSED">متوقف</SelectItem>
         </SelectContent>
       </Select>
       <Button type="submit" size="sm" variant="outline">
-        Apply
+        اعمال
       </Button>
     </form>
   );
@@ -97,23 +97,23 @@ export function DisputeResolveForm({ disputeId }: { disputeId: string }) {
       {state?.error ? <p className="text-xs text-destructive">{state.error}</p> : null}
       {state?.success ? <p className="text-xs text-primary">{state.success}</p> : null}
       <div className="space-y-2">
-        <Label className="text-xs text-muted-foreground">Resolution note</Label>
+        <Label className="text-xs text-muted-foreground">یادداشت نتیجه</Label>
         <Textarea name="resolution" required minLength={10} rows={3}
-          placeholder="Explain the platform decision for both parties." />
+          placeholder="تصمیم پلتفرم را برای دو طرف توضیح دهید." />
       </div>
       <div className="flex flex-wrap items-center gap-2">
         <Select name="outcome" defaultValue="RESOLVED_SHARING_DECISION">
-          <SelectTrigger className="h-8 w-64" aria-label="Outcome">
+          <SelectTrigger className="h-8 w-64" aria-label="نتیجه">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="RESOLVED_ACCEPTED">Overturn — report accepted</SelectItem>
-            <SelectItem value="RESOLVED_REJECTED">Uphold — report stays rejected</SelectItem>
-            <SelectItem value="RESOLVED_SHARING_DECISION">Sharing decision upheld</SelectItem>
+            <SelectItem value="RESOLVED_ACCEPTED">بازنگری — گزارش پذیرفته شود</SelectItem>
+            <SelectItem value="RESOLVED_REJECTED">تأیید تصمیم — گزارش رد بماند</SelectItem>
+            <SelectItem value="RESOLVED_SHARING_DECISION">تصمیم فعلی حفظ شود</SelectItem>
           </SelectContent>
         </Select>
         <Button type="submit" size="sm" disabled={pending}>
-          {pending ? "Resolving…" : "Resolve"}
+          {pending ? "در حال بررسی…" : "حل اختلاف"}
         </Button>
       </div>
     </form>

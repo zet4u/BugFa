@@ -7,8 +7,9 @@ import { EmptyState } from "@/components/app/empty-state";
 import { Pagination } from "@/components/app/pagination";
 import { SearchFilters } from "@/components/app/search-filters";
 import { PAGE_SIZE } from "@/lib/constants";
+import { formatPoints } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Explore Programs" };
+export const metadata: Metadata = { title: "کاوش برنامه‌ها" };
 
 const SORTS: Record<string, object> = {
   _default: [{ publishedAt: "desc" }],
@@ -48,9 +49,9 @@ export default async function ExplorePage({
 
   return (
     <div className="container-app py-10">
-      <h1 className="text-2xl font-bold tracking-tight">Explore programs</h1>
+      <h1 className="text-2xl animate-fade-up font-bold tracking-tight">کاوش برنامه‌ها</h1>
       <p className="mb-8 mt-1 text-sm text-muted-foreground">
-        {total} program{total === 1 ? "" : "s"} accepting coordinated vulnerability reports.
+        {formatPoints(total)} برنامه در حال پذیرش گزارش آسیب‌پذیری.
       </p>
       <Suspense fallback={null}>
         <SearchFilters basePath="/explore" />
@@ -59,13 +60,15 @@ export default async function ExplorePage({
         {programs.length === 0 ? (
           <EmptyState
             icon={<SearchX />}
-            title="No programs match"
-            description="Try different keywords or clear the filters."
+            title="برنامه‌ای پیدا نشد"
+            description="کلیدواژه‌های دیگری امتحان کنید یا فیلترها را پاک کنید."
           />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {programs.map((program) => (
-              <ProgramCard key={program.id} program={program as any} />
+            {programs.map((program, i) => (
+              <div key={program.id} className="animate-fade-up" style={{ animationDelay: `${i * 60}ms` }}>
+                <ProgramCard program={program as any} />
+              </div>
             ))}
           </div>
         )}

@@ -38,9 +38,9 @@ async function uniqueProgramSlug(title: string, ignoreId?: string) {
 
 export async function saveProgramAction(_prev: unknown, formData: FormData): Promise<ActionState> {
   const session = await auth();
-  if (!session?.user?.id) return { error: "Unauthorized" };
+  if (!session?.user?.id) return { error: "دسترسی غیرمجاز" };
   const org = await requireOrg();
-  if (!org) return { error: "Only organization accounts can manage programs" };
+  if (!org) return { error: "فقط حساب‌های سازمانی می‌توانند برنامه‌ها را مدیریت کنند" };
 
   const fields = {
     title: formData.get("title"),
@@ -64,10 +64,10 @@ export async function saveProgramAction(_prev: unknown, formData: FormData): Pro
   const parsed = programSchema.safeParse(fields);
   if (!parsed.success) {
     const issues = parsed.error.errors.map((e) => e.message).slice(0, 3).join("; ");
-    return { error: issues || "Invalid input" };
+    return { error: issues || "ورودی نامعتبر" };
   }
   if (parsed.data.maxBounty < parsed.data.minBounty) {
-    return { error: "Maximum bounty must be greater than or equal to minimum bounty" };
+    return { error: "حداکثر جایزه باید بیشتر یا مساوی حداقل باشد" };
   }
 
   const programId = (formData.get("programId") as string) || "";
@@ -92,7 +92,7 @@ export async function saveProgramAction(_prev: unknown, formData: FormData): Pro
 
   if (programId) {
     const existing = await prisma.program.findUnique({ where: { id: programId }, select: { organizationId: true } });
-    if (!existing || existing.organizationId !== org.id) return { error: "Not found" };
+    if (!existing || existing.organizationId !== org.id) return { error: "پیدا نشد" };
     await prisma.program.update({ where: { id: programId }, data });
     await auditLog({ actorId: session.user.id, action: "program.updated", targetType: "Program", targetId: programId });
     revalidatePath("/org/programs");

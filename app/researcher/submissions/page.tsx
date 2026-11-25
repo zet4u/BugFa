@@ -10,10 +10,10 @@ import { EmptyState } from "@/components/app/empty-state";
 import { Pagination } from "@/components/app/pagination";
 import { FilterTabs } from "@/components/app/filter-tabs";
 import { PAGE_SIZE } from "@/lib/constants";
-import { timeAgo, formatMoney } from "@/lib/utils";
+import { timeAgo, formatMoney, formatPoints } from "@/lib/utils";
 import { FileSearch } from "lucide-react";
 
-export const metadata: Metadata = { title: "My submissions" };
+export const metadata: Metadata = { title: "گزارش‌های من" };
 
 export default async function SubmissionsPage({
   searchParams,
@@ -49,23 +49,23 @@ export default async function SubmissionsPage({
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <DashboardShell title="My submissions" subtitle={`${total} report${total === 1 ? "" : "s"}`} nav={RESEARCHER_NAV} currentPath="/researcher/submissions">
+    <DashboardShell title="گزارش‌های من" subtitle={`${formatPoints(total)} گزارش`} nav={RESEARCHER_NAV} currentPath="/researcher/submissions">
       <div className="mb-6">
         <FilterTabs
           basePath="/researcher/submissions"
           current={status}
           options={[
-            { value: "ALL", label: "All" },
-            { value: "OPEN", label: "In progress" },
-            { value: "TRIAGED", label: "Triaged" },
-            { value: "ACCEPTED", label: "Accepted" },
-            { value: "REJECTED", label: "Rejected" },
-            { value: "REWARDED", label: "Rewarded" },
+            { value: "ALL", label: "همه" },
+            { value: "OPEN", label: "در جریان" },
+            { value: "TRIAGED", label: "بررسی‌شده" },
+            { value: "ACCEPTED", label: "پذیرفته‌شده" },
+            { value: "REJECTED", label: "رد‌شده" },
+            { value: "REWARDED", label: "جایزه‌داده‌شده" },
           ]}
         />
       </div>
       {reports.length === 0 ? (
-        <EmptyState icon={<FileSearch />} title="Nothing here yet" description="Reports you submit will appear with live status updates." />
+        <EmptyState icon={<FileSearch />} title="فعلاً چیزی اینجا نیست" description="گزارش‌هایی که ثبت می‌کنید همراه با به‌روزرسانی وضعیت اینجا نمایش داده می‌شوند." />
       ) : (
         <div className="space-y-2">
           {reports.map((r) => (

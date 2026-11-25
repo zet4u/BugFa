@@ -3,38 +3,38 @@ import { z } from "zod";
 import { VULN_CATEGORIES, SEVERITIES, SCOPE_ASSET_TYPES, BOUNTY_CURRENCIES } from "@/lib/constants";
 
 export const loginSchema = z.object({
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(1, "Password is required"),
+  email: z.string().email("ایمیل معتبر وارد کنید"),
+  password: z.string().min(1, "رمز عبور الزامی است"),
 });
 
 export const registerSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters").max(80),
+    name: z.string().min(2, "نام باید حداقل ۲ نویسه باشد").max(80),
     username: z
       .string()
-      .min(3, "Username must be at least 3 characters")
+      .min(3, "نام کاربری باید حداقل ۳ نویسه باشد")
       .max(30)
-      .regex(/^[a-zA-Z0-9_-]+$/, "Only letters, numbers, dashes and underscores"),
-    email: z.string().email("Enter a valid email"),
+      .regex(/^[a-zA-Z0-9_-]+$/, "فقط حروف انگلیسی، عدد، خط تیره و زیرخط"),
+    email: z.string().email("ایمیل معتبر وارد کنید"),
     password: z
       .string()
-      .min(10, "Password must be at least 10 characters")
+      .min(10, "رمز عبور باید حداقل ۱۰ نویسه باشد")
       .max(128)
-      .regex(/[a-zA-Z]/, "Include at least one letter")
-      .regex(/[0-9]/, "Include at least one digit"),
+      .regex(/[a-zA-Z]/, "حداقل یک حرف انگلیسی داشته باشد")
+      .regex(/[0-9]/, "حداقل یک عدد داشته باشد"),
     confirmPassword: z.string(),
     role: z.enum(["RESEARCHER", "ORGANIZATION"]),
     organizationName: z.string().min(2).max(80).optional(),
     acceptedTerms: z.literal(true, {
-      errorMap: () => ({ message: "You must accept the Terms of Service" }),
+      errorMap: () => ({ message: "باید شرایط استفاده را بپذیرید" }),
     }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "رمزها یکسان نیستند",
     path: ["confirmPassword"],
   })
   .refine((data) => data.role !== "ORGANIZATION" || !!data.organizationName, {
-    message: "Organization name is required",
+    message: "نام سازمان الزامی است",
     path: ["organizationName"],
   });
 
@@ -49,7 +49,7 @@ export const passwordResetSchema = z
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "رمزها یکسان نیستند",
     path: ["confirmPassword"],
   });
 
@@ -59,22 +59,22 @@ export const profileSchema = z.object({
     .string()
     .min(3)
     .max(30)
-    .regex(/^[a-zA-Z0-9_-]+$/, "Only letters, numbers, dashes and underscores"),
+    .regex(/^[a-zA-Z0-9_-]+$/, "فقط حروف انگلیسی، عدد، خط تیره و زیرخط"),
   bio: z.string().max(600).optional().or(z.literal("")),
   country: z.string().max(60).optional().or(z.literal("")),
-  website: z.string().url("Enter a valid URL").optional().or(z.literal("")),
+  website: z.string().url("آدرس اینترنتی معتبر وارد کنید").optional().or(z.literal("")),
   github: z.string().max(60).optional().or(z.literal("")),
   twitter: z.string().max(60).optional().or(z.literal("")),
 });
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, "Current password required"),
+    currentPassword: z.string().min(1, "رمز عبور فعلی الزامی است"),
     password: z.string().min(10).max(128).regex(/[a-zA-Z]/).regex(/[0-9]/),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "رمزها یکسان نیستند",
     path: ["confirmPassword"],
   });
 
@@ -96,12 +96,12 @@ const severityRewardSchema = z.object({
 
 export const programSchema = z.object({
   title: z.string().min(4).max(120),
-  summary: z.string().min(20, "Provide a short summary (min 20 chars)").max(280),
-  description: z.string().min(50, "Description must be at least 50 characters"),
-  website: z.string().url("Enter a valid URL"),
+  summary: z.string().min(20, "خلاصه کوتاهی بنویسید (حداقل ۲۰ نویسه)").max(280),
+  description: z.string().min(50, "توضیحات باید حداقل ۵۰ نویسه باشد"),
+  website: z.string().url("آدرس اینترنتی معتبر وارد کنید"),
   status: z.enum(["DRAFT", "PUBLIC", "PRIVATE", "PAUSED"]),
-  categories: z.array(z.enum(VULN_CATEGORIES)).min(1, "Select at least one category"),
-  inScope: z.array(scopeAssetSchema).min(1, "Add at least one in-scope asset"),
+  categories: z.array(z.enum(VULN_CATEGORIES)).min(1, "حداقل یک دسته‌بندی انتخاب کنید"),
+  inScope: z.array(scopeAssetSchema).min(1, "حداقل یک دارایی در محدوده اضافه کنید"),
   outOfScope: z.array(
     z.object({
       identifier: z.string().min(3).max(200),
@@ -121,13 +121,13 @@ export const programSchema = z.object({
 
 export const reportSchema = z.object({
   programId: z.string().min(3),
-  title: z.string().min(8, "Title must be at least 8 characters").max(160),
-  asset: z.string().min(3, "Specify the affected asset").max(200),
+  title: z.string().min(8, "عنوان باید حداقل ۸ نویسه باشد").max(160),
+  asset: z.string().min(3, "دارایی آسیب‌پذیر را مشخص کنید").max(200),
   category: z.enum(VULN_CATEGORIES),
   severity: z.enum(SEVERITIES),
-  description: z.string().min(50, "Description must be at least 50 characters"),
-  steps: z.string().min(20, "Steps to reproduce required"),
-  impact: z.string().min(20, "Describe the impact"),
+  description: z.string().min(50, "توضیحات باید حداقل ۵۰ نویسه باشد"),
+  steps: z.string().min(20, "مراحل بازتولید الزامی است"),
+  impact: z.string().min(20, "میزان اثر را شرح دهید"),
   proofOfConcept: z.string().max(20000).optional().or(z.literal("")),
   remediation: z.string().max(5000).optional().or(z.literal("")),
 });
@@ -154,7 +154,7 @@ export const statusUpdateSchema = z.object({
 
 export const disputeSchema = z.object({
   reportId: z.string().min(3),
-  reason: z.string().min(20, "Explain the dispute (min 20 characters)").max(4000),
+  reason: z.string().min(20, "علت اختلاف را شرح دهید (حداقل ۲۰ نویسه)").max(4000),
 });
 
 export const disputeResolutionSchema = z.object({

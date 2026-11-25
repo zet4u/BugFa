@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/app/empty-state";
 import { ShieldCheck, AlertCircle, Coins } from "lucide-react";
-import { formatMoney, timeAgo } from "@/lib/utils";
+import { formatMoney, formatPoints, timeAgo } from "@/lib/utils";
+import { PROGRAM_STATUS_LABELS } from "@/lib/constants";
 
-export const metadata: Metadata = { title: "Organization overview" };
+export const metadata: Metadata = { title: "نمای کلی سازمان" };
 
 export default async function OrgDashboard() {
   const user = await requireUser();
@@ -24,11 +25,11 @@ export default async function OrgDashboard() {
 
   if (orgs.length === 0) {
     return (
-      <DashboardShell title="Organization" nav={ORG_NAV} currentPath="/org">
+      <DashboardShell title="سازمان" nav={ORG_NAV} currentPath="/org">
         <EmptyState
           icon={<AlertCircle />}
-          title="No organization found"
-          description="Your account should have created an organization on registration. Contact support if you believe this is an error."
+          title="سازمانی یافت نشد"
+          description="حساب شما باید هنگام ثبت‌نام سازمانی ساخته باشد. اگر فکر می‌کنید اشتباهی رخ داده با پشتیبانی تماس بگیرید."
         />
       </DashboardShell>
     );
@@ -60,17 +61,17 @@ export default async function OrgDashboard() {
   return (
     <DashboardShell
       title={org.name}
-      subtitle={`Organization ${org.verified ? "· verified" : "· unverified"}`}
+      subtitle={`سازمان ${org.verified ? "· تاییدشده" : "· تاییدنشده"}`}
       nav={ORG_NAV}
       currentPath="/org"
       header={
         <div className="flex flex-wrap gap-2">
           <Button asChild size="sm">
-            <Link href="/org/programs/new">Create program</Link>
+            <Link href="/org/programs/new">ساخت برنامه</Link>
           </Button>
           <Button asChild variant="outline" size="sm">
             <Link href="/org/reports?status=NEW">
-              Triage queue {newCount > 0 ? `(${newCount})` : ""}
+              صف بررسی {newCount > 0 ? `(${formatPoints(newCount)})` : ""}
             </Link>
           </Button>
         </div>
@@ -78,34 +79,34 @@ export default async function OrgDashboard() {
     >
       {!org.verified ? (
         <div className="mb-6 rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-400">
-          <ShieldCheck className="mr-2 inline h-4 w-4" />
-          Your organization is not verified yet. Verified organizations get a badge and higher researcher trust.
+          <ShieldCheck className="me-2 inline h-4 w-4" />
+          سازمان شما هنوز تایید نشده است. سازمان‌های تاییدشده نشان تایید و اعتماد بیشتر پژوهشگران را کسب می‌کنند.
         </div>
       ) : null}
 
       <div className="grid gap-4 sm:grid-cols-4">
         {[
-          { label: "Programs", value: String(org.programs.length) },
-          { label: "New reports", value: String(newCount) },
-          { label: "Rewarded", value: formatMoney(sumRewarded) },
-          { label: "Team invites", value: String(org.teamInvites.length) },
+          { label: "برنامه‌ها", value: formatPoints(org.programs.length) },
+          { label: "گزارش‌های جدید", value: formatPoints(newCount) },
+          { label: "جایزه‌های پرداخت‌شده", value: formatMoney(sumRewarded) },
+          { label: "دعوت‌های تیم", value: formatPoints(org.teamInvites.length) },
         ].map((s) => (
           <div key={s.label} className="rounded-lg border bg-card p-4">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">{s.label}</p>
+            <p className="text-xs text-muted-foreground">{s.label}</p>
             <p className="mt-1 text-xl font-bold">{s.value}</p>
           </div>
         ))}
       </div>
 
       <section className="mt-8">
-        <h2 className="mb-4 text-lg font-semibold">Your programs</h2>
+        <h2 className="mb-4 text-lg font-semibold">برنامه‌های شما</h2>
         {org.programs.length === 0 ? (
           <EmptyState
-            title="No programs yet"
-            description="Create your first program to start receiving vulnerability reports."
+            title="هنوز برنامه‌ای ندارید"
+            description="اولین برنامه خود را بسازید تا شروع به دریافت گزارش آسیب‌پذیری کنید."
             action={
               <Button asChild size="sm">
-                <Link href="/org/programs/new">Create program</Link>
+                <Link href="/org/programs/new">ساخت برنامه</Link>
               </Button>
             }
           />
@@ -119,7 +120,7 @@ export default async function OrgDashboard() {
                     /programs/{p.slug}
                   </Link>
                 </div>
-                <Badge variant="secondary">{p.status}</Badge>
+                <Badge variant="secondary">{PROGRAM_STATUS_LABELS[p.status] ?? p.status}</Badge>
               </div>
             ))}
           </div>
@@ -128,7 +129,7 @@ export default async function OrgDashboard() {
 
       {pendingReports.length > 0 ? (
         <section className="mt-8">
-          <h2 className="mb-4 text-lg font-semibold">Newest reports</h2>
+          <h2 className="mb-4 text-lg font-semibold">جدیدترین گزارش‌ها</h2>
           <div className="space-y-2">
             {pendingReports.map((r) => (
               <Link

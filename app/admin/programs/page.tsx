@@ -7,9 +7,10 @@ import { Pagination } from "@/components/app/pagination";
 import { FilterTabs } from "@/components/app/filter-tabs";
 import { ProgramModerateForm } from "@/components/app/admin-forms";
 import { EmptyState } from "@/components/app/empty-state";
-import { formatMoney, timeAgo } from "@/lib/utils";
+import { formatMoney, formatPoints, timeAgo } from "@/lib/utils";
+import { PROGRAM_STATUS_LABELS } from "@/lib/constants";
 
-export const metadata: Metadata = { title: "Program moderation" };
+export const metadata: Metadata = { title: "بازبینی برنامه‌ها" };
 
 const STATUSES = ["DRAFT", "PUBLIC", "PRIVATE", "PAUSED"];
 
@@ -42,20 +43,20 @@ export default async function AdminProgramsPage({
   const totalPages = Math.ceil(total / 20);
 
   return (
-    <DashboardShell title="Program moderation" subtitle={`${total} program${total === 1 ? "" : "s"}`} nav={ADMIN_NAV} currentPath="/admin/programs">
+    <DashboardShell title="بازبینی برنامه‌ها" subtitle={`${formatPoints(total)} برنامه`} nav={ADMIN_NAV} currentPath="/admin/programs">
       <div className="mb-4">
         <FilterTabs
           basePath="/admin/programs"
           current={status}
           options={[
-            { value: "ALL", label: "All" },
-            ...STATUSES.map((s) => ({ value: s, label: s.charAt(0) + s.slice(1).toLowerCase() })),
+            { value: "ALL", label: "همه" },
+            ...STATUSES.map((s) => ({ value: s, label: PROGRAM_STATUS_LABELS[s] ?? s })),
           ]}
         />
       </div>
 
       {programs.length === 0 ? (
-        <EmptyState title="No programs" />
+        <EmptyState title="برنامه‌ای یافت نشد" />
       ) : (
         <div className="space-y-3">
           {programs.map((p) => (
@@ -63,7 +64,7 @@ export default async function AdminProgramsPage({
               <div className="min-w-0">
                 <p className="truncate font-medium">{p.title}{p.featured ? " ★" : ""}</p>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  {p.organization.name}{p.organization.verified ? " ✓" : ""} · {formatMoney(p.minBounty, p.currency)}–{formatMoney(p.maxBounty, p.currency)} · {p._count.reports} reports · {p.status} · created {timeAgo(p.createdAt)}
+                  {p.organization.name}{p.organization.verified ? " ✓" : ""} · {formatMoney(p.minBounty, p.currency)}–{formatMoney(p.maxBounty, p.currency)} · {formatPoints(p._count.reports)} گزارش · {PROGRAM_STATUS_LABELS[p.status] ?? p.status} · ساخته‌شده {timeAgo(p.createdAt)}
                 </p>
               </div>
               <ProgramModerateForm programId={p.id} status={p.status} />

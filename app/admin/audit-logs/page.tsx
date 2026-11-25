@@ -4,9 +4,9 @@ import { prisma } from "@/lib/prisma";
 import { DashboardShell } from "@/components/app/dashboard-shell";
 import { ADMIN_NAV } from "@/components/app/admin-nav";
 import { Pagination } from "@/components/app/pagination";
-import { timeAgo } from "@/lib/utils";
+import { formatPoints, timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Audit logs" };
+export const metadata: Metadata = { title: "لاگ‌های حسابرسی" };
 
 export default async function AdminAuditLogsPage({
   searchParams,
@@ -29,19 +29,19 @@ export default async function AdminAuditLogsPage({
   const totalPages = Math.ceil(total / 30);
 
   return (
-    <DashboardShell title="Audit logs" subtitle={`${total} event${total === 1 ? "" : "s"}`} nav={ADMIN_NAV} currentPath="/admin/audit-logs">
+    <DashboardShell title="لاگ‌های حسابرسی" subtitle={`${formatPoints(total)} رخداد`} nav={ADMIN_NAV} currentPath="/admin/audit-logs">
       {logs.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No audit events recorded yet.</p>
+        <p className="text-sm text-muted-foreground">هنوز رخدادی در لاگ حسابرسی ثبت نشده است.</p>
       ) : (
         <div className="overflow-x-auto rounded-lg border">
           <table className="w-full min-w-[720px] text-sm">
             <thead>
-              <tr className="border-b bg-secondary/40 text-left text-xs uppercase tracking-wide text-muted-foreground">
-                <th className="px-4 py-2.5 font-medium">When</th>
-                <th className="px-4 py-2.5 font-medium">Action</th>
-                <th className="px-4 py-2.5 font-medium">Actor</th>
-                <th className="px-4 py-2.5 font-medium">Target</th>
-                <th className="px-4 py-2.5 font-medium">Metadata</th>
+              <tr className="border-b bg-secondary/40 text-right text-xs text-muted-foreground">
+                <th className="px-4 py-2.5 font-medium">زمان</th>
+                <th className="px-4 py-2.5 font-medium">اقدام</th>
+                <th className="px-4 py-2.5 font-medium">کاربر</th>
+                <th className="px-4 py-2.5 font-medium">هدف</th>
+                <th className="px-4 py-2.5 font-medium">فراداده</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border">
@@ -49,7 +49,7 @@ export default async function AdminAuditLogsPage({
                 <tr key={l.id} className="align-top">
                   <td className="whitespace-nowrap px-4 py-3 text-xs text-muted-foreground">{timeAgo(l.createdAt)}</td>
                   <td className="px-4 py-3 font-mono text-xs text-primary">{l.action}</td>
-                  <td className="px-4 py-3 text-xs">{l.actor ? `${l.actor.name} (${l.actor.email})` : "system"}</td>
+                  <td className="px-4 py-3 text-xs">{l.actor ? `${l.actor.name} (${l.actor.email})` : "سیستم"}</td>
                   <td className="px-4 py-3 text-xs text-muted-foreground">{l.targetType}{l.targetId ? ` · ${l.targetId.slice(-8)}` : ""}</td>
                   <td className="px-4 py-3 font-mono text-xs text-muted-foreground">
                     {l.metadata ? JSON.stringify(l.metadata).slice(0, 80) : "—"}

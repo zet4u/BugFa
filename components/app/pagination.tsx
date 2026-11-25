@@ -27,29 +27,29 @@ export function Pagination({
   return (
     <div className="flex items-center justify-between border-t pt-4">
       <span className="text-sm text-muted-foreground">
-        Page {page} of {totalPages}
+        صفحه {new Intl.NumberFormat("fa-IR").format(page)} از {new Intl.NumberFormat("fa-IR").format(totalPages)}
       </span>
       <div className="flex gap-2">
         {page > 1 ? (
           <Button asChild variant="outline" size="sm">
             <Link href={buildHref(page - 1)}>
-              <ChevronLeft className="h-4 w-4" /> Previous
+              <ChevronRight className="h-4 w-4" /> قبلی
             </Link>
           </Button>
         ) : (
           <Button variant="outline" size="sm" disabled>
-            <ChevronLeft className="h-4 w-4" /> Previous
+            <ChevronRight className="h-4 w-4" /> قبلی
           </Button>
         )}
         {page < totalPages ? (
           <Button asChild variant="outline" size="sm">
             <Link href={buildHref(page + 1)}>
-              Next <ChevronRight className="h-4 w-4" />
+              بعدی <ChevronLeft className="h-4 w-4" />
             </Link>
           </Button>
         ) : (
           <Button variant="outline" size="sm" disabled>
-            Next <ChevronRight className="h-4 w-4" />
+            بعدی <ChevronLeft className="h-4 w-4" />
           </Button>
         )}
       </div>

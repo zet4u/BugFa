@@ -9,10 +9,10 @@ import { FilterTabs } from "@/components/app/filter-tabs";
 import { EmptyState } from "@/components/app/empty-state";
 import { Pagination } from "@/components/app/pagination";
 import { SearchX } from "lucide-react";
-import { PAGE_SIZE } from "@/lib/constants";
-import { timeAgo, formatMoney } from "@/lib/utils";
+import { PAGE_SIZE, STATUS_LABELS } from "@/lib/constants";
+import { formatPoints, timeAgo, formatMoney } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Submissions" };
+export const metadata: Metadata = { title: "گزارش‌های دریافتی" };
 
 export default async function OrgReportsPage({
   searchParams,
@@ -30,8 +30,8 @@ export default async function OrgReportsPage({
   });
   if (orgs.length === 0) {
     return (
-      <DashboardShell title="Submissions" nav={ORG_NAV} currentPath="/org/reports">
-        <p className="text-sm text-muted-foreground">No organization associated with your account.</p>
+      <DashboardShell title="گزارش‌های دریافتی" nav={ORG_NAV} currentPath="/org/reports">
+        <p className="text-sm text-muted-foreground">هیچ سازمانی به حساب شما متصل نیست.</p>
       </DashboardShell>
     );
   }
@@ -67,18 +67,18 @@ export default async function OrgReportsPage({
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <DashboardShell title="Submissions" subtitle={`${total} report${total === 1 ? "" : "s"} across your programs`} nav={ORG_NAV} currentPath="/org/reports">
+    <DashboardShell title="گزارش‌های دریافتی" subtitle={`${formatPoints(total)} گزارش در برنامه‌های شما`} nav={ORG_NAV} currentPath="/org/reports">
       <div className="mb-6">
         <FilterTabs
           basePath="/org/reports"
           current={status}
           options={[
-            { value: "NEW", label: "New" },
-            { value: "TRIAGED", label: "Triaged" },
-            { value: "ACCEPTED", label: "Accepted" },
-            { value: "REWARDED", label: "Rewarded" },
-            { value: "REJECTED", label: "Rejected" },
-            { value: "ALL", label: "All" },
+            { value: "NEW", label: "جدید" },
+            { value: "TRIAGED", label: "بررسی‌شده" },
+            { value: "ACCEPTED", label: "پذیرفته‌شده" },
+            { value: "REWARDED", label: "جایزه‌داده‌شده" },
+            { value: "REJECTED", label: "رد‌شده" },
+            { value: "ALL", label: "همه" },
           ]}
         />
       </div>
@@ -86,8 +86,8 @@ export default async function OrgReportsPage({
         {reports.length === 0 ? (
           <EmptyState
             icon={<SearchX />}
-            title="No reports in this view"
-            description="Public reports submitted to your programs will appear here for triage."
+            title="گزارشی در این نما وجود ندارد"
+            description="گزارش‌های ارسالی به برنامه‌های شما برای بررسی اولیه اینجا نمایش داده می‌شوند."
           />
         ) : (
           <div className="space-y-2">
@@ -104,7 +104,7 @@ export default async function OrgReportsPage({
                     {r.status === "REWARDED" && r.rewardAmount ? ` · ${formatMoney(r.rewardAmount)}` : ""}
                   </p>
                 </div>
-                <span className="shrink-0 text-xs text-muted-foreground">{r.status}</span>
+                <span className="shrink-0 text-xs text-muted-foreground">{STATUS_LABELS[r.status] ?? r.status}</span>
               </Link>
             ))}
             <div className="pt-4">

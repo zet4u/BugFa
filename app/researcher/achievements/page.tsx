@@ -5,9 +5,9 @@ import { DashboardShell } from "@/components/app/dashboard-shell";
 import { RESEARCHER_NAV } from "@/components/app/researcher-nav";
 import { ACHIEVEMENTS } from "@/lib/constants";
 import { researcherLevel } from "@/lib/gamification";
-import { timeAgo } from "@/lib/utils";
+import { formatPoints, timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Achievements" };
+export const metadata: Metadata = { title: "نشان‌ها" };
 
 export default async function AchievementsPage() {
   const user = await requireUser();
@@ -22,7 +22,7 @@ export default async function AchievementsPage() {
   const level = researcherLevel(agg._sum.points ?? 0);
 
   return (
-    <DashboardShell title="Achievements" subtitle={`${owned.size} of ${ACHIEVEMENTS.length} unlocked · ${level.name}`} nav={RESEARCHER_NAV} currentPath="/researcher/achievements">
+    <DashboardShell title="نشان‌ها" subtitle={`${formatPoints(owned.size)} از ${ACHIEVEMENTS.length} نشان باز شده · ${level.name}`} nav={RESEARCHER_NAV} currentPath="/researcher/achievements">
       <div className="grid gap-3 sm:grid-cols-2">
         {ACHIEVEMENTS.map((a) => {
           const awardedAt = owned.get(a.key);
@@ -43,7 +43,7 @@ export default async function AchievementsPage() {
               <div className="min-w-0">
                 <p className="text-sm font-medium">{a.title}</p>
                 <p className="text-xs text-muted-foreground">
-                  {awardedAt ? `Unlocked ${timeAgo(awardedAt)}` : a.description}
+                  {awardedAt ? `باز شده ${timeAgo(awardedAt)}` : a.description}
                 </p>
               </div>
             </div>

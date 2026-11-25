@@ -1,8 +1,8 @@
 export const ORG_NAV = [
-  { href: "/org", label: "Overview" },
-  { href: "/org/programs", label: "Programs" },
-  { href: "/org/programs/new", label: "New Program" },
-  { href: "/org/reports", label: "Submissions" },
-  { href: "/org/team", label: "Team" },
-  { href: "/org/profile", label: "Organization Profile" },
+  { href: "/org", label: "نمای کلی" },
+  { href: "/org/programs", label: "برنامه‌ها" },
+  { href: "/org/programs/new", label: "برنامه جدید" },
+  { href: "/org/reports", label: "گزارش‌ها" },
+  { href: "/org/team", label: "تیم" },
+  { href: "/org/profile", label: "پروفایل سازمان" },
 ];

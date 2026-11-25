@@ -18,7 +18,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { username } = await params;
   const user = await prisma.user.findUnique({ where: { username }, select: { name: true } });
-  return { title: user ? `${user.name} · Researcher profile` : "Researcher not found" };
+  return { title: user ? `${user.name} · نمایه پژوهشگر` : "پژوهشگر یافت نشد" };
 }
 
 export default async function ResearcherProfilePage({
@@ -76,7 +76,7 @@ export default async function ResearcherProfilePage({
   const ownedAchievements = new Set(user.achievements.map((a) => a.key));
 
   return (
-    <div className="container-app max-w-4xl py-10">
+    <div className="container-app max-w-4xl animate-fade-up py-10">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
         <Avatar className="h-16 w-16">
           <AvatarFallback className="text-lg">{user.name.split(" ").map((p) => p[0]).slice(0, 2).join("")}</AvatarFallback>
@@ -89,22 +89,22 @@ export default async function ResearcherProfilePage({
             {user.country ? (
               <span className="flex items-center gap-1"><MapPin className="h-3 w-3" /> {user.country}</span>
             ) : null}
-            <span>Joined {timeAgo(user.createdAt)}</span>
+            <span>عضو از {timeAgo(user.createdAt)}</span>
           </p>
         </div>
         <div className="flex gap-3">
           {user.website ? (
-            <a href={user.website} target="_blank" rel="noopener noreferrer nofollow" aria-label="Website">
+            <a href={user.website} target="_blank" rel="noopener noreferrer nofollow" aria-label="وب‌سایت">
               <Globe className="h-4 w-4 text-muted-foreground hover:text-primary" />
             </a>
           ) : null}
           {user.github ? (
-            <a href={`https://github.com/${user.github}`} target="_blank" rel="noopener noreferrer nofollow" aria-label="GitHub">
+            <a href={`https://github.com/${user.github}`} target="_blank" rel="noopener noreferrer nofollow" aria-label="گیت‌هاب">
               <Github className="h-4 w-4 text-muted-foreground hover:text-primary" />
             </a>
           ) : null}
           {user.twitter ? (
-            <a href={`https://x.com/${user.twitter}`} target="_blank" rel="noopener noreferrer nofollow" aria-label="X / Twitter">
+            <a href={`https://x.com/${user.twitter}`} target="_blank" rel="noopener noreferrer nofollow" aria-label="ایکس">
               <Twitter className="h-4 w-4 text-muted-foreground hover:text-primary" />
             </a>
           ) : null}
@@ -115,21 +115,21 @@ export default async function ResearcherProfilePage({
 
       <div className="mt-8 grid gap-4 sm:grid-cols-4">
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Reputation</p>
+          <p className="text-xs text-muted-foreground">امتیاز اعتبار</p>
           <p className="mt-1 font-mono text-xl font-bold text-primary">{formatPoints(totalPoints)}</p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Accepted reports</p>
+          <p className="text-xs text-muted-foreground">گزارش‌های پذیرفته‌شده</p>
           <p className="mt-1 font-mono text-xl font-bold">{severityBreakdown.reduce((s, b) => s + b._count, 0)}</p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Achievements</p>
+          <p className="text-xs text-muted-foreground">نشان‌ها</p>
           <p className="mt-1 font-mono text-xl font-bold">
             {ownedAchievements.size}/{ACHIEVEMENTS.length}
           </p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="mb-1 text-xs uppercase tracking-wide text-muted-foreground">Severity mix</p>
+          <p className="mb-1 text-xs text-muted-foreground">ترکیب شدت</p>
           <div className="flex flex-wrap gap-1">
             {severityBreakdown.map((b) => (
               <SeverityBadge key={b.severity} severity={b.severity} />
@@ -140,7 +140,7 @@ export default async function ResearcherProfilePage({
       </div>
 
       <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold">Achievements</h2>
+        <h2 className="mb-4 text-lg font-semibold">نشان‌ها</h2>
         <div className="grid gap-3 sm:grid-cols-2">
           {ACHIEVEMENTS.map((achievement) => {
             const owned = ownedAchievements.has(achievement.key);
@@ -167,9 +167,9 @@ export default async function ResearcherProfilePage({
       </section>
 
       <section className="mt-10">
-        <h2 className="mb-4 text-lg font-semibold">Recent accepted reports</h2>
+        <h2 className="mb-4 text-lg font-semibold">تازه‌ترین گزارش‌های پذیرفته‌شده</h2>
         {reports.length === 0 ? (
-          <EmptyState title="No accepted reports yet" />
+          <EmptyState title="هنوز گزارش پذیرفته‌شده‌ای وجود ندارد" />
         ) : (
           <div className="space-y-2">
             {reports.map((report) => (
@@ -191,7 +191,7 @@ export default async function ResearcherProfilePage({
           </div>
         )}
         <p className="mt-3 text-xs text-muted-foreground">
-          Report details remain private between the researcher and the program.
+          جزئیات گزارش‌ها بین پژوهشگر و برنامه محرمانه باقی می‌ماند.
         </p>
       </section>
     </div>

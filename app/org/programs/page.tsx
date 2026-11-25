@@ -8,17 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/app/empty-state";
 import { setProgramStatusAction } from "@/lib/actions/programs";
-import { formatMoney } from "@/lib/utils";
+import { PROGRAM_STATUS_LABELS } from "@/lib/constants";
+import { formatMoney, formatPoints } from "@/lib/utils";
 import { Plus } from "lucide-react";
 
-export const metadata: Metadata = { title: "Manage programs" };
-
-const STATUS_LABELS: Record<string, string> = {
-  DRAFT: "Draft",
-  PUBLIC: "Public",
-  PRIVATE: "Private",
-  PAUSED: "Paused",
-};
+export const metadata: Metadata = { title: "مدیریت برنامه‌ها" };
 
 export default async function OrgProgramsPage() {
   const user = await requireRole("ORGANIZATION", "ADMIN");
@@ -43,24 +37,24 @@ export default async function OrgProgramsPage() {
 
   return (
     <DashboardShell
-      title="Manage programs"
+      title="مدیریت برنامه‌ها"
       nav={ORG_NAV}
       currentPath="/org/programs"
       header={
         <Button asChild size="sm">
           <Link href="/org/programs/new">
-            <Plus className="mr-1.5 h-4 w-4" /> New program
+            <Plus className="me-1.5 h-4 w-4" /> برنامه جدید
           </Link>
         </Button>
       }
     >
       {programs.length === 0 ? (
         <EmptyState
-          title="No programs yet"
-          description="Create your first bug bounty program to start receiving reports."
+          title="هنوز برنامه‌ای ندارید"
+          description="اولین برنامه باگ بانتی خود را بسازید تا شروع به دریافت گزارش کنید."
           action={
             <Button asChild size="sm">
-              <Link href="/org/programs/new">Create program</Link>
+              <Link href="/org/programs/new">ساخت برنامه</Link>
             </Button>
           }
         />
@@ -80,14 +74,14 @@ export default async function OrgProgramsPage() {
                     {p.title}
                   </Link>
                   <Badge variant={p.status === "PUBLIC" ? "default" : "secondary"}>
-                    {STATUS_LABELS[p.status] ?? p.status}
+                    {PROGRAM_STATUS_LABELS[p.status] ?? p.status}
                   </Badge>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">
                   {formatMoney(p.minBounty, p.currency)} – {formatMoney(p.maxBounty, p.currency)} ·{" "}
-                  {p._count.reports} report{p._count.reports === 1 ? "" : "s"} ·{" "}
+                  {formatPoints(p._count.reports)} گزارش ·{" "}
                   <Link href={`/programs/${p.slug}`} className="hover:text-primary">
-                    view public page
+                    مشاهده صفحه عمومی
                   </Link>
                 </p>
               </div>
@@ -99,12 +93,12 @@ export default async function OrgProgramsPage() {
                       <input type="hidden" name="programId" value={p.id} />
                       <input type="hidden" name="status" value={s} />
                       <Button type="submit" variant="outline" size="sm">
-                        {STATUS_LABELS[s]}
+                        {PROGRAM_STATUS_LABELS[s]}
                       </Button>
                     </form>
                   ))}
                 <Button asChild variant="ghost" size="sm">
-                  <Link href={`/org/programs/${p.id}/edit`}>Edit</Link>
+                  <Link href={`/org/programs/${p.id}/edit`}>ویرایش</Link>
                 </Button>
               </div>
             </div>

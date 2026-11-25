@@ -15,19 +15,19 @@ export function VerifyEmailView({ token }: { token: string }) {
   return (
     <div className="flex flex-col items-center gap-4 py-12 text-center">
       <EmailCheck className="h-10 w-10 text-primary" />
-      <h1 className="text-xl font-bold">Email verification</h1>
+      <h1 className="text-xl font-bold">تأیید ایمیل</h1>
       {state?.error ? <p className="text-sm text-destructive">{state.error}</p> : null}
       {state?.success ? (
         <>
-          <p className="text-sm text-emerald-400">Your email has been verified.</p>
+          <p className="text-sm text-emerald-400">ایمیل شما تأیید شد.</p>
           <Button asChild>
-            <Link href="/dashboard">Go to dashboard</Link>
+            <Link href="/dashboard">رفتن به پیشخوان</Link>
           </Button>
         </>
       ) : !state ? (
         <form action={formAction}>
           <Button type="submit" disabled={pending}>
-            {pending ? "Verifying…" : "Verify my email"}
+            {pending ? "در حال تأیید…" : "تأیید ایمیل من"}
           </Button>
         </form>
       ) : null}

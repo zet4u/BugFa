@@ -102,21 +102,21 @@ export async function moderateProgramAction(formData: FormData) {
 
 export async function resolveDisputeAction(_prev: unknown, formData: FormData): Promise<ActionState> {
   const admin = await requireAdmin();
-  if (!admin) return { error: "Unauthorized" };
+  if (!admin) return { error: "دسترسی غیرمجاز" };
 
   const parsed = disputeResolutionSchema.safeParse({
     disputeId: formData.get("disputeId"),
     resolution: formData.get("resolution"),
     outcome: formData.get("outcome"),
   });
-  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+  if (!parsed.success) return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
 
   const dispute = await prisma.dispute.findUnique({
     where: { id: parsed.data.disputeId },
     include: { report: { select: { id: true, researcherId: true, title: true } } },
   });
-  if (!dispute) return { error: "Dispute not found" };
-  if (dispute.status !== "OPEN") return { error: "Dispute already resolved" };
+  if (!dispute) return { error: "اختلاف پیدا نشد" };
+  if (dispute.status !== "OPEN") return { error: "این اختلاف قبلاً حل شده است" };
 
   await prisma.dispute.update({
     where: { id: dispute.id },
@@ -142,7 +142,7 @@ export async function resolveDisputeAction(_prev: unknown, formData: FormData): 
     metadata: { outcome: parsed.data.outcome },
   });
   revalidatePath("/admin/disputes");
-  return { success: "Dispute resolved" };
+  return { success: "اختلاف حل شد" };
 }
 
 export async function markAllNotificationsReadAction() {

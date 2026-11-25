@@ -22,7 +22,7 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
     password: formData.get("password"),
   });
   if (!parsed.success) {
-    return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+    return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
   }
 
   const limiter = await checkRateLimit(await ipKey("login"), 10, 60_000);
@@ -37,10 +37,10 @@ export async function loginAction(_prev: ActionState, formData: FormData): Promi
       redirect: false,
     });
   } catch {
-    return { error: "Invalid email or password" };
+    return { error: "ایمیل یا رمز عبور نادرست است" };
   }
   await auditLog({ action: "auth.login", metadata: { email: parsed.data.email } });
-  return { success: "Signed in" };
+  return { success: "وارد شدید" };
 }
 
 export async function registerAction(_prev: ActionState, formData: FormData): Promise<ActionState> {
@@ -55,7 +55,7 @@ export async function registerAction(_prev: ActionState, formData: FormData): Pr
     acceptedTerms: formData.get("acceptedTerms") === "on",
   });
   if (!parsed.success) {
-    return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+    return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
   }
 
   const limiter = await checkRateLimit(await ipKey("register"), 5, 60_000);
@@ -73,8 +73,8 @@ export async function registerAction(_prev: ActionState, formData: FormData): Pr
     return {
       error:
         existing.email === email.toLowerCase()
-          ? "An account with this email already exists"
-          : "This username is taken",
+          ? "حسابی با این ایمیل از قبل وجود دارد"
+          : "این نام کاربری قبلاً گرفته شده",
     };
   }
 
@@ -121,9 +121,9 @@ export async function registerAction(_prev: ActionState, formData: FormData): Pr
   try {
     await signIn("credentials", { email, password, redirect: false });
   } catch {
-    return { error: "Account created but sign-in failed. Please log in." };
+    return { error: "حساب ساخته شد اما ورود خودکار ناموفق بود. دوباره وارد شوید." };
   }
-  return { success: "Account created" };
+  return { success: "حساب ساخته شد" };
 }
 
 async function uniqueOrgSlug(name: string) {
@@ -141,10 +141,10 @@ export async function requestPasswordResetAction(
   formData: FormData
 ): Promise<ActionState> {
   const parsed = requestPasswordResetSchema.safeParse({ email: formData.get("email") });
-  if (!parsed.success) return { error: "Enter a valid email" };
+  if (!parsed.success) return { error: "ایمیل معتبر وارد کنید" };
 
   const limiter = await checkRateLimit(await ipKey("pwreset"), 5, 60_000);
-  if (!limiter.ok) return { error: "Too many attempts. Try again later." };
+  if (!limiter.ok) return { error: "تلاش‌های بیش از حد. بعداً دوباره امتحان کنید." };
 
   const user = await prisma.user.findUnique({ where: { email: parsed.data.email.toLowerCase() } });
   if (user) {
@@ -160,7 +160,7 @@ export async function requestPasswordResetAction(
     console.log(`[dev] password reset link: /reset-password?token=${token}`);
   }
   return {
-    success: "If that email exists, a reset link has been sent. Check your inbox.",
+    success: "اگر این ایمیل وجود داشته باشد، لینک بازنشانی ارسال شده است. صندوق ورودی خود را بررسی کنید.",
   };
 }
 
@@ -174,7 +174,7 @@ export async function passwordResetAction(
     confirmPassword: formData.get("confirmPassword"),
   });
   if (!parsed.success) {
-    return { error: parsed.error.errors[0]?.message ?? "Invalid input" };
+    return { error: parsed.error.errors[0]?.message ?? "ورودی نامعتبر" };
   }
 
   const record = await prisma.authToken.findUnique({
@@ -182,7 +182,7 @@ export async function passwordResetAction(
     include: { user: true },
   });
   if (!record || record.type !== "PASSWORD_RESET" || record.usedAt || record.expiresAt < new Date()) {
-    return { error: "This reset link is invalid or has expired" };
+    return { error: "این لینک بازنشانی نامعتبر است یا منقضی شده" };
   }
 
   const passwordHash = await bcrypt.hash(parsed.data.password, 12);
@@ -195,20 +195,20 @@ export async function passwordResetAction(
     }),
   ]);
   await auditLog({ actorId: record.userId, action: "auth.password_reset" });
-  return { success: "Password updated. You can now log in." };
+  return { success: "رمز عبور به‌روزرسانی شد. اکنون می‌توانید وارد شوید." };
 }
 
 export async function verifyEmailAction(token: string): Promise<ActionState> {
   const record = await prisma.authToken.findUnique({ where: { token: hashToken(token) } });
   if (!record || record.type !== "EMAIL_VERIFICATION" || record.usedAt || record.expiresAt < new Date()) {
-    return { error: "This verification link is invalid or has expired" };
+    return { error: "این لینک تأیید نامعتبر است یا منقضی شده" };
   }
   await prisma.$transaction([
     prisma.user.update({ where: { id: record.userId }, data: { emailVerified: new Date() } }),
     prisma.authToken.update({ where: { id: record.id }, data: { usedAt: new Date() } }),
   ]);
   await auditLog({ actorId: record.userId, action: "auth.email_verified" });
-  return { success: "Email verified" };
+  return { success: "ایمیل تأیید شد" };
 }
 
 export async function resendVerificationAction(): Promise<ActionState> {
@@ -218,7 +218,7 @@ export async function resendVerificationAction(): Promise<ActionState> {
   if (!user || user.emailVerified) return null;
 
   const limiter = await checkRateLimit(`verify:${user.id}`, 3, 60 * 60_000);
-  if (!limiter.ok) return { error: "Please wait before requesting another email." };
+  if (!limiter.ok) return { error: "لطفاً پیش از درخواست ایمیل بعدی کمی صبر کنید." };
 
   const token = generateToken();
   await prisma.authToken.create({
@@ -230,7 +230,7 @@ export async function resendVerificationAction(): Promise<ActionState> {
     },
   });
   console.log(`[dev] email verification link: /verify-email?token=${token}`);
-  return { success: "Verification email sent." };
+  return { success: "ایمیل تأیید ارسال شد." };
 }
 
 export async function signOutAction() {

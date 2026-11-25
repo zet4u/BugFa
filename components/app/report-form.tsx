@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { submitReportAction } from "@/lib/actions/reports";
-import { VULN_CATEGORIES, SEVERITIES } from "@/lib/constants";
+import { VULN_CATEGORIES, SEVERITIES, SEVERITY_LABELS, CATEGORY_LABELS } from "@/lib/constants";
 
 export function ReportForm({ programId, programTitle }: { programId: string; programTitle: string }) {
   const [state, formAction, pending] = useActionState(submitReportAction, null);
@@ -34,48 +34,48 @@ export function ReportForm({ programId, programTitle }: { programId: string; pro
       ) : null}
 
       <div className="space-y-2">
-        <h2 className="text-sm font-semibold">Vulnerability details</h2>
+        <h2 className="text-sm font-semibold">جزئیات آسیب‌پذیری</h2>
         <p className="text-xs text-muted-foreground">
-          A clear title and precise reproduction steps get triaged faster.
+          عنوان واضح و مراحل بازتولید دقیق، بررسی سریع‌تری به همراه دارد.
         </p>
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="title">Title</Label>
+        <Label htmlFor="title">عنوان</Label>
         <Input id="title" name="title" required minLength={8} maxLength={160}
-          placeholder="e.g. Stored XSS in user profile bio field" />
+          placeholder="مثلاً: XSS ذخیره‌شده در فیلد بیوگرافی پروفایل کاربری" />
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="space-y-2 sm:col-span-1">
-          <Label htmlFor="asset">Affected asset</Label>
+          <Label htmlFor="asset">دارایی آسیب‌پذیر</Label>
           <Input id="asset" name="asset" required placeholder="https://app.example.com/profile" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="severity">Severity</Label>
+          <Label htmlFor="severity">شدت</Label>
           <Select name="severity" defaultValue="MEDIUM" required>
-            <SelectTrigger id="severity" aria-label="Severity">
+            <SelectTrigger id="severity" aria-label="شدت">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {SEVERITIES.map((s) => (
                 <SelectItem key={s} value={s}>
-                  {s.charAt(0) + s.slice(1).toLowerCase()}
+                  {SEVERITY_LABELS[s]}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <div className="space-y-2">
-          <Label htmlFor="category">Category</Label>
+          <Label htmlFor="category">دسته‌بندی</Label>
           <Select name="category" required>
-            <SelectTrigger id="category" aria-label="Category">
-              <SelectValue placeholder="Select a category" />
+            <SelectTrigger id="category" aria-label="دسته‌بندی">
+              <SelectValue placeholder="دسته‌بندی را انتخاب کنید" />
             </SelectTrigger>
             <SelectContent>
               {VULN_CATEGORIES.map((c) => (
                 <SelectItem key={c} value={c}>
-                  {c}
+                  {CATEGORY_LABELS[c] ?? c}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -84,37 +84,37 @@ export function ReportForm({ programId, programTitle }: { programId: string; pro
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Detailed description</Label>
+        <Label htmlFor="description">شرح کامل</Label>
         <Textarea id="description" name="description" required minLength={50} rows={5}
-          placeholder="What is the vulnerability and which component does it affect?" />
+          placeholder="آسیب‌پذیری چیست و کدام بخش را تحت تأثیر قرار می‌دهد؟" />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="steps">Steps to reproduce</Label>
+        <Label htmlFor="steps">مراحل بازتولید</Label>
         <Textarea id="steps" name="steps" required minLength={20} rows={6}
           placeholder={"1. Go to…\n2. Enter…\n3. Observe…"} />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="impact">Impact</Label>
+        <Label htmlFor="impact">میزان اثر</Label>
         <Textarea id="impact" name="impact" required minLength={20} rows={3}
-          placeholder="What could an attacker achieve with this issue?" />
+          placeholder="مهاجم با این مشکل چه چیزی می‌تواند به دست بیاورد؟" />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="proofOfConcept">Proof of Concept (optional)</Label>
+        <Label htmlFor="proofOfConcept">اثبات مفهوم (اختیاری)</Label>
         <Textarea id="proofOfConcept" name="proofOfConcept" rows={5}
           className="font-mono text-xs"
-          placeholder="Paste PoC code, request/response snippets or payloads here" />
+          placeholder="کد PoC، درخواست/پاسخ یا پیلود را اینجا وارد کنید" />
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="remediation">Suggested remediation (optional)</Label>
+        <Label htmlFor="remediation">راه‌حل پیشنهادی (اختیاری)</Label>
         <Textarea id="remediation" name="remediation" rows={3} />
       </div>
 
       <Button type="submit" disabled={pending} size="lg">
-        {pending ? "Submitting…" : `Submit report to ${programTitle}`}
+        {pending ? "در حال ارسال…" : `ارسال گزارش به ${programTitle}`}
       </Button>
     </form>
   );

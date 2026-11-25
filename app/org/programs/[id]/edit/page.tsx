@@ -8,7 +8,7 @@ import { BackLink } from "@/components/app/back-link";
 import { ProgramForm } from "@/components/app/program-form";
 import type { ScopeAsset } from "@/lib/constants";
 
-export const metadata: Metadata = { title: "Edit program" };
+export const metadata: Metadata = { title: "ویرایش برنامه" };
 
 export default async function EditProgramPage({
   params,
@@ -31,8 +31,8 @@ export default async function EditProgramPage({
   if (!isStaff) redirect("/org/programs");
 
   return (
-    <DashboardShell title={`Edit: ${program.title}`} nav={ORG_NAV} currentPath="/org/programs">
-      <BackLink href="/org/programs" label="Back to programs" />
+    <DashboardShell title={`ویرایش: ${program.title}`} nav={ORG_NAV} currentPath="/org/programs">
+      <BackLink href="/org/programs" label="بازگشت به برنامه‌ها" />
       <ProgramForm
         program={{
           id: program.id,

@@ -10,8 +10,9 @@ import { EmptyState } from "@/components/app/empty-state";
 import { Pagination } from "@/components/app/pagination";
 import { SearchX } from "lucide-react";
 import { PAGE_SIZE } from "@/lib/constants";
+import { formatPoints } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Available programs" };
+export const metadata: Metadata = { title: "برنامه‌های موجود" };
 
 export default async function ResearcherProgramsPage({
   searchParams,
@@ -46,13 +47,13 @@ export default async function ResearcherProgramsPage({
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <DashboardShell title="Available programs" subtitle={`${total} public programs`} nav={RESEARCHER_NAV} currentPath="/researcher/programs">
+    <DashboardShell title="برنامه‌های موجود" subtitle={`${formatPoints(total)} برنامه عمومی`} nav={RESEARCHER_NAV} currentPath="/researcher/programs">
       <Suspense fallback={null}>
         <SearchFilters basePath="/researcher/programs" />
       </Suspense>
       <div className="mt-6">
         {programs.length === 0 ? (
-          <EmptyState icon={<SearchX />} title="No programs found" />
+          <EmptyState icon={<SearchX />} title="برنامه‌ای یافت نشد" />
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
             {programs.map((program) => (

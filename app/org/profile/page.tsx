@@ -5,8 +5,9 @@ import { DashboardShell } from "@/components/app/dashboard-shell";
 import { ORG_NAV } from "@/components/app/org-nav";
 import { OrgProfileForm } from "@/components/app/org-forms";
 import { EmptyState } from "@/components/app/empty-state";
+import { formatPoints } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Organization profile" };
+export const metadata: Metadata = { title: "نمایه سازمان" };
 
 export default async function OrgProfilePage() {
   const user = await requireRole("ORGANIZATION", "ADMIN");
@@ -17,30 +18,30 @@ export default async function OrgProfilePage() {
 
   if (!org) {
     return (
-      <DashboardShell title="Organization profile" nav={ORG_NAV} currentPath="/org/profile">
-        <EmptyState title="No organization found" description="Contact support if this seems wrong." />
+      <DashboardShell title="نمایه سازمان" nav={ORG_NAV} currentPath="/org/profile">
+        <EmptyState title="سازمانی یافت نشد" description="اگر این درست به نظر نمی‌رسد با پشتیبانی تماس بگیرید." />
       </DashboardShell>
     );
   }
 
   return (
     <DashboardShell
-      title="Organization profile"
+      title="نمایه سازمان"
       nav={ORG_NAV}
       currentPath="/org/profile"
     >
       <div className="mb-6 grid gap-4 sm:grid-cols-3">
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Programs</p>
-          <p className="mt-1 text-xl font-bold">{org._count.programs}</p>
+          <p className="text-xs text-muted-foreground">برنامه‌ها</p>
+          <p className="mt-1 text-xl font-bold">{formatPoints(org._count.programs)}</p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Team members</p>
-          <p className="mt-1 text-xl font-bold">{org._count.members + 1}</p>
+          <p className="text-xs text-muted-foreground">اعضای تیم</p>
+          <p className="mt-1 text-xl font-bold">{formatPoints(org._count.members + 1)}</p>
         </div>
         <div className="rounded-lg border bg-card p-4">
-          <p className="text-xs uppercase tracking-wide text-muted-foreground">Status</p>
-          <p className="mt-1 text-xl font-bold">{org.verified ? "Verified" : "Unverified"}</p>
+          <p className="text-xs text-muted-foreground">وضعیت</p>
+          <p className="mt-1 text-xl font-bold">{org.verified ? "تاییدشده" : "تاییدنشده"}</p>
         </div>
       </div>
 
@@ -55,7 +56,7 @@ export default async function OrgProfilePage() {
         />
       ) : (
         <p className="text-sm text-muted-foreground">
-          Only the organization owner ({org.owner.name}) can edit the profile.
+          فقط مالک سازمان ({org.owner.name}) می‌تواند نمایه را ویرایش کند.
         </p>
       )}
     </DashboardShell>

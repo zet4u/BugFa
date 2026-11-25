@@ -8,10 +8,10 @@ import { NotificationBell } from "@/components/app/notification-bell";
 import { MobileNav } from "@/components/app/mobile-nav";
 
 const NAV_LINKS = [
-  { href: "/explore", label: "Explore Programs" },
-  { href: "/leaderboard", label: "Leaderboard" },
-  { href: "/hall-of-fame", label: "Hall of Fame" },
-  { href: "/about", label: "About" },
+  { href: "/explore", label: "کاوش برنامه‌ها" },
+  { href: "/leaderboard", label: "جدول امتیازات" },
+  { href: "/hall-of-fame", label: "تالار افتخار" },
+  { href: "/about", label: "درباره ما" },
 ];
 
 export async function SiteHeader() {
@@ -29,7 +29,7 @@ export async function SiteHeader() {
       <div className="container-app flex h-14 items-center justify-between gap-4">
         <div className="flex items-center gap-6">
           <Logo />
-          <nav className="hidden items-center gap-1 md:flex" aria-label="Main">
+          <nav className="hidden items-center gap-1 md:flex" aria-label="ناوبری اصلی">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -56,10 +56,10 @@ export async function SiteHeader() {
           ) : (
             <div className="hidden items-center gap-2 sm:flex">
               <Button asChild variant="ghost" size="sm">
-                <Link href="/login">Log in</Link>
+                <Link href="/login">ورود</Link>
               </Button>
               <Button asChild size="sm">
-                <Link href="/register">Sign up</Link>
+                <Link href="/register">ثبت‌نام</Link>
               </Button>
             </div>
           )}

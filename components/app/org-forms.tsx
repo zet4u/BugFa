@@ -34,7 +34,7 @@ export function OrgProfileForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Organization details</CardTitle>
+        <CardTitle className="text-base">اطلاعات سازمان</CardTitle>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
@@ -49,27 +49,27 @@ export function OrgProfileForm({
             </div>
           ) : null}
           <div className="space-y-2">
-            <Label htmlFor="name">Organization name</Label>
+            <Label htmlFor="name">نام سازمان</Label>
             <Input id="name" name="name" required minLength={2} maxLength={80} defaultValue={org.name} />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">توضیحات</Label>
             <Textarea id="description" name="description" rows={4} defaultValue={org.description}
-              placeholder="What does your organization build?" />
+              placeholder="سازمان شما چه می‌سازد؟" />
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="website">Website</Label>
+              <Label htmlFor="website">وب‌سایت</Label>
               <Input id="website" name="website" type="url" defaultValue={org.website}
                 placeholder="https://example.com" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="twitter">X / Twitter handle</Label>
+              <Label htmlFor="twitter">آیدی X / توییتر</Label>
               <Input id="twitter" name="twitter" defaultValue={org.twitter} placeholder="@example" />
             </div>
           </div>
           <Button type="submit" disabled={pending}>
-            {pending ? "Saving…" : "Save profile"}
+            {pending ? "در حال ذخیره…" : "ذخیره پروفایل"}
           </Button>
         </form>
       </CardContent>
@@ -86,7 +86,7 @@ export function InviteMemberForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">Invite a team member</CardTitle>
+        <CardTitle className="text-base">دعوت عضو تیم</CardTitle>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-4">
@@ -102,27 +102,27 @@ export function InviteMemberForm() {
           ) : null}
           <div className="grid gap-4 sm:grid-cols-[1fr_160px_auto] sm:items-end">
             <div className="space-y-2">
-              <Label htmlFor="email">Email of an organization account</Label>
+              <Label htmlFor="email">ایمیل یک حساب سازمانی</Label>
               <Input id="email" name="email" type="email" required placeholder="colleague@company.com" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="role">Role</Label>
+              <Label htmlFor="role">نقش</Label>
               <Select name="role" defaultValue="MEMBER">
-                <SelectTrigger id="role" aria-label="Role">
+                <SelectTrigger id="role" aria-label="نقش">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="MEMBER">Member</SelectItem>
-                  <SelectItem value="TRIAGER">Triager</SelectItem>
+                  <SelectItem value="MEMBER">عضو</SelectItem>
+                  <SelectItem value="TRIAGER">بررسی‌کننده</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <Button type="submit" disabled={pending}>
-              {pending ? "Inviting…" : "Invite"}
+              {pending ? "در حال دعوت…" : "دعوت"}
             </Button>
           </div>
           <p className="text-xs text-muted-foreground">
-            The invitee must already have an organization account on BugFa with this email.
+            فرد دعوت‌شده باید از قبل با این ایمیل یک حساب سازمانی در BugFa داشته باشد.
           </p>
         </form>
       </CardContent>
@@ -146,7 +146,7 @@ export function PendingInviteForm({ token }: { token: string }) {
       <input type="hidden" name="token" value={token} />
       {state?.error ? <p className="text-xs text-destructive">{state.error}</p> : null}
       <Button type="submit" size="sm" variant="outline" disabled={pending}>
-        {pending ? "Joining…" : "Accept invite"}
+        {pending ? "در حال پیوستن…" : "پذیرش دعوت‌نامه"}
       </Button>
     </form>
   );

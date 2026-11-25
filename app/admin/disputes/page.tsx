@@ -6,9 +6,9 @@ import { ADMIN_NAV } from "@/components/app/admin-nav";
 import { DisputeResolveForm } from "@/components/app/admin-forms";
 import { StatusBadge } from "@/components/app/status-badge";
 import { EmptyState } from "@/components/app/empty-state";
-import { timeAgo } from "@/lib/utils";
+import { formatPoints, timeAgo } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Dispute management" };
+export const metadata: Metadata = { title: "مدیریت اختلافات" };
 
 export default async function AdminDisputesPage() {
   await requireRole("ADMIN");
@@ -26,29 +26,29 @@ export default async function AdminDisputesPage() {
 
   return (
     <DashboardShell
-      title="Disputes"
-      subtitle={`${open.length} open · ${resolved.length} resolved`}
+      title="اختلافات"
+      subtitle={`${formatPoints(open.length)} باز · ${formatPoints(resolved.length)} حل‌شده`}
       nav={ADMIN_NAV}
       currentPath="/admin/disputes"
     >
       {disputes.length === 0 ? (
-        <EmptyState title="No disputes" description="Disputes raised by researchers will appear here." />
+        <EmptyState title="اختلافی وجود ندارد" description="اختلاف‌هایی که پژوهشگران مطرح می‌کنند اینجا نمایش داده می‌شوند." />
       ) : (
         <div className="space-y-6">
           {open.length > 0 ? (
             <section className="space-y-3">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Open disputes</h2>
+              <h2 className="text-sm font-semibold text-muted-foreground">اختلافات باز</h2>
               {open.map((d) => (
                 <div key={d.id} className="rounded-lg border bg-card p-4">
                   <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
                     <div>
                       <p className="font-medium">{d.report.title}</p>
                       <p className="text-xs text-muted-foreground">
-                        Opened by @{d.openedBy.username} · {timeAgo(d.createdAt)}
+                        مطرح‌شده توسط @{d.openedBy.username} · {timeAgo(d.createdAt)}
                       </p>
                     </div>
                     <a href={`/admin/reports/${d.reportId}`} className="text-xs text-primary hover:underline">
-                      View report →
+                      مشاهده گزارش ←
                     </a>
                   </div>
                   <p className="mb-4 whitespace-pre-wrap rounded-md bg-secondary/40 p-3 text-sm">{d.reason}</p>
@@ -60,7 +60,7 @@ export default async function AdminDisputesPage() {
 
           {resolved.length > 0 ? (
             <section className="space-y-3">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">Resolved</h2>
+              <h2 className="text-sm font-semibold text-muted-foreground">حل‌شده</h2>
               {resolved.map((d) => (
                 <div key={d.id} className="rounded-lg border bg-card p-4">
                   <div className="flex flex-wrap items-center justify-between gap-2">

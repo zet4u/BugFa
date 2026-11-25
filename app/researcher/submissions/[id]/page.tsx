@@ -8,7 +8,7 @@ import { BackLink } from "@/components/app/back-link";
 import { ReportView } from "@/components/app/report-view";
 import { DisputeForm } from "@/components/app/report-controls";
 
-export const metadata: Metadata = { title: "Submission" };
+export const metadata: Metadata = { title: "گزارش" };
 
 export default async function ResearcherReportPage({
   params,
@@ -26,8 +26,8 @@ export default async function ResearcherReportPage({
   if (report.researcherId !== user.id) redirect("/researcher/submissions");
 
   return (
-    <DashboardShell title="Submission" nav={RESEARCHER_NAV} currentPath="/researcher/submissions">
-      <BackLink href="/researcher/submissions" label="Back to submissions" />
+    <DashboardShell title="گزارش" nav={RESEARCHER_NAV} currentPath="/researcher/submissions">
+      <BackLink href="/researcher/submissions" label="بازگشت به گزارش‌ها" />
       <ReportView
         reportId={id}
         viewerId={user.id}

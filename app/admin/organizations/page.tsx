@@ -6,10 +6,10 @@ import { ADMIN_NAV } from "@/components/app/admin-nav";
 import { OrgVerifyForm } from "@/components/app/admin-forms";
 import { Badge } from "@/components/ui/badge";
 import { EmptyState } from "@/components/app/empty-state";
-import { timeAgo } from "@/lib/utils";
+import { formatPoints, timeAgo } from "@/lib/utils";
 import { ShieldCheck, ShieldOff } from "lucide-react";
 
-export const metadata: Metadata = { title: "Organization verification" };
+export const metadata: Metadata = { title: "تایید سازمان‌ها" };
 
 export default async function AdminOrganizationsPage({
   searchParams,
@@ -30,12 +30,12 @@ export default async function AdminOrganizationsPage({
   });
 
   return (
-    <DashboardShell title="Organizations" subtitle={`${orgs.length} organization${orgs.length === 1 ? "" : "s"}`} nav={ADMIN_NAV} currentPath="/admin/organizations">
+    <DashboardShell title="سازمان‌ها" subtitle={`${formatPoints(orgs.length)} سازمان`} nav={ADMIN_NAV} currentPath="/admin/organizations">
       <div className="mb-4 flex gap-1">
         {[
-          { value: "ALL", label: "All", href: "/admin/organizations" },
-          { value: "UNVERIFIED", label: "Unverified", href: "/admin/organizations?filter=UNVERIFIED" },
-          { value: "VERIFIED", label: "Verified", href: "/admin/organizations?filter=VERIFIED" },
+          { value: "ALL", label: "همه", href: "/admin/organizations" },
+          { value: "UNVERIFIED", label: "تاییدنشده", href: "/admin/organizations?filter=UNVERIFIED" },
+          { value: "VERIFIED", label: "تاییدشده", href: "/admin/organizations?filter=VERIFIED" },
         ].map((t) => (
           <a
             key={t.value}
@@ -50,7 +50,7 @@ export default async function AdminOrganizationsPage({
       </div>
 
       {orgs.length === 0 ? (
-        <EmptyState icon={filter === "UNVERIFIED" ? <ShieldOff /> : <ShieldCheck />} title="No organizations" />
+        <EmptyState icon={filter === "UNVERIFIED" ? <ShieldOff /> : <ShieldCheck />} title="سازمانی یافت نشد" />
       ) : (
         <div className="space-y-3">
           {orgs.map((o) => (
@@ -59,13 +59,13 @@ export default async function AdminOrganizationsPage({
                 <div className="flex items-center gap-2">
                   <p className="truncate font-medium">{o.name}</p>
                   {o.verified ? (
-                    <Badge variant="default" className="gap-1"><ShieldCheck className="h-3 w-3" /> Verified</Badge>
+                    <Badge variant="default" className="gap-1"><ShieldCheck className="h-3 w-3" /> تاییدشده</Badge>
                   ) : (
-                    <Badge variant="secondary">Unverified</Badge>
+                    <Badge variant="secondary">تاییدنشده</Badge>
                   )}
                 </div>
                 <p className="mt-0.5 text-xs text-muted-foreground">
-                  Owner: {o.owner.name} ({o.owner.email}) · {o._count.programs} programs · {o._count.members + 1} member{o._count.members === 0 ? "" : "s"} · created {timeAgo(o.createdAt)}
+                  مالک: {o.owner.name} ({o.owner.email}) · {formatPoints(o._count.programs)} برنامه · {formatPoints(o._count.members + 1)} عضو · ساخته‌شده {timeAgo(o.createdAt)}
                 </p>
               </div>
               <OrgVerifyForm organizationId={o.id} verified={o.verified} />

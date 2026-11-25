@@ -18,15 +18,15 @@ export function CommentForm({ reportId, isStaff }: { reportId: string; isStaff: 
     <form ref={ref} action={formAction} className="space-y-3">
       {state?.error ? <Alert tone="error">{state.error}</Alert> : null}
       <input type="hidden" name="reportId" value={reportId} />
-      <Textarea name="body" rows={3} required maxLength={5000} placeholder="Write a private message…" />
+      <Textarea name="body" rows={3} required maxLength={5000} placeholder="پیام خصوصی خود را بنویسید…" />
       {isStaff ? (
         <label className="flex items-center gap-2 text-xs text-muted-foreground">
           <input type="checkbox" name="internal" />
-          Internal note (not visible to the researcher)
+          یادداشت داخلی (برای پژوهشگر نمایش داده نمی‌شود)
         </label>
       ) : null}
       <Button type="submit" size="sm" disabled={pending}>
-        {pending ? "Posting…" : "Post comment"}
+        {pending ? "در حال ارسال…" : "ارسال دیدگاه"}
       </Button>
     </form>
   );

@@ -13,11 +13,11 @@ export function ForgotPasswordForm() {
       {state?.error ? <p className="text-sm text-destructive">{state.error}</p> : null}
       {state?.success ? <p className="text-sm text-emerald-400">{state.success}</p> : null}
       <div className="space-y-2">
-        <Label htmlFor="email">Email</Label>
+        <Label htmlFor="email">ایمیل</Label>
         <Input id="email" name="email" type="email" required />
       </div>
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? "Sending…" : "Send reset link"}
+        {pending ? "در حال ارسال…" : "ارسال لینک بازنشانی"}
       </Button>
     </form>
   );

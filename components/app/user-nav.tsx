@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { LayoutDashboard, LogOut, Settings } from "lucide-react";
 import { signOutAction } from "@/lib/actions/auth";
+import { ROLE_LABELS } from "@/lib/constants";
 
 export function UserNav({
   name,
@@ -33,7 +34,7 @@ export function UserNav({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-9 w-9 rounded-full p-0" aria-label="Account menu">
+        <Button variant="ghost" className="relative h-9 w-9 rounded-full p-0" aria-label="منوی حساب">
           <Avatar className="h-8 w-8">
             {avatarUrl ? <AvatarImage src={avatarUrl} alt={name} /> : null}
             <AvatarFallback data-pending={pending || undefined}>
@@ -46,25 +47,25 @@ export function UserNav({
         <DropdownMenuLabel>
           <div className="text-sm font-medium">{name}</div>
           <div className="text-xs text-muted-foreground">{email}</div>
-          <div className="mt-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">{role}</div>
+          <div className="mt-0.5 text-[10px] text-muted-foreground">{ROLE_LABELS[role] ?? role}</div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="/dashboard">
-            <LayoutDashboard /> Dashboard
+            <LayoutDashboard /> پیشخوان
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="/dashboard/settings">
-            <Settings /> Settings
+            <Settings /> تنظیمات
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href={`/researchers/${username}`}>Public profile</Link>
+          <Link href={`/researchers/${username}`}>پروفایل عمومی</Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => startTransition(() => signOutAction())}>
-          <LogOut /> Log out
+          <LogOut /> خروج
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

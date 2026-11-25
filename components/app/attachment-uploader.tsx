@@ -22,10 +22,10 @@ export function AttachmentUploader({ reportId }: { reportId: string }) {
       form.set("file", file);
       const res = await fetch("/api/attachments", { method: "POST", body: form });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Upload failed");
+      if (!res.ok) throw new Error(data.error ?? "آپلود ناموفق بود");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed");
+      setError(err instanceof Error ? err.message : "آپلود ناموفق بود");
     } finally {
       setUploading(false);
     }
@@ -37,7 +37,7 @@ export function AttachmentUploader({ reportId }: { reportId: string }) {
         <Button variant="outline" size="sm" asChild disabled={uploading}>
           <span>
             {uploading ? <Loader2 className="animate-spin" /> : <Paperclip />}
-            {uploading ? "Uploading…" : "Attach file"}
+            {uploading ? "در حال آپلود…" : "پیوست فایل"}
           </span>
         </Button>
         <input type="file" className="hidden" onChange={onChange} accept=".png,.jpg,.jpeg,.gif,.webp,.pdf,.txt,.json,.mp4,.md,.har" />

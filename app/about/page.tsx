@@ -3,47 +3,47 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { LegalPage } from "@/components/app/legal-page";
 
-export const metadata: Metadata = { title: "About" };
+export const metadata: Metadata = { title: "درباره ما" };
 
 export default function AboutPage() {
   return (
-    <LegalPage title="About BugFa">
+    <LegalPage title="درباره BugFa">
       <p>
-        BugFa is a bug bounty and vulnerability disclosure platform built on a simple premise:
-        security research works best when the rules are clear, the rewards are fair, and both sides
-        are held to the same standard of professionalism.
+        BugFa یک پلتفرم باگ بانتی و افشای آسیب‌پذیری است که بر یک اصل ساده بنا شده:
+        پژوهش امنیتی زمانی بهترین نتیجه را می‌دهد که قوانین شفاف، جوایز منصفانه و هر دو طرف
+        پایبند به یک استاندارد حرفه‌ای باشند.
       </p>
 
-      <h2>What BugFa does</h2>
+      <h2>کار BugFa چیست؟</h2>
       <p>
-        Organizations publish programs that describe their assets, rules, and bounty tables.
-        Security researchers test those assets within scope, submit structured vulnerability reports,
-        and work with the organization through a private discussion until the issue is resolved and —
-        where applicable — rewarded.
+        سازمان‌ها برنامه‌هایی منتشر می‌کنند که دارایی‌ها، قوانین و جدول جوایز را شرح می‌دهد.
+        پژوهشگران امنیتی آن دارایی‌ها را در چارچوب محدوده تست می‌کنند، گزارش‌های ساختاریافته
+        ثبت می‌کنند و از طریق گفتگوی خصوصی با سازمان همکاری می‌کنند تا مشکل حل شود و در صورت
+        لزوم جایزه پرداخت گردد.
       </p>
 
-      <h2>How reputation works</h2>
+      <h2>اعتبار چگونه کار می‌کند؟</h2>
       <p>
-        Every accepted report earns reputation points scaled by severity. Points contribute to your
-        global ranking, unlock achievements, and appear on your public researcher profile. Only
-        accepted findings count — quantity never beats quality.
+        هر گزارش پذیرفته‌شده امتیاز اعتبار متناسب با شدت کسب می‌کند. امتیازها در رتبه‌بندی سراسری
+        نقش دارند، نشان‌ها را باز می‌کنند و در پروفایل عمومی شما نمایش داده می‌شوند. فقط یافته‌های
+        پذیرفته‌شده حساب می‌شوند — تعداد هرگز بر کیفیت نمی‌چربد.
       </p>
 
-      <h2>Our commitment</h2>
+      <h2>تعهد ما</h2>
       <ul>
-        <li>Coordinated disclosure is the default. Researchers and organizations agree on timelines.</li>
-        <li>Private reports remain private. Access is strictly limited to the researcher and the program team.</li>
-        <li>Disputes are handled by BugFa staff with a documented resolution and audit trail.</li>
+        <li>افشای هماهنگ پیش‌فرض است. پژوهشگران و سازمان‌ها بر زمان‌بندی توافق می‌کنند.</li>
+        <li>گزارش‌های خصوصی خصوصی می‌مانند. دسترسی فقط به پژوهشگر و تیم برنامه محدود است.</li>
+        <li>اختلافات را تیم BugFa با نتیجه مستند و ثبت در لاگ حسابرسی تعیین تکلیف می‌کند.</li>
       </ul>
 
-      <h2>Get started</h2>
+      <h2>شروع کنید</h2>
       <p>
         <Button asChild variant="outline" size="sm">
-          <Link href="/explore">Explore live programs</Link>
+          <Link href="/explore">کاوش برنامه‌های فعال</Link>
         </Button>
         {" "}
-        <Button asChild variant="outline" size="sm" className="ml-2">
-          <Link href="/register">Create an account</Link>
+        <Button asChild variant="outline" size="sm" className="me-2">
+          <Link href="/register">ساخت حساب</Link>
         </Button>
       </p>
     </LegalPage>

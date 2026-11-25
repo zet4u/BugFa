@@ -25,14 +25,14 @@ export const MAX_UPLOAD_BYTES = 10 * 1024 * 1024;
 
 export function validateUpload(filename: string, mimeType: string, size: number) {
   if (size <= 0 || size > MAX_UPLOAD_BYTES) {
-    return { ok: false as const, error: "File must be between 1 byte and 10MB" };
+    return { ok: false as const, error: "اندازه فایل باید بین ۱ بایت و ۱۰ مگابایت باشد" };
   }
   if (!ALLOWED_MIME.has(mimeType)) {
-    return { ok: false as const, error: `File type ${mimeType} is not allowed` };
+    return { ok: false as const, error: `نوع فایل ${mimeType} مجاز نیست` };
   }
   const ext = path.extname(filename).toLowerCase();
   if (!ALLOWED_EXTENSIONS.has(ext)) {
-    return { ok: false as const, error: `File extension ${ext || "(none)"} is not allowed` };
+    return { ok: false as const, error: `پسوند ${ext || "(نامشخص)"} مجاز نیست` };
   }
   return { ok: true as const };
 }
@@ -54,7 +54,7 @@ async function putLocal(key: string, buffer: Buffer) {
 
 async function localReadObject(key: string) {
   const safeKey = path.basename(key);
-  if (safeKey !== key) throw new Error("Invalid storage key");
+  if (safeKey !== key) throw new Error("کلید ذخیره‌سازی نامعتبر است");
   return fs.readFile(path.join(localDir, safeKey));
 }
 

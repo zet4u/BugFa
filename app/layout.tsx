@@ -1,21 +1,22 @@
 import type { Metadata } from "next";
+import "vazirmatn/Vazirmatn-Variable-font-face.css";
 import "./globals.css";
 import { SiteHeader } from "@/components/app/site-header";
 import { SiteFooter } from "@/components/app/site-footer";
 
 export const metadata: Metadata = {
   title: {
-    default: "BugFa — Bug Bounty & Vulnerability Disclosure Platform",
+    default: "BugFa — پلتفرم باگ بانتی و افشای آسیب‌پذیری",
     template: "%s · BugFa",
   },
   description:
-    "BugFa connects security researchers with organizations running bug bounty and vulnerability disclosure programs. Find bugs, submit reports, earn rewards.",
-  keywords: ["bug bounty", "vulnerability disclosure", "security research", "bugfa"],
+    "BugFa پژوهشگران امنیتی را با سازمان‌هایی که برنامه باگ بانتی و افشای آسیب‌پذیری دارند متصل می‌کند. باگ پیدا کن، گزارش بده، جایزه بگیر.",
+  keywords: ["باگ بانتی", "افشای آسیب‌پذیری", "امنیت سایبری", "bugfa", "bug bounty"],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="fa" dir="rtl" className="dark">
       <body className="flex min-h-screen flex-col font-sans">
         <SiteHeader />
         <main className="flex-1">{children}</main>

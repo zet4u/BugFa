@@ -34,7 +34,7 @@ export async function GET(
       },
     },
   });
-  if (!attachment) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!attachment) return NextResponse.json({ error: "یافت نشد" }, { status: 404 });
 
   const allowed =
     session.user.role === "ADMIN" ||
@@ -44,7 +44,7 @@ export async function GET(
   if (!allowed) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const data = await readObject(key);
-  if (!data) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  if (!data) return NextResponse.json({ error: "یافت نشد" }, { status: 404 });
 
   return new NextResponse(data, {
     headers: {

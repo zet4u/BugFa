@@ -1,9 +1,9 @@
 export const RESEARCHER_NAV = [
-  { href: "/researcher", label: "Overview" },
-  { href: "/researcher/submissions", label: "My Submissions" },
-  { href: "/researcher/programs", label: "Available Programs" },
-  { href: "/researcher/bookmarks", label: "Bookmarked" },
-  { href: "/researcher/earnings", label: "Earnings" },
-  { href: "/researcher/achievements", label: "Achievements" },
-  { href: "/dashboard/settings", label: "Profile Settings" },
+  { href: "/researcher", label: "نمای کلی" },
+  { href: "/researcher/submissions", label: "گزارش‌های من" },
+  { href: "/researcher/programs", label: "برنامه‌های موجود" },
+  { href: "/researcher/bookmarks", label: "نشان‌شده‌ها" },
+  { href: "/researcher/earnings", label: "درآمد" },
+  { href: "/researcher/achievements", label: "نشان‌ها" },
+  { href: "/dashboard/settings", label: "تنظیمات پروفایل" },
 ];

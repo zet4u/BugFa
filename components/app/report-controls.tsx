@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { updateReportStatusAction } from "@/lib/actions/reports";
+import { STATUS_LABELS } from "@/lib/constants";
 import { Alert } from "@/components/app/settings-forms";
 
 export function StatusControls({
@@ -46,13 +47,13 @@ export function StatusControls({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button size="sm">Update triage</Button>
+        <Button size="sm">به‌روزرسانی بررسی</Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Triage report</DialogTitle>
+          <DialogTitle>بررسی گزارش</DialogTitle>
           <DialogDescription>
-            Update status and send a note to the researcher. Setting REWARDED applies the bounty.
+            وضعیت را به‌روزرسانی کنید و یادداشتی برای پژوهشگر بفرستید. حالت «جایزه‌داده‌شده» جایزه را اعمال می‌کند.
           </DialogDescription>
         </DialogHeader>
         <form ref={ref} action={formAction} className="space-y-4">
@@ -60,22 +61,22 @@ export function StatusControls({
           {state?.success ? <Alert tone="success">{state.success}</Alert> : null}
           <input type="hidden" name="reportId" value={reportId} />
           <div className="space-y-2">
-            <Label htmlFor="status">New status</Label>
+            <Label htmlFor="status">وضعیت جدید</Label>
             <Select name="status" defaultValue={currentStatus === "NEW" ? "TRIAGED" : currentStatus}>
-              <SelectTrigger id="status" aria-label="New status">
+              <SelectTrigger id="status" aria-label="وضعیت جدید">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
                 {["TRIAGED", "ACCEPTED", "RESOLVED", "REWARDED", "DUPLICATE", "REJECTED", "NEW"].map((s) => (
                   <SelectItem key={s} value={s}>
-                    {s.charAt(0) + s.slice(1).toLowerCase()}
+                    {STATUS_LABELS[s] ?? s}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="rewardAmount">Reward amount ({currency}) — only when rewarding</Label>
+            <Label htmlFor="rewardAmount">مقدار جایزه ({currency}) — فقط هنگام پرداخت جایزه</Label>
             <Input
               id="rewardAmount"
               name="rewardAmount"
@@ -85,11 +86,11 @@ export function StatusControls({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="note">Note to researcher (optional)</Label>
-            <Textarea id="note" name="note" rows={3} placeholder="Context for this status change…" />
+            <Label htmlFor="note">یادداشت برای پژوهشگر (اختیاری)</Label>
+            <Textarea id="note" name="note" rows={3} placeholder="توضیح این تغییر وضعیت…" />
           </div>
           <Button type="submit" disabled={pending} className="w-full">
-            {pending ? "Updating…" : "Apply update"}
+            {pending ? "در حال اعمال…" : "اعمال تغییر"}
           </Button>
         </form>
       </DialogContent>
@@ -110,14 +111,14 @@ export function DisputeForm({ reportId }: { reportId: string }) {
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          Dispute this decision
+          اعتراض به این تصمیم
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Open a dispute</DialogTitle>
+          <DialogTitle>ثبت اختلاف</DialogTitle>
           <DialogDescription>
-            BugFa staff will review the report, the program rules, and the triage decision.
+            تیم BugFa گزارش، قوانین برنامه و تصمیم بررسی را مطالعه می‌کند.
           </DialogDescription>
         </DialogHeader>
         {state?.success ? (
@@ -127,11 +128,11 @@ export function DisputeForm({ reportId }: { reportId: string }) {
             {state?.error ? <Alert tone="error">{state.error}</Alert> : null}
             <input type="hidden" name="reportId" value={reportId} />
             <div className="space-y-2">
-              <Label htmlFor="reason">Why do you dispute this triage?</Label>
+              <Label htmlFor="reason">چرا با این بررسی مخالف هستید؟</Label>
               <Textarea id="reason" name="reason" rows={5} required minLength={20} />
             </div>
             <Button type="submit" disabled={pending} className="w-full">
-              {pending ? "Submitting…" : "Submit dispute"}
+              {pending ? "در حال ارسال…" : "ثبت اختلاف"}
             </Button>
           </form>
         )}

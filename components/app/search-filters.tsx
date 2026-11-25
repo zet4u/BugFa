@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { VULN_CATEGORIES } from "@/lib/constants";
+import { VULN_CATEGORIES, CATEGORY_LABELS } from "@/lib/constants";
 
 export function SearchFilters({ basePath }: { basePath: string }) {
   const router = useRouter();
@@ -34,7 +34,7 @@ export function SearchFilters({ basePath }: { basePath: string }) {
     <div className="flex flex-col gap-3 sm:flex-row">
       <Input
         type="search"
-        placeholder="Search programs…"
+        placeholder="جستجوی برنامه‌ها…"
         className="sm:max-w-xs"
         defaultValue={q}
         key={q}
@@ -44,26 +44,26 @@ export function SearchFilters({ basePath }: { basePath: string }) {
         }}
       />
       <Select value={category || "_all"} onValueChange={(v) => setParam("category", v)}>
-        <SelectTrigger className="sm:w-64" aria-label="Filter by category">
-          <SelectValue placeholder="All categories" />
+        <SelectTrigger className="sm:w-64" aria-label="فیلتر بر اساس دسته‌بندی">
+          <SelectValue placeholder="همه دسته‌بندی‌ها" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="_all">All categories</SelectItem>
+          <SelectItem value="_all">همه دسته‌بندی‌ها</SelectItem>
           {VULN_CATEGORIES.map((c) => (
             <SelectItem key={c} value={c}>
-              {c}
+              {CATEGORY_LABELS[c] ?? c}
             </SelectItem>
           ))}
         </SelectContent>
       </Select>
       <Select value={sort || "_default"} onValueChange={(v) => setParam("sort", v)}>
-        <SelectTrigger className="sm:w-48" aria-label="Sort">
+        <SelectTrigger className="sm:w-48" aria-label="ترتیب">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="_default">Newest</SelectItem>
-          <SelectItem value="bounty">Top bounty</SelectItem>
-          <SelectItem value="name">Name</SelectItem>
+          <SelectItem value="_default">جدیدترین</SelectItem>
+          <SelectItem value="bounty">بیشترین جایزه</SelectItem>
+          <SelectItem value="name">نام</SelectItem>
         </SelectContent>
       </Select>
     </div>

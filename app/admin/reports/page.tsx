@@ -7,9 +7,10 @@ import { Pagination } from "@/components/app/pagination";
 import { FilterTabs } from "@/components/app/filter-tabs";
 import { ReportListRow } from "@/components/app/report-list-row";
 import { EmptyState } from "@/components/app/empty-state";
-import { PAGE_SIZE, REPORT_STATUSES } from "@/lib/constants";
+import { PAGE_SIZE, REPORT_STATUSES, STATUS_LABELS } from "@/lib/constants";
+import { formatPoints } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Report oversight" };
+export const metadata: Metadata = { title: "نظارت بر گزارش‌ها" };
 
 export default async function AdminReportsPage({
   searchParams,
@@ -39,16 +40,16 @@ export default async function AdminReportsPage({
   const totalPages = Math.ceil(total / PAGE_SIZE);
 
   return (
-    <DashboardShell title="Report oversight" subtitle={`${total} report${total === 1 ? "" : "s"}`} nav={ADMIN_NAV} currentPath="/admin/reports">
+    <DashboardShell title="نظارت بر گزارش‌ها" subtitle={`${formatPoints(total)} گزارش`} nav={ADMIN_NAV} currentPath="/admin/reports">
       <div className="mb-4">
         <FilterTabs
           basePath="/admin/reports"
           current={status}
-          options={[{ value: "ALL", label: "All" }, ...(REPORT_STATUSES as readonly string[]).map((s) => ({ value: s, label: s }))]}
+          options={[{ value: "ALL", label: "همه" }, ...(REPORT_STATUSES as readonly string[]).map((s) => ({ value: s, label: STATUS_LABELS[s] ?? s }))]}
         />
       </div>
       {reports.length === 0 ? (
-        <EmptyState title="No reports" />
+        <EmptyState title="گزارشی یافت نشد" />
       ) : (
         <div className="space-y-2">
           {reports.map((r) => (

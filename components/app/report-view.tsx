@@ -7,6 +7,13 @@ import { AttachmentUploader } from "@/components/app/attachment-uploader";
 import { formatMoney, timeAgo } from "@/lib/utils";
 import { Paperclip } from "lucide-react";
 
+const DISPUTE_STATUS: Record<string, string> = {
+  OPEN: "در جریان",
+  RESOLVED_SHARING_DECISION: "تأیید تصمیم تقسیم جوایز",
+  RESOLVED_REJECTED: "رد گزارش تأیید شد",
+  RESOLVED_ACCEPTED: "پذیرش گزارش تأیید شد",
+};
+
 export function ReportField({
   label,
   value,
@@ -18,7 +25,7 @@ export function ReportField({
 }) {
   return (
     <div>
-      <h4 className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</h4>
+      <h4 className="mb-1.5 text-xs font-semibold text-muted-foreground">{label}</h4>
       <p className={`whitespace-pre-wrap text-sm leading-relaxed ${mono ? "font-mono" : ""}`}>{value}</p>
     </div>
   );
@@ -65,7 +72,7 @@ export async function ReportView({
               <a href={`/programs/${report.program.slug}`} className="hover:text-primary">
                 {report.program.title}
               </a>{" "}
-              · submitted by{" "}
+              · ارسال‌شده توسط{" "}
               <a href={`/researchers/${report.researcher.username}`} className="hover:text-primary">
                 {report.researcher.name}
               </a>{" "}
@@ -82,7 +89,7 @@ export async function ReportView({
         </div>
         {report.status === "REWARDED" && report.rewardAmount != null ? (
           <div className="mt-4">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">Reward</p>
+            <p className="mb-1 text-xs font-semibold text-muted-foreground">جایزه</p>
             <p className="font-mono text-lg font-bold text-primary">
               {formatMoney(report.rewardAmount, report.currency)}
             </p>
@@ -91,22 +98,22 @@ export async function ReportView({
       </div>
 
       <div className="grid gap-8 lg:grid-cols-2">
-        <ReportField label="Description" value={report.description} />
-        <ReportField label="Steps to reproduce" value={report.steps} />
-        <ReportField label="Impact" value={report.impact} />
+        <ReportField label="شرح" value={report.description} />
+        <ReportField label="مراحل بازتولید" value={report.steps} />
+        <ReportField label="میزان اثر" value={report.impact} />
         {report.proofOfConcept ? (
-          <ReportField label="Proof of Concept" value={report.proofOfConcept} mono />
+          <ReportField label="اثبات مفهوم" value={report.proofOfConcept} mono />
         ) : null}
-        {report.remediation ? <ReportField label="Suggested remediation" value={report.remediation} /> : null}
+        {report.remediation ? <ReportField label="راه‌حل پیشنهادی" value={report.remediation} /> : null}
       </div>
 
       <section>
         <div className="mb-3 flex items-center justify-between">
-          <h3 className="text-sm font-semibold">Attachments ({attachments.length})</h3>
+          <h3 className="text-sm font-semibold">پیوست‌ها ({attachments.length})</h3>
           <AttachmentUploader reportId={report.id} />
         </div>
         {attachments.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No attachments.</p>
+          <p className="text-sm text-muted-foreground">پیوستی وجود ندارد.</p>
         ) : (
           <ul className="space-y-2">
             {attachments.map((a) => (
@@ -118,7 +125,7 @@ export async function ReportView({
                 >
                   <Paperclip className="h-3.5 w-3.5 text-muted-foreground" />
                   <span className="truncate">{a.filename}</span>
-                  <span className="ml-auto text-xs text-muted-foreground">{(a.size / 1024).toFixed(0)} KB</span>
+                  <span className="ms-auto text-xs text-muted-foreground">{(a.size / 1024).toFixed(0)} KB</span>
                 </a>
               </li>
             ))}
@@ -128,12 +135,12 @@ export async function ReportView({
 
       <section>
         <h3 className="mb-4 text-sm font-semibold">
-          Private discussion ({comments.length})
-          <span className="ml-2 font-normal text-muted-foreground">— visible only to you and the program team</span>
+          گفتگوی خصوصی ({comments.length})
+          <span className="mr-2 font-normal text-muted-foreground">— فقط برای شما و تیم برنامه نمایش داده می‌شود</span>
         </h3>
         <div className="space-y-4">
           {comments.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No messages yet.</p>
+            <p className="text-sm text-muted-foreground">هنوز پیامی نیست.</p>
           ) : (
             comments.map((c) => (
               <div key={c.id} className="rounded-lg border bg-card p-4">
@@ -142,10 +149,10 @@ export async function ReportView({
                   <span className="text-muted-foreground">@{c.author.username}</span>
                   {c.internal && isStaff ? (
                     <span className="rounded border border-rose-500/40 bg-rose-500/10 px-1.5 py-0.5 text-[10px] font-medium text-rose-400">
-                      internal
+                      داخلی
                     </span>
                   ) : null}
-                  <span className="ml-auto text-muted-foreground">{timeAgo(c.createdAt)}</span>
+                  <span className="ms-auto text-muted-foreground">{timeAgo(c.createdAt)}</span>
                 </div>
                 <p className="whitespace-pre-wrap text-sm text-muted-foreground">{c.body}</p>
               </div>
@@ -159,10 +166,10 @@ export async function ReportView({
 
       {report.dispute && isStaff ? (
         <div className="rounded-lg border border-amber-500/40 bg-amber-500/10 p-4">
-          <h3 className="text-sm font-semibold text-amber-400">Dispute {report.dispute.status.replace("RESOLVED_", "").replace(/_/g, " ").toLowerCase()}</h3>
+          <h3 className="text-sm font-semibold text-amber-400">اختلاف — {DISPUTE_STATUS[report.dispute.status] ?? report.dispute.status}</h3>
           <p className="mt-1 text-sm text-amber-400/80">{report.dispute.reason}</p>
           {report.dispute.resolution ? (
-            <p className="mt-2 text-sm">Resolution: {report.dispute.resolution}</p>
+            <p className="mt-2 text-sm">نتیجه: : {report.dispute.resolution}</p>
           ) : null}
         </div>
       ) : null}

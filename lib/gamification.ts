@@ -57,7 +57,7 @@ export async function checkAchievements(userId: string) {
       await notify({
         userId,
         type: "ACHIEVEMENT",
-        title: `Achievement unlocked: ${def.title}`,
+        title: `نشان جدید: ${def.title}`,
         body: def.description,
         link: "/researcher/achievements",
       });
@@ -66,10 +66,10 @@ export async function checkAchievements(userId: string) {
 }
 
 export function researcherLevel(points: number) {
-  if (points >= 2000) return { name: "Elite Hunter", min: 2000, next: null };
-  if (points >= 1000) return { name: "Master Hunter", min: 1000, next: 2000 };
-  if (points >= 500) return { name: "Senior Hunter", min: 500, next: 1000 };
-  if (points >= 200) return { name: "Hunter", min: 200, next: 500 };
-  if (points >= 50) return { name: "Scout", min: 50, next: 200 };
-  return { name: "Rookie", min: 0, next: 50 };
+  if (points >= 2000) return { name: "شکارچی نخبه", min: 2000, next: null };
+  if (points >= 1000) return { name: "شکارچی استاد", min: 1000, next: 2000 };
+  if (points >= 500) return { name: "شکارچی ارشد", min: 500, next: 1000 };
+  if (points >= 200) return { name: "شکارچی", min: 200, next: 500 };
+  if (points >= 50) return { name: "کاوشگر", min: 50, next: 200 };
+  return { name: "تازه‌کار", min: 0, next: 50 };
 }

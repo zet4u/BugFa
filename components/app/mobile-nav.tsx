@@ -16,12 +16,12 @@ export function MobileNav({
 
   return (
     <div className="md:hidden">
-      <Button variant="ghost" size="icon" onClick={() => setOpen(!open)} aria-label="Menu">
+      <Button variant="ghost" size="icon" onClick={() => setOpen(!open)} aria-label="منو">
         {open ? <X /> : <Menu />}
       </Button>
       {open ? (
         <div className="absolute left-0 right-0 top-14 border-b bg-background p-4 shadow-lg">
-          <nav className="flex flex-col gap-1" aria-label="Mobile">
+          <nav className="flex flex-col gap-1" aria-label="ناوبری موبایل">
             {links.map((link) => (
               <Link
                 key={link.href}
@@ -35,15 +35,15 @@ export function MobileNav({
             {!signedIn ? (
               <div className="mt-2 flex flex-col gap-2">
                 <Button asChild variant="outline" size="sm">
-                  <Link href="/login" onClick={() => setOpen(false)}>Log in</Link>
+                  <Link href="/login" onClick={() => setOpen(false)}>ورود</Link>
                 </Button>
                 <Button asChild size="sm">
-                  <Link href="/register" onClick={() => setOpen(false)}>Sign up</Link>
+                  <Link href="/register" onClick={() => setOpen(false)}>ثبت‌نام</Link>
                 </Button>
               </div>
             ) : (
               <Button asChild size="sm" className="mt-2">
-                <Link href="/dashboard" onClick={() => setOpen(false)}>Dashboard</Link>
+                <Link href="/dashboard" onClick={() => setOpen(false)}>پیشخوان</Link>
               </Button>
             )}
           </nav>

@@ -12,7 +12,7 @@ import { formatMoney, formatPoints, timeAgo } from "@/lib/utils";
 import { MailWarning, FileSearch, Wallet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const metadata: Metadata = { title: "Researcher dashboard" };
+export const metadata: Metadata = { title: "پیشخوان پژوهشگر" };
 
 export default async function ResearcherDashboard() {
   const user = await requireUser();
@@ -46,21 +46,21 @@ export default async function ResearcherDashboard() {
   const level = researcherLevel(points);
 
   const stats = [
-    { label: "Reputation points", value: formatPoints(points) },
-    { label: "Rank", value: level.name },
-    { label: "Total earnings", value: formatMoney(earnings._sum.rewardAmount ?? 0) },
-    { label: "Accepted / total", value: `${accepted.length} / ${allReports.length}` },
+    { label: "امتیاز اعتبار", value: formatPoints(points) },
+    { label: "درجه", value: level.name },
+    { label: "مجموع درآمد", value: formatMoney(earnings._sum.rewardAmount ?? 0) },
+    { label: "پذیرفته‌شده / کل", value: `${formatPoints(accepted.length)} / ${formatPoints(allReports.length)}` },
   ];
 
   return (
-    <DashboardShell title={`Hello, ${user.name}`} subtitle={level.next ? `${formatPoints(level.next - points)} points to the next level` : "Top level reached"} nav={RESEARCHER_NAV} currentPath="/researcher">
+    <DashboardShell title={`سلام، ${user.name}`} subtitle={level.next ? `${formatPoints(level.next - points)} امتیاز تا درجه بعدی` : "بالاترین درجه"} nav={RESEARCHER_NAV} currentPath="/researcher">
       {dbUser && !dbUser.emailVerified ? (
         <div className="mb-6 flex items-start gap-3 rounded-md border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm text-amber-400">
           <MailWarning className="mt-0.5 h-4 w-4 shrink-0" />
           <div>
-            <p className="font-medium">Your email is not verified yet.</p>
+            <p className="font-medium">ایمیل شما هنوز تایید نشده است.</p>
             <p className="mt-0.5 text-amber-400/80">
-              Check the verification link printed in the server console during development, or resend it from your settings.
+              لینک تایید در حالت توسعه در کنسول سرور چاپ می‌شود؛ یا از تنظیمات دوباره درخواست کنید.
             </p>
           </div>
         </div>
@@ -69,7 +69,7 @@ export default async function ResearcherDashboard() {
       <div className="grid gap-4 sm:grid-cols-4">
         {stats.map((s) => (
           <div key={s.label} className="rounded-lg border bg-card p-4">
-            <p className="text-xs uppercase tracking-wide text-muted-foreground">{s.label}</p>
+            <p className="text-xs text-muted-foreground">{s.label}</p>
             <p className="mt-1 text-xl font-bold">{s.value}</p>
           </div>
         ))}
@@ -77,31 +77,31 @@ export default async function ResearcherDashboard() {
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         <Button asChild variant="outline" className="justify-start">
-          <Link href="/researcher/programs"><FileSearch className="text-primary" /> Find programs</Link>
+          <Link href="/researcher/programs"><FileSearch className="text-primary" /> پیدا کردن برنامه‌ها</Link>
         </Button>
         <Button asChild variant="outline" className="justify-start">
-          <Link href="/leaderboard"><Wallet className="text-primary" /> Your leaderboard position</Link>
+          <Link href="/leaderboard"><Wallet className="text-primary" /> جایگاه شما در جدول امتیازات</Link>
         </Button>
         <Button asChild variant="outline" className="justify-start">
-          <Link href="/researcher/achievements">{achievementCount} achievements unlocked</Link>
+          <Link href="/researcher/achievements">{formatPoints(achievementCount)} نشان باز شده</Link>
         </Button>
       </div>
 
       <section className="mt-10">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Recent submissions</h2>
+          <h2 className="text-lg font-semibold">گزارش‌های اخیر</h2>
           <Button asChild variant="ghost" size="sm">
-            <Link href="/researcher/submissions">View all</Link>
+            <Link href="/researcher/submissions">مشاهده همه</Link>
           </Button>
         </div>
         {reports.length === 0 ? (
           <EmptyState
             icon={<FileSearch />}
-            title="No submissions yet"
-            description="Pick a program, find a valid bug, and submit your first report."
+            title="هنوز گزارشی ثبت نکرده‌اید"
+            description="یک برنامه انتخاب کنید، یک باگ معتبر پیدا کنید و اولین گزارش خود را ثبت کنید."
             action={
               <Button asChild size="sm">
-                <Link href="/researcher/programs">Browse programs</Link>
+                <Link href="/researcher/programs">مرور برنامه‌ها</Link>
               </Button>
             }
           />

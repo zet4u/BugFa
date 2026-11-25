@@ -8,7 +8,7 @@ import { EmptyState } from "@/components/app/empty-state";
 import { formatPoints } from "@/lib/utils";
 import { Trophy, Medal } from "lucide-react";
 
-export const metadata: Metadata = { title: "Leaderboard" };
+export const metadata: Metadata = { title: "جدول امتیازات" };
 
 export default async function LeaderboardPage() {
   const researchers = await prisma.user.findMany({
@@ -38,23 +38,23 @@ export default async function LeaderboardPage() {
 
   return (
     <div className="container-app max-w-4xl py-10">
-      <h1 className="text-2xl font-bold tracking-tight">Researcher leaderboard</h1>
+      <h1 className="animate-fade-up text-2xl font-bold tracking-tight">جدول امتیازات پژوهشگران</h1>
       <p className="mb-8 mt-1 text-sm text-muted-foreground">
-        Ranking by reputation points from accepted reports. Updated in real time.
+        رتبه‌بندی بر اساس امتیاز اعتبارِ گزارش‌های پذیرفته‌شده. به‌صورت زنده به‌روزرسانی می‌شود.
       </p>
 
       {ranked.length === 0 ? (
-        <EmptyState icon={<Trophy />} title="No researchers ranked yet" />
+        <EmptyState icon={<Trophy />} title="هنوز پژوهشگری رتبه‌بندی نشده است" />
       ) : (
         <div className="overflow-hidden rounded-lg border">
           <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-xs uppercase tracking-wide text-muted-foreground">
+            <thead className="bg-muted/50 text-xs text-muted-foreground">
               <tr>
-                <th className="px-4 py-3 text-left font-medium">#</th>
-                <th className="px-4 py-3 text-left font-medium">Researcher</th>
-                <th className="px-4 py-3 text-right font-medium">Points</th>
-                <th className="hidden px-4 py-3 text-right font-medium sm:table-cell">Accepted</th>
-                <th className="hidden px-4 py-3 text-right font-medium sm:table-cell">Critical</th>
+                <th className="px-4 py-3 text-right font-medium">#</th>
+                <th className="px-4 py-3 text-right font-medium">پژوهشگر</th>
+                <th className="px-4 py-3 text-right font-medium">امتیاز</th>
+                <th className="hidden px-4 py-3 text-right font-medium sm:table-cell">پذیرفته‌شده</th>
+                <th className="hidden px-4 py-3 text-right font-medium sm:table-cell">بحرانی</th>
               </tr>
             </thead>
             <tbody>
@@ -80,7 +80,7 @@ export default async function LeaderboardPage() {
                       <span>
                         <span className="font-medium">{r.name}</span>
                         {r.country ? (
-                          <span className="ml-2 text-xs text-muted-foreground">{r.country}</span>
+                          <span className="me-2 text-xs text-muted-foreground">{r.country}</span>
                         ) : null}
                       </span>
                     </Link>

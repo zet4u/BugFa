@@ -18,6 +18,9 @@ import {
 import { saveProgramAction } from "@/lib/actions/programs";
 import type { ActionState } from "@/lib/actions/auth";
 import {
+  ASSET_TYPE_LABELS,
+  CATEGORY_LABELS,
+  SEVERITY_LABELS,
   VULN_CATEGORIES,
   SEVERITIES,
   SCOPE_ASSET_TYPES,
@@ -51,14 +54,7 @@ export type ProgramFormDefaults = {
   severityRewards?: Record<string, number>;
 };
 
-const ASSET_TYPE_LABELS: Record<string, string> = {
-  WEB: "Web",
-  API: "API",
-  MOBILE: "Mobile",
-  DESKTOP: "Desktop",
-  HARDWARE: "Hardware",
-  OTHER: "Other",
-};
+const TYPE_LABELS = ASSET_TYPE_LABELS;
 
 function ScopeRow({
   asset,
@@ -75,12 +71,12 @@ function ScopeRow({
     <div className="rounded-md border border-border/60 p-3">
       <div className="grid gap-3 sm:grid-cols-[130px_1fr_150px_auto] sm:items-end">
         <div className="space-y-1.5">
-          <Label className="text-xs text-muted-foreground">Type</Label>
+          <Label className="text-xs text-muted-foreground">نوع</Label>
           <Select
             value={asset.type}
             onValueChange={(v) => onChange({ ...asset, type: v })}
           >
-            <SelectTrigger aria-label="Asset type">
+            <SelectTrigger aria-label="نوع دارایی">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -93,7 +89,7 @@ function ScopeRow({
           </Select>
         </div>
         <div className="space-y-1.5">
-          <Label className="text-xs text-muted-foreground">Identifier</Label>
+          <Label className="text-xs text-muted-foreground">شناسه</Label>
           <Input
             value={asset.identifier}
             onChange={(e) => onChange({ ...asset, identifier: e.target.value })}
@@ -101,30 +97,30 @@ function ScopeRow({
           />
         </div>
         <div className="space-y-1.5">
-          <Label className="text-xs text-muted-foreground">Max severity</Label>
+          <Label className="text-xs text-muted-foreground">بیشینه شدت</Label>
           <Select
             value={asset.maxSeverity}
             onValueChange={(v) => onChange({ ...asset, maxSeverity: v as SeverityValue })}
           >
-            <SelectTrigger aria-label="Max severity">
+            <SelectTrigger aria-label="بیشینه شدت">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
               {SEVERITIES.map((s) => (
                 <SelectItem key={s} value={s}>
-                  {s.charAt(0) + s.slice(1).toLowerCase()}
+                  {SEVERITY_LABELS[s]}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
         </div>
         <Button type="button" variant="ghost" size="sm" onClick={onRemove} className="text-muted-foreground">
-          Remove
+          حذف
         </Button>
       </div>
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label className="text-xs text-muted-foreground">Instructions (optional)</Label>
+          <Label className="text-xs text-muted-foreground">راهنما (اختیاری)</Label>
           <Input
             value={asset.instruction ?? ""}
             onChange={(e) => onChange({ ...asset, instruction: e.target.value })}
@@ -136,7 +132,7 @@ function ScopeRow({
             checked={asset.eligibleForBounty}
             onCheckedChange={(v) => onChange({ ...asset, eligibleForBounty: v === true })}
           />
-          Eligible for monetary bounty
+          مشمول جایزه مالی
         </label>
       </div>
     </div>
@@ -190,66 +186,66 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Basics</CardTitle>
+          <CardTitle className="text-base">اطلاعات پایه</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="title">Program name</Label>
+              <Label htmlFor="title">نام برنامه</Label>
               <Input id="title" name="title" required minLength={4} maxLength={120}
-                defaultValue={program?.title ?? ""} placeholder="e.g. Nebula Web" />
+                defaultValue={program?.title ?? ""} placeholder="مثلاً: وب نبولا" />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="website">Company website</Label>
+              <Label htmlFor="website">وب‌سایت سازمان</Label>
               <Input id="website" name="website" required type="url"
                 defaultValue={program?.website ?? ""} placeholder="https://example.com" />
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="summary">Short summary</Label>
+            <Label htmlFor="summary">خلاصه کوتاه</Label>
             <Input id="summary" name="summary" required minLength={20} maxLength={280}
               defaultValue={program?.summary ?? ""}
-              placeholder="One-paragraph pitch shown on the program card" />
+              placeholder="معرفی یک‌پاراگرافی که در کارت برنامه نمایش داده می‌شود" />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="description">Description</Label>
+            <Label htmlFor="description">توضیحات</Label>
             <Textarea id="description" name="description" required minLength={50} rows={6}
               defaultValue={program?.description ?? ""}
-              placeholder="Describe the product, environment, and what researchers should know before testing." />
+              placeholder="محصول، محیط آزمایش و نکاتی که پژوهشگر باید قبل از تست بداند را شرح دهید." />
           </div>
           <div className="grid gap-4 sm:grid-cols-3">
             <div className="space-y-2">
-              <Label htmlFor="status">Visibility</Label>
+              <Label htmlFor="status">وضعیت نمایش</Label>
               <input type="hidden" name="status" value={status} />
               <Select value={status} onValueChange={setStatus}>
-                <SelectTrigger id="status" aria-label="Program status">
+                <SelectTrigger id="status" aria-label="وضعیت برنامه">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="DRAFT">Draft</SelectItem>
-                  <SelectItem value="PUBLIC">Public</SelectItem>
-                  <SelectItem value="PRIVATE">Private</SelectItem>
-                  <SelectItem value="PAUSED">Paused</SelectItem>
+                  <SelectItem value="DRAFT">پیش‌نویس</SelectItem>
+                  <SelectItem value="PUBLIC">عمومی</SelectItem>
+                  <SelectItem value="PRIVATE">خصوصی</SelectItem>
+                  <SelectItem value="PAUSED">متوقف</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="minBounty">Min bounty</Label>
+              <Label htmlFor="minBounty">حداقل جایزه</Label>
               <Input id="minBounty" name="minBounty" type="number" min={0} required
                 defaultValue={program?.minBounty ?? 0} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="maxBounty">Max bounty</Label>
+              <Label htmlFor="maxBounty">حداکثر جایزه</Label>
               <Input id="maxBounty" name="maxBounty" type="number" min={0} required
                 defaultValue={program?.maxBounty ?? 0} />
             </div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">واحد پول</Label>
               <input type="hidden" name="currency" value={currency} />
               <Select value={currency} onValueChange={setCurrency}>
-                <SelectTrigger id="currency" aria-label="Currency">
+                <SelectTrigger id="currency" aria-label="واحد پول">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -260,9 +256,9 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="disclosurePolicy">Disclosure policy</Label>
+              <Label htmlFor="disclosurePolicy">سیاست افشا</Label>
               <Select name="disclosurePolicy" defaultValue={program?.disclosurePolicy ?? "COORDINATED"}>
-                <SelectTrigger id="disclosurePolicy" aria-label="Disclosure policy">
+                <SelectTrigger id="disclosurePolicy" aria-label="سیاست افشا">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -275,7 +271,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
           </div>
           <label className="flex items-center gap-2 text-sm text-muted-foreground">
             <Checkbox checked={safeHarbor} onCheckedChange={(v) => setSafeHarbor(v === true)} />
-            Safe harbor — we will not pursue legal action against good-faith research
+            بخش‌بندی امن — علیه پژوهش حسن‌نیتانه اقدام قانونی نخواهیم کرد
           </label>
           <input type="hidden" name="safeHarbor" value={safeHarbor ? "on" : ""} />
         </CardContent>
@@ -283,7 +279,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Scope</CardTitle>
+          <CardTitle className="text-base">محدوده</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <input type="hidden" name="inScope" value={scopeValid} />
@@ -311,12 +307,12 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
               ])
             }
           >
-            Add in-scope asset
+            افزودن دارایی در محدوده
           </Button>
 
           <div className="pt-2" />
           <input type="hidden" name="outOfScope" value={outScopeValid} />
-          <Label className="text-xs uppercase tracking-wide text-muted-foreground">Out-of-scope assets</Label>
+          <Label className="text-xs text-muted-foreground">دارایی‌های خارج از محدوده</Label>
           {outOfScope.map((row, i) => (
             <div key={i} className="grid gap-3 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
               <Input
@@ -326,7 +322,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
                     prev.map((r, j) => (j === i ? { ...r, identifier: e.target.value } : r))
                   )
                 }
-                placeholder="e.g. blog.example.com"
+                placeholder="مثلاً: blog.example.com"
               />
               <Input
                 value={row.note ?? ""}
@@ -335,7 +331,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
                     prev.map((r, j) => (j === i ? { ...r, note: e.target.value } : r))
                   )
                 }
-                placeholder="Reason / note (optional)"
+                placeholder="دلیل / یادداشت (اختیاری)"
               />
               <Button
                 type="button"
@@ -344,7 +340,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
                 className="text-muted-foreground"
                 onClick={() => setOutOfScope((prev) => prev.filter((_, j) => j !== i))}
               >
-                Remove
+                حذف
               </Button>
             </div>
           ))}
@@ -354,15 +350,15 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
             size="sm"
             onClick={() => setOutOfScope((prev) => [...prev, { identifier: "", note: "" }])}
           >
-            Add out-of-scope asset
+            افزودن دارایی خارج از محدوده
           </Button>
 
           <div className="space-y-2 pt-2">
             <Label htmlFor="prohibited">
-              Prohibited activities <span className="text-muted-foreground">(one per line)</span>
+              فعالیت‌های ممنوعه <span className="text-muted-foreground">(هر خط یک مورد)</span>
             </Label>
             <Textarea id="prohibited" rows={4} value={prohibited} onChange={(e) => setProhibited(e.target.value)}
-              placeholder={"Social engineering\nPhysical attacks\nAutomated scanners against production"} />
+              placeholder={"مهندسی اجتماعی\nحملات فیزیکی\nاسکنرهای خودکار علیه محیط عملیات"} />
             <input type="hidden" name="prohibited" value={JSON.stringify(
               prohibited.split("\n").map((s) => s.trim()).filter(Boolean)
             )} />
@@ -372,7 +368,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Rewards</CardTitle>
+          <CardTitle className="text-base">جوایز</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <input type="hidden" name="severityRewards" value={JSON.stringify(severityRewards)} />
@@ -380,7 +376,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
             {SEVERITIES.map((s) => (
               <div key={s} className="space-y-2">
                 <Label htmlFor={`reward-${s}`} className="text-xs text-muted-foreground">
-                  {s.charAt(0) + s.slice(1).toLowerCase()}
+                  {SEVERITY_LABELS[s]}
                 </Label>
                 <Input
                   id={`reward-${s}`}
@@ -399,7 +395,7 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Categories</CardTitle>
+          <CardTitle className="text-base">دسته‌بندی‌ها</CardTitle>
         </CardHeader>
         <CardContent>
           <input type="hidden" name="categories" value={JSON.stringify(categories)} />
@@ -417,42 +413,42 @@ export function ProgramForm({ program }: { program?: ProgramFormDefaults }) {
                       : "border-border text-muted-foreground hover:border-muted-foreground/40"
                   }`}
                 >
-                  {c}
+                  {CATEGORY_LABELS[c] ?? c}
                 </button>
               );
             })}
           </div>
           {categories.length === 0 ? (
-            <p className="mt-3 text-xs text-muted-foreground">Select at least one category.</p>
+            <p className="mt-3 text-xs text-muted-foreground">حداقل یک دسته‌بندی انتخاب کنید.</p>
           ) : null}
         </CardContent>
       </Card>
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Policy &amp; requirements</CardTitle>
+          <CardTitle className="text-base">قوانین و الزامات</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="rules">Program rules</Label>
+            <Label htmlFor="rules">قوانین برنامه</Label>
             <Textarea id="rules" name="rules" rows={5} defaultValue={program?.rules ?? ""}
-              placeholder="Any additional rules researchers must follow." />
+              placeholder="قوانین دیگری که پژوهشگران باید رعایت کنند." />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="submissionRequirements">Submission requirements</Label>
+            <Label htmlFor="submissionRequirements">الزامات گزارش</Label>
             <Textarea id="submissionRequirements" name="submissionRequirements" rows={4}
               defaultValue={program?.submissionRequirements ?? ""}
-              placeholder="e.g. Detailed PoC required, video for mobile issues, etc." />
+              placeholder="مثلاً: PoC کامل الزامی است، ضبط ویدیو برای مشکلات موبایل، و غیره." />
           </div>
         </CardContent>
       </Card>
 
       <div className="flex items-center gap-3">
         <Button type="submit" disabled={pending}>
-          {pending ? "Saving…" : program?.id ? "Save changes" : "Create program"}
+          {pending ? "در حال ذخیره…" : program?.id ? "ذخیره تغییرات" : "ساخت برنامه"}
         </Button>
         <Button type="button" variant="ghost" onClick={() => router.push("/org/programs")}>
-          Cancel
+          انصراف
         </Button>
       </div>
     </form>

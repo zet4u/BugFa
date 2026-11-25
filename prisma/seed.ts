@@ -47,7 +47,7 @@ async function main() {
     [
       {
         email: "admin@bugfa.dev",
-        name: "Ada Nakamura",
+        name: "آدا ناکامورا",
         username: "admin",
         role: "ADMIN",
         emailVerified: daysAgo(400),
@@ -55,7 +55,7 @@ async function main() {
       },
       {
         email: "sec@nebulacdn.io",
-        name: "Marcus Reyes",
+        name: "مارکوس ریس",
         username: "nebula_sec",
         role: "ORGANIZATION",
         emailVerified: daysAgo(300),
@@ -63,7 +63,7 @@ async function main() {
       },
       {
         email: "security@vaultpay.eu",
-        name: "Priya Anand",
+        name: "پریا آناند",
         username: "vaultpay_sec",
         role: "ORGANIZATION",
         emailVerified: daysAgo(280),
@@ -71,18 +71,18 @@ async function main() {
       },
       {
         email: "sec@driftmail.com",
-        name: "Jonas Keller",
+        name: "یوناس کلر",
         username: "driftmail_sec",
         role: "ORGANIZATION",
         emailVerified: daysAgo(90),
         country: "DE",
       },
-      { email: "lena@hunt.dev", name: "Lena Okafor", username: "lenapk", role: "RESEARCHER", emailVerified: daysAgo(380), country: "NG", bio: "Web security researcher. IDOR and logic bugs are my thing.", website: "https://lenapk.dev" },
-      { email: "tomas@hunt.dev", name: "Tomás Ferreira", username: "tferz", role: "RESEARCHER", emailVerified: daysAgo(360), country: "PT", bio: "Full-time bug hunter focused on payments and fintech." },
-      { email: "yuki@hunt.dev", name: "Yuki Sato", username: "yukisec", role: "RESEARCHER", emailVerified: daysAgo(340), country: "JP", bio: "Mobile and API security specialist." },
-      { email: "omer@hunt.dev", name: "Ömer Yıldız", username: "omeryld", role: "RESEARCHER", emailVerified: daysAgo(300), country: "TR", bio: "GraphQL and API abuse specialist." },
-      { email: "sara@hunt.dev", name: "Sara Lindqvist", username: "saralind", role: "RESEARCHER", emailVerified: daysAgo(250), country: "SE", bio: "Breaking auth flows since 2019." },
-      { email: "darek@hunt.dev", name: "Dariusz Nowak", username: "dstorm", role: "RESEARCHER", emailVerified: daysAgo(200), country: "PL", bio: "Cloud and container escape enthusiast.", github: "dstorm" },
+      { email: "lena@hunt.dev", name: "لنا اوکافور", username: "lenapk", role: "RESEARCHER", emailVerified: daysAgo(380), country: "NG", bio: "پژوهشگر امنیت وب. باگ‌های IDOR و منطقی تخصص من است.", website: "https://lenapk.dev" },
+      { email: "tomas@hunt.dev", name: "توماس فریرا", username: "tferz", role: "RESEARCHER", emailVerified: daysAgo(360), country: "PT", bio: "شکارچی باگ تمام‌وقت با تمرکز بر پرداخت و فین‌تک." },
+      { email: "yuki@hunt.dev", name: "یوکی ساتو", username: "yukisec", role: "RESEARCHER", emailVerified: daysAgo(340), country: "JP", bio: "متخصص امنیت موبایل و ای‌پی‌آی." },
+      { email: "omer@hunt.dev", name: "عمر یلدیز", username: "omeryld", role: "RESEARCHER", emailVerified: daysAgo(300), country: "TR", bio: "متخصص GraphQL و سوءاستفاده از ای‌پی‌آی." },
+      { email: "sara@hunt.dev", name: "سارا لیندکویست", username: "saralind", role: "RESEARCHER", emailVerified: daysAgo(250), country: "SE", bio: "از ۲۰۱۹ در حال شکستن جریان‌های احراز هویت." },
+      { email: "darek@hunt.dev", name: "داریوش نوواک", username: "dstorm", role: "RESEARCHER", emailVerified: daysAgo(200), country: "PL", bio: "علاقه‌مند به فرار از فضای ابری و کانتینر.", github: "dstorm" },
     ].map(async (u) =>
       prisma.user.create({
         data: {
@@ -121,7 +121,7 @@ async function main() {
     data: {
       name: "Nebula CDN",
       slug: "nebula-cdn",
-      description: "Edge network and content delivery infrastructure powering 40k+ websites.",
+      description: "زیرساخت شبکه لبه و تحویل محتوا که بیش از ۴۰ هزار وب‌سایت را پشتیبانی می‌کند.",
       website: "https://nebulacdn.io",
       twitter: "@nebulacdn",
       verified: true,
@@ -133,7 +133,7 @@ async function main() {
     data: {
       name: "VaultPay",
       slug: "vaultpay",
-      description: "European payment platform for marketplaces and SaaS billing.",
+      description: "پلتفرم پرداخت اروپایی برای مارکت‌پلیس‌ها و صورت‌حساب SaaS.",
       website: "https://vaultpay.eu",
       verified: true,
       ownerId: orgOwnerVaultpay.id,
@@ -144,7 +144,7 @@ async function main() {
     data: {
       name: "DriftMail",
       slug: "driftmail",
-      description: "Privacy-first transactional email for developers.",
+      description: "ایمیل تراکنشی حریم‌خصوصی‌محور برای توسعه‌دهندگان.",
       website: "https://driftmail.com",
       verified: false,
       ownerId: orgOwnerDrift.id,
@@ -152,19 +152,19 @@ async function main() {
   });
 
   const scopeWeb = (domain: string) => [
-    { type: "WEB", identifier: `*.${domain}`, eligibleForBounty: true, maxSeverity: "CRITICAL", instruction: "Use your own subdomain accounts when testing multi-tenant features." },
-    { type: "API", identifier: `api.${domain}/v2`, eligibleForBounty: true, maxSeverity: "CRITICAL", instruction: "Versioned API only — v1 is deprecated." },
+    { type: "WEB", identifier: `*.${domain}`, eligibleForBounty: true, maxSeverity: "CRITICAL", instruction: "برای تست قابلیت‌های چند‌مستأجری از حساب‌های زیردامنه خودتان استفاده کنید." },
+    { type: "API", identifier: `api.${domain}/v2`, eligibleForBounty: true, maxSeverity: "CRITICAL", instruction: "فقط ای‌پی‌آی نسخه‌بندی‌شده — نسخه v1 منسوخ است." },
     { type: "WEB", identifier: `status.${domain}`, eligibleForBounty: false, maxSeverity: "LOW" },
   ];
 
   const progNebula = await prisma.program.create({
     data: {
       organizationId: orgNebula.id,
-      title: "Nebula CDN Core",
+      title: "هسته Nebula CDN",
       slug: "nebula-cdn-core",
-      summary: "Test our edge network, dashboard and cache-control APIs.",
+      summary: "شبکه لبه، داشبورد و ای‌پی‌آی‌های کنترل کش ما را تست کنید.",
       description:
-        "Nebula CDN serves traffic for over 40,000 websites. This program covers the customer dashboard, the provisioning API, and edge cache behaviors. We care most about cache poisoning, account takeover, and access control issues. Automated scanning without prior approval may result in removal from the program.",
+        "Nebula CDN ترافیک بیش از چهل‌هزار وب‌سایت را سرو می‌کند. این برنامه شامل داشبورد مشتریان، ای‌پی‌آی تأمین منابع و رفتار کش لبه است. بیشترین اولویت ما آلودگی کش (Cache Poisoning)، تصاحب حساب کاربری و مشکلات کنترل دسترسی است. اسکن خودکار بدون هماهنگی قبلی ممکن است به حذف شما از برنامه منجر شود.",
       status: "PUBLIC",
       featured: true,
       minBounty: 100,
@@ -176,9 +176,9 @@ async function main() {
         { identifier: "cdn.nebulacdn.io", note: "Shared delivery edge, telemetry only" },
         { identifier: "nebulacdn.statuspage.io", note: "Hosted by third party" },
       ] as any,
-      prohibited: ["Automated scanners against production", "Social engineering our support team", "DDoS or resource-exhaustion tests", "Physical attacks"],
-      rules: "Findings must be reproducible on the production environment. Rate-limit aggressive testing to 5 requests/second. Always use your own test accounts.",
-      submissionRequirements: "Clear reproduction steps are mandatory. Videos are welcome for race conditions.",
+      prohibited: ["اسکنرهای خودکار علیه محیط عملیات", "مهندسی اجتماعی تیم پشتیبانی ما", "تست‌های DDoS یا فرسایش منابع", "حملات فیزیکی"],
+      rules: "یافته‌ها باید در محیط عملیات قابل بازتولید باشند. تست‌های تهاجمی را به ۵ درخواست بر ثانیه محدود کنید. همیشه از حساب‌های تستی خودتان استفاده کنید.",
+      submissionRequirements: "گام‌های بازتولید واضح الزامی است. برای شرایط رقابتی (Race Condition) ویدئو خوش‌آمدید.",
       disclosurePolicy: "COORDINATED",
       safeHarbor: true,
       severityRewards: { CRITICAL: 8000, HIGH: 2500, MEDIUM: 700, LOW: 150, INFORMATIONAL: 0 } as any,
@@ -192,9 +192,9 @@ async function main() {
       organizationId: orgVaultpay.id,
       title: "VaultPay Checkout",
       slug: "vaultpay-checkout",
-      summary: "Payments core: checkout, billing portal and merchant API.",
+      summary: "هسته پرداخت: تسویه، پورتال صورت‌حساب و ای‌پی‌آی پذیرندگان.",
       description:
-        "VaultPay processes payments for European marketplaces. The program covers our hosted checkout, the merchant dashboard, and the public API v2. Focus areas are payment logic flaws, cross-tenant data leaks, and authentication bypasses. Please never use real cardholder data — test cards are provided in the docs.",
+        "VaultPay پردازش پرداخت‌ها برای مارکت‌پلیس‌های اروپایی را انجام می‌دهد. این برنامه شامل صفحه تسویه میزبانی‌شده، داشبورد پذیرندگان و ای‌پی‌آی عمومی v2 است. حوزه‌های تمرکز: ایرادهای منطق پرداخت، نشت داده بین‌مستأجری و دورزدن احراز هویت. لطفاً هرگز از داده واقعی صاحبان کارت استفاده نکنید — کارت‌های تستی در مستندات موجود است.",
       status: "PUBLIC",
       featured: true,
       minBounty: 250,
@@ -203,9 +203,9 @@ async function main() {
       categories: ["Business Logic", "Broken Authorization (IDOR)", "Authentication", "Sensitive Data Exposure", "Cross-Site Scripting (XSS)"],
       inScope: scopeWeb("vaultpay.eu") as any,
       outOfScope: [{ identifier: "docs.vaultpay.eu", note: "Static documentation site" }] as any,
-      prohibited: ["Testing with real cardholder data", "Spamming checkout with live transactions", "Phishing against our customers"],
-      rules: "Use the provided sandbox merchant account for all interactions with checkout flows.",
-      submissionRequirements: "Impact analysis is required for all business logic findings.",
+      prohibited: ["تست با داده واقعی صاحبان کارت", "اسپم تسویه با تراکنش‌های واقعی", "فیشینگ علیه مشتریان ما"],
+      rules: "برای تمام تعامل با جریان‌های تسویه از حساب پذیرنده سندباکس ارائه‌شده استفاده کنید.",
+      submissionRequirements: "برای همه یافته‌های منطق کسب‌وکار، تحلیل تأثیر الزامی است.",
       disclosurePolicy: "COORDINATED",
       safeHarbor: true,
       severityRewards: { CRITICAL: 15000, HIGH: 4000, MEDIUM: 1200, LOW: 250, INFORMATIONAL: 50 } as any,
@@ -219,9 +219,9 @@ async function main() {
       organizationId: orgDrift.id,
       title: "DriftMail API",
       slug: "driftmail-api",
-      summary: "Transactional email API and templating engine.",
+      summary: "ایمیل تراکنشی ای‌پی‌آی و موتور قالب‌سازی.",
       description:
-        "DriftMail lets developers send transactional email through a simple API. This program covers the API gateway, template variables engine and webhook signing. We are a small team — reports are usually triaged within a week.",
+        "DriftMail به توسعه‌دهندگان اجازه می‌دهد از طریق یک ای‌پی‌آی ساده ایمیل تراکنشی بفرستند. این برنامه شامل دروازه ای‌پی‌آی، موتور متغیرهای قالب و امضای وب‌هوک است. ما تیم کوچکی هستیم — گزارش‌ها معمولاً ظرف یک هفته بررسی اولیه می‌شوند.",
       status: "PUBLIC",
       minBounty: 50,
       maxBounty: 2000,
@@ -229,7 +229,7 @@ async function main() {
       categories: ["Access Control", "Information Disclosure", "Misconfiguration", "Race Condition"],
       inScope: scopeWeb("driftmail.com") as any,
       outOfScope: [] as any,
-      prohibited: ["Email bombing", "Spoofing our domain"],
+      prohibited: ["بمباران ایمیلی", "جعل دامنه ما"],
       rules: null,
       submissionRequirements: null,
       disclosurePolicy: "SAFE_HARBOR_ONLY",
@@ -243,21 +243,21 @@ async function main() {
   const progVaultpayPrivate = await prisma.program.create({
     data: {
       organizationId: orgVaultpay.id,
-      title: "VaultPay Mobile Beta",
+      title: "بتای موبایل VaultPay",
       slug: "vaultpay-mobile-beta",
-      summary: "iOS and Android beta apps for VaultPay merchants.",
+      summary: "اپ‌های بتای iOS و اندروید برای پذیرندگان VaultPay.",
       description:
-        "Our merchant mobile apps are in closed beta. This program is invite-only and only visible to researchers with an accepted vulnerability in the main program. The focus is on local storage, deep links, and certificate pinning bypasses.",
+        "اپ‌های موبایل پذیرندگان ما در بتای بسته قرار دارند. این برنامه فقط با دعوت‌نامه و فقط برای پژوهشگرانی که در برنامه اصلی یک آسیب‌پذیری پذیرفته‌شده دارند قابل مشاهده است. تمرکز روی ذخیره‌سازی محلی، دیپ‌لینک‌ها و دورزدن سنجاق‌کردن گواهی است.",
       status: "PRIVATE",
       minBounty: 300,
       maxBounty: 10000,
       currency: "EUR",
       categories: ["Insecure Deserialization", "Authentication", "Sensitive Data Exposure"],
-      inScope: [{ type: "MOBILE", identifier: "VaultPay iOS beta build 1.4.x", eligibleForBounty: true, maxSeverity: "CRITICAL", instruction: "Distribution via TestFlight invitation." }] as any,
+      inScope: [{ type: "MOBILE", identifier: "VaultPay iOS beta build 1.4.x", eligibleForBounty: true, maxSeverity: "CRITICAL", instruction: "توزیع از طریق دعوت‌نامه TestFlight." }] as any,
       outOfScope: [] as any,
-      prohibited: ["Jailbroken-device-only findings without real-world impact", "Tweaking the app store listing"],
-      rules: "Beta builds may be unstable. Submit only reproducible crashes with security impact.",
-      submissionRequirements: "Screen recording required for UI-level issues.",
+      prohibited: ["یافته‌های صرفاً مخصوص دستگاه جیلبریک‌شده بدون تأثیر واقعی", "دستکاری صفحه اپ در استور"],
+      rules: "نسخه‌های بتا ممکن است ناپایدار باشند. فقط کرش‌های قابل بازتولید با تأثیر امنیتی ارسال کنید.",
+      submissionRequirements: "برای مشکلات سطح رابط کاربری، ضبط صفحه الزامی است.",
       disclosurePolicy: "COORDINATED",
       safeHarbor: true,
       severityRewards: { CRITICAL: 10000, HIGH: 3000, MEDIUM: 900, LOW: 300, INFORMATIONAL: 0 } as any,
@@ -269,11 +269,11 @@ async function main() {
   const progDriftPaused = await prisma.program.create({
     data: {
       organizationId: orgDrift.id,
-      title: "DriftMail Legacy SMTP Relay",
+      title: "ریلی قدیمی SMTP درفت‌میل",
       slug: "driftmail-legacy-relay",
-      summary: "Legacy SMTP relay — currently under migration.",
+      summary: "ریلی قدیمی SMTP — در حال مهاجرت.",
       description:
-        "Our legacy SMTP relay is being decommissioned this quarter. Reports are accepted but remediation may be delayed until the migration completes. This program is paused while we stabilize the new relay implementation.",
+        "ریلی قدیمی SMTP ما در این سه‌ماهه جمع‌آوری می‌شود. گزارش‌ها پذیرفته می‌شوند اما رفع مشکل ممکن است تا پایان مهاجرت به تعویق بیفتد. این برنامه تا پایدارشدن نسخه جدید ریلی متوقف است.",
       status: "PAUSED",
       minBounty: 50,
       maxBounty: 500,
@@ -281,7 +281,7 @@ async function main() {
       categories: ["Misconfiguration", "Information Disclosure"],
       inScope: [{ type: "OTHER", identifier: "smtp-legacy.driftmail.com", eligibleForBounty: true, maxSeverity: "HIGH" }] as any,
       outOfScope: [] as any,
-      prohibited: ["Mail flooding"],
+      prohibited: ["سیل ایمیلی"],
       rules: null,
       submissionRequirements: null,
       disclosurePolicy: "SAFE_HARBOR_ONLY",
@@ -323,12 +323,12 @@ async function main() {
         severity: o.severity as any,
         status: o.status as any,
         description:
-          "A detailed description of the vulnerability, including the affected component, the preconditions required to trigger it, and why the existing controls do not prevent it.",
+          "توضیح تفصیلی آسیب‌پذیری شامل کامپوننت تحت تأثیر، پیش‌شرط‌های لازم برای فعال‌سازی آن و اینکه چرا کنترل‌های موجود مانع آن نمی‌شوند.",
         steps:
-          "1. Log in as a free-tier test account.\n2. Open the target endpoint and copy the request.\n3. Modify the identifier and replay the request.\n4. Observe the response leaking data from other accounts.",
-        impact: "Full account takeover of any tenant is possible, leading to data exfiltration and unauthorized transactions.",
+          "۱. با حساب تستی پلن رایگان وارد شوید.\n۲. اندپوینت هدف را باز کنید و درخواست را کپی کنید.\n۳. شناسه را تغییر دهید و درخواست را دوباره بفرستید.\n۴. مشاهده می‌کنید پاسخ، داده حساب‌های دیگر را لو می‌دهد.",
+        impact: "تصاحب کامل حساب هر مستأجری ممکن است که به سرقت داده و تراکنش‌های غیرمجاز منجر می‌شود.",
         proofOfConcept: "curl -i 'https://TARGET/api/v2/resource?id=1337' -H 'Authorization: Bearer $TOKEN'",
-        remediation: "Validate object ownership server-side on every request and return 404 for foreign objects.",
+        remediation: "مالکیت شیء را در هر درخواست سمت سرور validate کنید و برای اشیای خارجی خطای ۴۰۴ برگردانید.",
         rewardAmount: o.reward ?? null,
         currency,
         points: o.points ?? 0,
@@ -339,18 +339,18 @@ async function main() {
     });
 
   const reportDefs = [
-    [progNebula.id, "USD", lena.id, { title: "Cache poisoning on edge nodes via X-Forwarded-Host", asset: "*.nebulacdn.io", category: "Misconfiguration", severity: "CRITICAL", status: "REWARDED", days: 40, reward: 8000, points: 100, triaged: true, resolved: true }],
-    [progNebula.id, "USD", tomas.id, { title: "IDOR in provisioning API exposes customer SSH keys", asset: "api.nebulacdn.io/v2/keys", category: "Broken Authorization (IDOR)", severity: "HIGH", status: "REWARDED", days: 28, reward: 2500, points: 60, triaged: true, resolved: true }],
-    [progNebula.id, "USD", omer.id, { title: "SSRF through webhook test endpoint", asset: "api.nebulacdn.io/v2/hooks/test", category: "Server-Side Request Forgery (SSRF)", severity: "HIGH", status: "ACCEPTED", days: 12, points: 60, triaged: true }],
-    [progNebula.id, "USD", sara.id, { title: "Session fixation after password reset", asset: "app.nebulacdn.io/reset", category: "Authentication", severity: "MEDIUM", status: "TRIAGED", days: 5, points: 0, triaged: true }],
-    [progNebula.id, "USD", yuki.id, { title: "Reflected XSS in error page via crafted Accept header", asset: "app.nebulacdn.io/error", category: "Cross-Site Scripting (XSS)", severity: "LOW", status: "REJECTED", days: 16, points: 0, triaged: true, resolved: true }],
-    [progNebula.id, "USD", darek.id, { title: "Cacheable 404 pages leak private bucket names", asset: "cdn.nebulacdn.io", category: "Information Disclosure", severity: "LOW", status: "NEW", days: 1 }],
-    [progVaultpay.id, "EUR", tomas.id, { title: "Checkout amount can be changed after 3DS verification", asset: "checkout.vaultpay.eu", category: "Business Logic", severity: "CRITICAL", status: "REWARDED", days: 22, reward: 15000, points: 100, triaged: true, resolved: true }],
-    [progVaultpay.id, "EUR", lena.id, { title: "Cross-merchant data leak via invoice export filter", asset: "app.vaultpay.eu/invoices?merchant=", category: "Broken Authorization (IDOR)", severity: "HIGH", status: "REWARDED", days: 35, reward: 4000, points: 60, triaged: true, resolved: true }],
-    [progVaultpay.id, "EUR", omer.id, { title: "Stored XSS in merchant display name shown in receipts", asset: "checkout.vaultpay.eu/receipt", category: "Cross-Site Scripting (XSS)", severity: "HIGH", status: "TRIAGED", days: 8, points: 0, triaged: true }],
-    [progVaultpay.id, "EUR", sara.id, { title: "2FA can be skipped by replaying the challenge token", asset: "app.vaultpay.eu/2fa", category: "Authentication", severity: "MEDIUM", status: "DUPLICATE", days: 18, points: 0, triaged: true }],
-    [progDrift.id, "EUR", yuki.id, { title: "Webhook signature verification skips trailing newline", asset: "api.driftmail.com/v1/webhooks", category: "Other", severity: "MEDIUM", status: "ACCEPTED", days: 9, points: 30, triaged: true }],
-    [progDrift.id, "EUR", lena.id, { title: "Template variables allow header injection in email previews", asset: "api.driftmail.com/v1/templates/preview", category: "Information Disclosure", severity: "LOW", status: "NEW", days: 2 }],
+    [progNebula.id, "USD", lena.id, { title: "آلودگی کش روی نودهای لبه از طریق X-Forwarded-Host", asset: "*.nebulacdn.io", category: "Misconfiguration", severity: "CRITICAL", status: "REWARDED", days: 40, reward: 8000, points: 100, triaged: true, resolved: true }],
+    [progNebula.id, "USD", tomas.id, { title: "ای‌دی‌او‌آر در ای‌پی‌آی تأمین منابع، کلیدهای SSH مشتریان را لو می‌دهد", asset: "api.nebulacdn.io/v2/keys", category: "Broken Authorization (IDOR)", severity: "HIGH", status: "REWARDED", days: 28, reward: 2500, points: 60, triaged: true, resolved: true }],
+    [progNebula.id, "USD", omer.id, { title: "SSRF از طریق اندپوینت تست وب‌هوک", asset: "api.nebulacdn.io/v2/hooks/test", category: "Server-Side Request Forgery (SSRF)", severity: "HIGH", status: "ACCEPTED", days: 12, points: 60, triaged: true }],
+    [progNebula.id, "USD", sara.id, { title: "تثبیت نشست پس از بازیابی رمز عبور", asset: "app.nebulacdn.io/reset", category: "Authentication", severity: "MEDIUM", status: "TRIAGED", days: 5, points: 0, triaged: true }],
+    [progNebula.id, "USD", yuki.id, { title: "XSS بازتابی در صفحه خطا از طریق هدر Accept دستکاری‌شده", asset: "app.nebulacdn.io/error", category: "Cross-Site Scripting (XSS)", severity: "LOW", status: "REJECTED", days: 16, points: 0, triaged: true, resolved: true }],
+    [progNebula.id, "USD", darek.id, { title: "صفحات ۴۰۴ قابل‌کش، نام باکت‌های خصوصی را لو می‌دهند", asset: "cdn.nebulacdn.io", category: "Information Disclosure", severity: "LOW", status: "NEW", days: 1 }],
+    [progVaultpay.id, "EUR", tomas.id, { title: "مبلغ تسویه پس از تأیید 3DS قابل تغییر است", asset: "checkout.vaultpay.eu", category: "Business Logic", severity: "CRITICAL", status: "REWARDED", days: 22, reward: 15000, points: 100, triaged: true, resolved: true }],
+    [progVaultpay.id, "EUR", lena.id, { title: "نشت داده بین‌پذیرندگان از طریق فیلتر خروجی فاکتور", asset: "app.vaultpay.eu/invoices?merchant=", category: "Broken Authorization (IDOR)", severity: "HIGH", status: "REWARDED", days: 35, reward: 4000, points: 60, triaged: true, resolved: true }],
+    [progVaultpay.id, "EUR", omer.id, { title: "XSS ذخیره‌شده در نام نمایشی پذیرنده در رسیدها", asset: "checkout.vaultpay.eu/receipt", category: "Cross-Site Scripting (XSS)", severity: "HIGH", status: "TRIAGED", days: 8, points: 0, triaged: true }],
+    [progVaultpay.id, "EUR", sara.id, { title: "دورزدن احراز دومرحله‌ای با پخش مجدد توکن چالش", asset: "app.vaultpay.eu/2fa", category: "Authentication", severity: "MEDIUM", status: "DUPLICATE", days: 18, points: 0, triaged: true }],
+    [progDrift.id, "EUR", yuki.id, { title: "بررسی امضای وب‌هوک خط جدید انتهایی را نادیده می‌گیرد", asset: "api.driftmail.com/v1/webhooks", category: "Other", severity: "MEDIUM", status: "ACCEPTED", days: 9, points: 30, triaged: true }],
+    [progDrift.id, "EUR", lena.id, { title: "متغیرهای قالب اجازه تزریق هدر در پیش‌نمایش ایمیل را می‌دهند", asset: "api.driftmail.com/v1/templates/preview", category: "Information Disclosure", severity: "LOW", status: "NEW", days: 2 }],
   ] as const;
 
   type CreatedReport = Awaited<ReturnType<typeof r>>;
@@ -364,34 +364,34 @@ async function main() {
   await prisma.reportComment.createMany({
     data: [
       {
-        reportId: byTitle("Cache poisoning on edge nodes via X-Forwarded-Host").id,
+        reportId: byTitle("آلودگی کش روی نودهای لبه از طریق X-Forwarded-Host").id,
         authorId: orgOwnerNebula.id,
-        body: "Great catch — confirmed on our staging edge. Security team is preparing the fix.",
+        body: "یافته عالی — در محیط آزمایشی لبه تأیید شد. تیم امنیتی در حال آماده‌سازی وصله است.",
         createdAt: daysAgo(38),
       },
       {
-        reportId: byTitle("Cache poisoning on edge nodes via X-Forwarded-Host").id,
+        reportId: byTitle("آلودگی کش روی نودهای لبه از طریق X-Forwarded-Host").id,
         authorId: lena.id,
-        body: "Happy to verify the fix once it ships. A cache key version bump should stop the bypass.",
+        body: "با کمال میل پس از انتشار وصله، تأیید می‌کنم. افزایش نسخه کلید کش باید این دورزدن را قطع کند.",
         createdAt: daysAgo(37),
       },
       {
-        reportId: byTitle("Cache poisoning on edge nodes via X-Forwarded-Host").id,
+        reportId: byTitle("آلودگی کش روی نودهای لبه از طریق X-Forwarded-Host").id,
         authorId: orgOwnerNebula.id,
-        body: "Fix deployed to 90% of the fleet. Reward sent at the Critical tier. Thank you!",
+        body: "وصله روی ۹۰٪ خوشه مستقر شد. جایزه در سطح بحرانی پرداخت شد. ممنون!",
         internal: true,
         createdAt: daysAgo(34),
       },
       {
-        reportId: byTitle("2FA can be skipped by replaying the challenge token").id,
+        reportId: byTitle("دورزدن احراز دومرحله‌ای با پخش مجدد توکن چالش").id,
         authorId: orgOwnerVaultpay.id,
-        body: "This overlaps with a private finding from #VR-4412. Marking as duplicate.",
+        body: "این با یافته خصوصی #VR-4412 هم‌پوشانی دارد. به‌عنوان تکراری علامت می‌خورد.",
         createdAt: daysAgo(10),
       },
       {
-        reportId: byTitle("SSRF through webhook test endpoint").id,
+        reportId: byTitle("SSRF از طریق اندپوینت تست وب‌هوک").id,
         authorId: omer.id,
-        body: "Added a second PoC targeting the internal metadata service (blocked in PoC 2, works in PoC 1).",
+        body: "یک PoC دوم علیه سرویس متادیتای داخلی اضافه کردم (در PoC 2 مسدود است، در PoC 1 جواب می‌دهد).",
         createdAt: daysAgo(11),
       },
     ],
@@ -399,10 +399,10 @@ async function main() {
 
   await prisma.dispute.create({
     data: {
-      reportId: byTitle("2FA can be skipped by replaying the challenge token").id,
+      reportId: byTitle("دورزدن احراز دومرحله‌ای با پخش مجدد توکن چالش").id,
       openedById: sara.id,
       reason:
-        "The referenced duplicate (#VR-4412) only mentioned 2FA token expiry. My finding is about full challenge replay, which is a distinct root cause.",
+        "تکراری ذکرشده (#VR-4412) فقط به انقضای توکن 2FA اشاره داشت. یافته من درباره پخش کامل چالش است که ریشه متمایزی دارد.",
       status: "OPEN",
       createdAt: daysAgo(7),
     },
@@ -410,11 +410,11 @@ async function main() {
 
   await prisma.dispute.create({
     data: {
-      reportId: byTitle("Reflected XSS in error page via crafted Accept header").id,
+      reportId: byTitle("XSS بازتابی در صفحه خطا از طریق هدر Accept دستکاری‌شده").id,
       openedById: yuki.id,
-      reason: "The error page belongs to the customer dashboard listed in scope — this should not be out of scope.",
+      reason: "صفحه خطا مربوط به داشبورد مشتریان است که در محدوده ذکر شده — این نباید خارج از محدوده تلقی شود.",
       status: "RESOLVED_ACCEPTED",
-      resolution: "Reviewed the scope: the dashboard routes are in scope, the platform accepted the re-triage and re-opened triage duty for the vendor. Severity kept at Low.",
+      resolution: "محدوده بازبینی شد: مسیرهای داشبورد در محدوده هستند، پلتفرم بازبینی مجدد را پذیرفت و وظیفه بررسی اولیه برای سازمان بازگشایی شد. شدت روی کم باقی ماند.",
       resolvedAt: daysAgo(12),
       createdAt: daysAgo(14),
     },
@@ -458,9 +458,9 @@ async function main() {
 
   await prisma.notification.createMany({
     data: [
-      { userId: lena.id, type: "REPORT_STATUS", title: "Your report was rewarded", body: "Cache poisoning on edge nodes via X-Forwarded-Host — $8,000 at the Critical tier.", link: "/researcher/submissions", createdAt: daysAgo(34) },
-      { userId: orgOwnerNebula.id, type: "REPORT_STATUS", title: "New report in Nebula CDN Core", body: "Cacheable 404 pages leak private bucket names.", link: "/org/reports", createdAt: daysAgo(1) },
-      { userId: admin.id, type: "ORG_VERIFICATION", title: "DriftMail is awaiting verification", body: "Review the organization before their next program launch.", link: "/admin/organizations", createdAt: daysAgo(3) },
+      { userId: lena.id, type: "REPORT_STATUS", title: "گزارش شما جایزه گرفت", body: "آلودگی کش روی نودهای لبه از طریق X-Forwarded-Host — هشت‌هزار دلار در سطح بحرانی.", link: "/researcher/submissions", createdAt: daysAgo(34) },
+      { userId: orgOwnerNebula.id, type: "REPORT_STATUS", title: "گزارش جدید در هسته Nebula CDN", body: "صفحات ۴۰۴ قابل‌کش، نام باکت‌های خصوصی را لو می‌دهند.", link: "/org/reports", createdAt: daysAgo(1) },
+      { userId: admin.id, type: "ORG_VERIFICATION", title: "DriftMail در انتظار تایید است", body: "قبل از انتشار برنامه بعدی این سازمان را بازبینی کنید.", link: "/admin/organizations", createdAt: daysAgo(3) },
     ],
   });
 

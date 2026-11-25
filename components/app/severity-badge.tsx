@@ -1,14 +1,14 @@
-import { Badge } from "@/components/ui/badge";
-import { SEVERITY_STYLES } from "@/lib/constants";
+import { SEVERITY_STYLES, SEVERITY_LABELS } from "@/lib/constants";
 
 export function SeverityBadge({ severity }: { severity: string }) {
+  const sev = severity as keyof typeof SEVERITY_LABELS;
   return (
     <span
       className={`inline-flex items-center rounded-md border px-2 py-0.5 text-xs font-medium ${
-        SEVERITY_STYLES[severity] ?? SEVERITY_STYLES.INFORMATIONAL
+        SEVERITY_STYLES[sev] ?? SEVERITY_STYLES.INFORMATIONAL
       }`}
     >
-      {severity.charAt(0) + severity.slice(1).toLowerCase()}
+      {SEVERITY_LABELS[sev] ?? severity}
     </span>
   );
 }

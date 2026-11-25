@@ -21,13 +21,13 @@ export function DashboardShell({
 }) {
   return (
     <div className="container-app py-8">
-      <div className="mb-8">
+      <div className="mb-8 animate-fade-in">
         <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         {subtitle ? <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p> : null}
         {header ? <div className="mt-4">{header}</div> : null}
       </div>
       <div className="grid gap-8 lg:grid-cols-[220px_1fr]">
-        <nav className="lg:self-start" aria-label="Dashboard">
+        <nav className="lg:self-start" aria-label="پیشخوان">
           <ul className="flex gap-1 overflow-x-auto pb-2 lg:flex-col lg:overflow-visible lg:pb-0">
             {nav.map((item) => {
               const active =
@@ -53,7 +53,7 @@ export function DashboardShell({
             })}
           </ul>
         </nav>
-        <div className="min-w-0">{children}</div>
+        <div className="min-w-0 animate-fade-up">{children}</div>
       </div>
     </div>
   );

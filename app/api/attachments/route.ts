@@ -14,31 +14,31 @@ export async function POST(req: NextRequest) {
   const origin = req.headers.get("origin");
   const host = req.headers.get("host");
   if (origin && new URL(origin).host !== host) {
-    return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+    return NextResponse.json({ error: "مبدا درخواست نامعتبر است" }, { status: 403 });
   }
 
   const limiter = await checkRateLimit(`upload:${clientIpFromHeaders(req.headers)}`, 20, 60_000);
   if (!limiter.ok) {
-    return NextResponse.json({ error: "Too many uploads" }, { status: 429 });
+    return NextResponse.json({ error: "تعداد بارگذاری‌ها بیش از حد مجاز است" }, { status: 429 });
   }
 
   const { auth } = await import("@/lib/auth");
   const session = await auth();
   if (!session?.user?.id) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return NextResponse.json({ error: "ابتدا وارد شوید" }, { status: 401 });
   }
 
   let form: FormData;
   try {
     form = await req.formData();
   } catch {
-    return NextResponse.json({ error: "Invalid form data" }, { status: 400 });
+    return NextResponse.json({ error: "داده فرم نامعتبر است" }, { status: 400 });
   }
 
   const reportId = String(form.get("reportId") ?? "");
   const file = form.get("file");
   if (!reportId || !(file instanceof File)) {
-    return NextResponse.json({ error: "Missing reportId or file" }, { status: 400 });
+    return NextResponse.json({ error: "شناسه گزارش یا فایل ارسال نشده است" }, { status: 400 });
   }
 
   const report = await prisma.report.findUnique({
@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
       },
     },
   });
-  if (!report) return NextResponse.json({ error: "Report not found" }, { status: 404 });
+  if (!report) return NextResponse.json({ error: "گزارش یافت نشد" }, { status: 404 });
 
   const isStaff =
     report.program.organization.ownerId === session.user.id ||

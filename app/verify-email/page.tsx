@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { VerifyEmailView } from "@/components/app/verify-email-view";
 
-export const metadata: Metadata = { title: "Verify email" };
+export const metadata: Metadata = { title: "تأیید ایمیل" };
 
 export default async function VerifyEmailPage({
   searchParams,
@@ -12,7 +12,7 @@ export default async function VerifyEmailPage({
   if (!params.token) {
     return (
       <div className="container-app max-w-md py-16">
-        <p className="text-sm text-destructive">Missing verification token.</p>
+        <p className="text-sm text-destructive">توکن تأیید یافت نشد.</p>
       </div>
     );
   }

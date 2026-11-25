@@ -15,7 +15,7 @@ export function ResetPasswordForm({ token }: { token: string }) {
       <div className="space-y-4">
         <p className="text-sm text-emerald-400">{state.success}</p>
         <Button asChild className="w-full">
-          <Link href="/login">Go to login</Link>
+          <Link href="/login">رفتن به صفحه ورود</Link>
         </Button>
       </div>
     );
@@ -26,15 +26,15 @@ export function ResetPasswordForm({ token }: { token: string }) {
       {state?.error ? <p className="text-sm text-destructive">{state.error}</p> : null}
       <input type="hidden" name="token" value={token} />
       <div className="space-y-2">
-        <Label htmlFor="password">New password</Label>
+        <Label htmlFor="password">رمز عبور جدید</Label>
         <Input id="password" name="password" type="password" required minLength={10} />
       </div>
       <div className="space-y-2">
-        <Label htmlFor="confirmPassword">Confirm new password</Label>
+        <Label htmlFor="confirmPassword">تکرار رمز عبور جدید</Label>
         <Input id="confirmPassword" name="confirmPassword" type="password" required minLength={10} />
       </div>
       <Button type="submit" className="w-full" disabled={pending}>
-        {pending ? "Updating…" : "Update password"}
+        {pending ? "در حال به‌روزرسانی…" : "به‌روزرسانی رمز عبور"}
       </Button>
     </form>
   );

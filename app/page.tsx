@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ProgramCard } from "@/components/app/program-card";
+import { Reveal } from "@/components/app/reveal";
 import { prisma } from "@/lib/prisma";
-import { formatMoney } from "@/lib/utils";
-import { Search, ShieldCheck, Trophy, FileWarning, ArrowRight, Server, Users, Wallet } from "lucide-react";
+import { formatMoney, formatPoints } from "@/lib/utils";
+import { Search, ShieldCheck, Trophy, FileWarning, ArrowLeft, Server, Users, Wallet } from "lucide-react";
 
 export default async function LandingPage() {
   const [programs, stats] = await Promise.all([
@@ -30,37 +31,37 @@ export default async function LandingPage() {
           <div className="absolute left-1/2 top-0 h-[400px] w-[800px] -translate-x-1/2 bg-primary/10 blur-[120px]" />
         </div>
         <div className="container-app relative flex flex-col items-center py-24 text-center sm:py-32">
-          <Badge variant="secondary" className="mb-6 font-normal text-muted-foreground">
-            <ShieldCheck className="mr-1.5 h-3.5 w-3.5 text-primary" />
-            Bug bounty & coordinated vulnerability disclosure
+          <Badge variant="secondary" className="animate-fade-in mb-6 font-normal text-muted-foreground">
+            <ShieldCheck className="ms-1.5 h-3.5 w-3.5 text-primary" />
+            باگ بانتی و افشای هماهنگ آسیب‌پذیری
           </Badge>
-          <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
-            Find real bugs.
+          <h1 className="animate-fade-up max-w-3xl text-4xl font-bold tracking-tight sm:text-6xl">
+            باگ‌های واقعی پیدا کن.
             <br />
-            Get <span className="text-primary">fairly rewarded</span>.
+            <span className="text-primary">منصفانه جایزه</span> بگیر.
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-            BugFa connects security researchers with organizations that take security seriously.
-            Discover programs, report vulnerabilities, and build a verified track record.
+          <p className="animate-fade-up mt-6 max-w-2xl text-lg leading-8 text-muted-foreground [animation-delay:120ms]">
+            BugFa پژوهشگران امنیتی را با سازمان‌هایی که امنیت را جدی می‌گیرند متصل می‌کند.
+            برنامه‌ها را کشف کن، آسیب‌پذیری‌ها را گزارش کن و رکورد تأییدشده بساز.
           </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <div className="animate-fade-up mt-8 flex flex-wrap items-center justify-center gap-3 [animation-delay:240ms]">
             <Button asChild size="lg">
               <Link href="/explore">
-                Browse programs <ArrowRight className="h-4 w-4" />
+                کاوش برنامه‌ها <ArrowLeft className="h-4 w-4" />
               </Link>
             </Button>
             <Button asChild variant="outline" size="lg">
-              <Link href="/register">Run a program</Link>
+              <Link href="/register">اجرای برنامه</Link>
             </Button>
           </div>
           <dl className="mt-16 grid w-full max-w-3xl grid-cols-2 gap-4 sm:grid-cols-4">
             {[
-              { icon: FileWarning, label: "Accepted reports", value: acceptedReports },
-              { icon: Users, label: "Researchers", value: researchers },
-              { icon: Wallet, label: "Rewards paid", value: formatMoney(totalPaid._sum.rewardAmount ?? 0) },
-              { icon: Server, label: "Live programs", value: activePrograms },
-            ].map((item) => (
-              <div key={item.label} className="rounded-lg border bg-card p-4">
+              { icon: FileWarning, label: "گزارش‌های پذیرفته‌شده", value: formatPoints(acceptedReports) },
+              { icon: Users, label: "پژوهشگران", value: formatPoints(researchers) },
+              { icon: Wallet, label: "جایزه‌های پرداخت‌شده", value: formatMoney(totalPaid._sum.rewardAmount ?? 0) },
+              { icon: Server, label: "برنامه‌های فعال", value: formatPoints(activePrograms) },
+            ].map((item, i) => (
+              <div key={item.label} className="animate-fade-up card-hover rounded-lg border bg-card p-4" style={{ animationDelay: `${300 + i * 90}ms` }}>
                 <item.icon className="mx-auto mb-2 h-4 w-4 text-primary" />
                 <dd className="text-xl font-bold">{item.value}</dd>
                 <dt className="text-xs text-muted-foreground">{item.label}</dt>
@@ -71,22 +72,24 @@ export default async function LandingPage() {
       </section>
 
       <section className="container-app py-20">
-        <div className="flex items-end justify-between">
+        <Reveal className="flex items-end justify-between">
           <div>
-            <h2 className="text-2xl font-bold tracking-tight">Live programs</h2>
+            <h2 className="text-2xl font-bold tracking-tight">برنامه‌های فعال</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Organizations currently accepting vulnerability reports.
+              سازمان‌هایی که هم‌اکنون گزارش آسیب‌پذیری می‌پذیرند.
             </p>
           </div>
           <Button asChild variant="ghost" size="sm">
             <Link href="/explore">
-              View all <ArrowRight className="h-4 w-4" />
+              دیدن همه <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
-        </div>
+        </Reveal>
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {programs.map((program) => (
-            <ProgramCard key={program.id} program={program as any} />
+          {programs.map((program, i) => (
+            <Reveal key={program.id} delay={i * 80}>
+              <ProgramCard program={program as any} />
+            </Reveal>
           ))}
         </div>
       </section>
@@ -96,39 +99,41 @@ export default async function LandingPage() {
           {[
             {
               icon: Search,
-              title: "Discover weaknesses before attackers do",
-              body: "Programs clearly define scope, rules, and reward tables, so you always know what is in bounds and what it pays.",
+              title: "ضعف‌ها را قبل از مهاجمان کشف کن",
+              body: "برنامه‌ها محدوده، قوانین و جدول جوایز را شفاف مشخص می‌کنند تا همیشه بدانی چه چیزی در محدوده است و چه می‌پردازد.",
             },
             {
               icon: ShieldCheck,
-              title: "Fair, transparent triage",
-              body: "Every report gets a tracked lifecycle — from submission to reward — with private discussion built in.",
+              title: "بررسی منصفانه و شفاف",
+              body: "هر گزارش یک چرخه پیگیری‌شده دارد — از ارسال تا جایزه — با گفتگوی خصوصی داخلی.",
             },
             {
               icon: Trophy,
-              title: "Reputation that follows you",
-              body: "Earn points, unlock achievements, and climb a leaderboard backed by real accepted findings.",
+              title: "اعتباری که با تو می‌آید",
+              body: "امتیاز جمع کن، نشان‌ها را باز کن و با یافته‌های واقعیِ پذیرفته‌شده در جدول امتیازات بالا برو.",
             },
-          ].map((f) => (
-            <div key={f.title}>
+          ].map((f, i) => (
+            <Reveal key={f.title} delay={i * 120}>
               <f.icon className="mb-4 h-6 w-6 text-primary" />
               <h3 className="font-semibold">{f.title}</h3>
-              <p className="mt-2 text-sm text-muted-foreground">{f.body}</p>
-            </div>
+              <p className="mt-2 text-sm leading-7 text-muted-foreground">{f.body}</p>
+            </Reveal>
           ))}
         </div>
       </section>
 
       <section className="container-app py-20 text-center">
-        <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
-          Ready to make the internet a little safer?
-        </h2>
-        <p className="mx-auto mt-2 max-w-xl text-sm text-muted-foreground">
-          Join researchers and organizations already coordinating security work on BugFa.
-        </p>
-        <Button asChild className="mt-6" size="lg">
-          <Link href="/register">Create your free account</Link>
-        </Button>
+        <Reveal>
+          <h2 className="text-2xl font-bold tracking-tight sm:text-3xl">
+            آماده‌ای اینترنت را کمی امن‌تر کنی؟
+          </h2>
+          <p className="mx-auto mt-2 max-w-xl text-sm text-muted-foreground">
+            به پژوهشگران و سازمان‌هایی بپیوند که همین حالا روی BugFa همکاری امنیتی می‌کنند.
+          </p>
+          <Button asChild className="mt-6" size="lg">
+            <Link href="/register">ساخت حساب رایگان</Link>
+          </Button>
+        </Reveal>
       </section>
     </>
   );

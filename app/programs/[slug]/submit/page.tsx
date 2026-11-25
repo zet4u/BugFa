@@ -6,7 +6,7 @@ import { ReportForm } from "@/components/app/report-form";
 import { SeverityBadge } from "@/components/app/severity-badge";
 import { formatMoney } from "@/lib/utils";
 
-export const metadata: Metadata = { title: "Submit report" };
+export const metadata: Metadata = { title: "ثبت گزارش" };
 
 export default async function SubmitPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -32,14 +32,14 @@ export default async function SubmitPage({ params }: { params: Promise<{ slug: s
   const rewards = program.severityRewards as Record<string, number>;
 
   return (
-    <div className="container-app max-w-3xl py-10">
-      <h1 className="text-2xl font-bold tracking-tight">Submit a report</h1>
+    <div className="container-app max-w-3xl animate-fade-up py-10">
+      <h1 className="text-2xl font-bold tracking-tight">ثبت گزارش</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Target: <span className="font-medium text-foreground">{program.title}</span>
+        هدف: <span className="font-medium text-foreground">{program.title}</span>
       </p>
 
       <div className="my-6 rounded-lg border bg-card p-4">
-        <h2 className="mb-2 text-sm font-semibold">Reward table</h2>
+        <h2 className="mb-2 text-sm font-semibold">جدول جوایز</h2>
         <div className="flex flex-wrap gap-x-6 gap-y-2">
           {(["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"] as const).map((sev) => (
             <span key={sev} className="flex items-center gap-2 text-sm">
@@ -52,15 +52,15 @@ export default async function SubmitPage({ params }: { params: Promise<{ slug: s
         </div>
         {program.prohibited.length > 0 ? (
           <p className="mt-3 text-xs text-muted-foreground">
-            Prohibited: {program.prohibited.slice(0, 3).join(" · ")}
-            {program.prohibited.length > 3 ? ` +${program.prohibited.length - 3} more` : ""}
+            ممنوع: {program.prohibited.slice(0, 3).join(" · ")}
+            {program.prohibited.length > 3 ? ` و ${program.prohibited.length - 3} مورد دیگر` : ""}
           </p>
         ) : null}
       </div>
 
       {program.submissionRequirements ? (
         <div className="my-6 rounded-lg border border-primary/30 bg-primary/5 p-4 text-sm">
-          <h2 className="mb-1 text-sm font-semibold">Submission requirements</h2>
+          <h2 className="mb-1 text-sm font-semibold">الزامات ارسال گزارش</h2>
           <p className="whitespace-pre-wrap text-muted-foreground">{program.submissionRequirements}</p>
         </div>
       ) : null}

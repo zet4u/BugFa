@@ -27,40 +27,40 @@ export function ProfileForm({
       {state?.success ? <Alert tone="success">{state.success}</Alert> : null}
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">نام</Label>
           <Input id="name" name="name" defaultValue={defaults.name} required />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="username">Username</Label>
+          <Label htmlFor="username">نام کاربری</Label>
           <Input id="username" name="username" defaultValue={defaults.username} required />
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="bio">Bio</Label>
-        <Textarea id="bio" name="bio" defaultValue={defaults.bio} rows={3} maxLength={600} placeholder="Short public bio (shown on your public profile)" />
+        <Label htmlFor="bio">بیوگرافی</Label>
+        <Textarea id="bio" name="bio" defaultValue={defaults.bio} rows={3} maxLength={600} placeholder="بیوگرافی کوتاه عمومی (در پروفایل عمومی نمایش داده می‌شود)" />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="country">Country</Label>
+          <Label htmlFor="country">کشور</Label>
           <Input id="country" name="country" defaultValue={defaults.country} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="website">Website</Label>
+          <Label htmlFor="website">وب‌سایت</Label>
           <Input id="website" name="website" type="url" defaultValue={defaults.website} />
         </div>
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="github">GitHub username</Label>
+          <Label htmlFor="github">نام کاربری گیت‌هاب</Label>
           <Input id="github" name="github" defaultValue={defaults.github} />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="twitter">X / Twitter username</Label>
+          <Label htmlFor="twitter">نام کاربری X / توییتر</Label>
           <Input id="twitter" name="twitter" defaultValue={defaults.twitter} />
         </div>
       </div>
       <Button type="submit" disabled={pending}>
-        {pending ? "Saving…" : "Save profile"}
+        {pending ? "در حال ذخیره…" : "ذخیره پروفایل"}
       </Button>
     </form>
   );
@@ -74,21 +74,21 @@ export function ChangePasswordForm() {
       {state?.error ? <Alert tone="error">{state.error}</Alert> : null}
       {state?.success ? <Alert tone="success">{state.success}</Alert> : null}
       <div className="space-y-2">
-        <Label htmlFor="currentPassword">Current password</Label>
+        <Label htmlFor="currentPassword">رمز عبور فعلی</Label>
         <Input id="currentPassword" name="currentPassword" type="password" required autoComplete="current-password" />
       </div>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="password">New password</Label>
+          <Label htmlFor="password">رمز عبور جدید</Label>
           <Input id="password" name="password" type="password" required minLength={10} autoComplete="new-password" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="confirmPassword">Confirm new password</Label>
+          <Label htmlFor="confirmPassword">تکرار رمز عبور جدید</Label>
           <Input id="confirmPassword" name="confirmPassword" type="password" required minLength={10} autoComplete="new-password" />
         </div>
       </div>
       <Button type="submit" variant="outline" disabled={pending}>
-        {pending ? "Updating…" : "Change password"}
+        {pending ? "در حال تغییر…" : "تغییر رمز عبور"}
       </Button>
     </form>
   );
@@ -101,10 +101,10 @@ export function ResendVerification() {
     <form action={formAction} className="space-y-2">
       {state?.error ? <Alert tone="error">{state.error}</Alert> : null}
       {state?.success ? (
-        <Alert tone="success">{state.success} In development, the link is printed in the server console.</Alert>
+        <Alert tone="success">{state.success} در حالت توسعه، لینک فقط در کنسول سرور چاپ می‌شود.</Alert>
       ) : null}
       <Button type="submit" variant="outline" size="sm" disabled={pending}>
-        {pending ? "Sending…" : "Resend verification email"}
+        {pending ? "در حال ارسال…" : "ارسال دوباره ایمیل تأیید"}
       </Button>
     </form>
   );

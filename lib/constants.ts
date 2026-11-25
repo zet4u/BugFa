@@ -20,6 +20,71 @@ export const VULN_CATEGORIES = [
 export const SEVERITIES = ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"] as const;
 export type SeverityValue = (typeof SEVERITIES)[number];
 
+export const SEVERITY_LABELS: Record<SeverityValue, string> = {
+  CRITICAL: "بحرانی",
+  HIGH: "بالا",
+  MEDIUM: "متوسط",
+  LOW: "کم",
+  INFORMATIONAL: "اطلاعاتی",
+};
+
+export const ROLE_LABELS: Record<string, string> = {
+  RESEARCHER: "پژوهشگر",
+  ORGANIZATION: "سازمان",
+  ADMIN: "مدیر",
+};
+
+export const PROGRAM_STATUS_LABELS: Record<string, string> = {
+  DRAFT: "پیش‌نویس",
+  PUBLIC: "عمومی",
+  PRIVATE: "خصوصی",
+  PAUSED: "متوقف‌شده",
+};
+
+export const TEAM_ROLE_LABELS: Record<string, string> = {
+  OWNER: "مالک",
+  MEMBER: "عضو",
+  MANAGER: "مدیر برنامه",
+};
+
+export const STATUS_LABELS: Record<string, string> = {
+  NEW: "جدید",
+  TRIAGED: "بررسی‌شده",
+  ACCEPTED: "پذیرفته‌شده",
+  REJECTED: "رد‌شده",
+  DUPLICATE: "تکراری",
+  RESOLVED: "حل‌شده",
+  REWARDED: "جایزه‌داده‌شده",
+};
+
+export const CATEGORY_LABELS: Record<string, string> = {
+  "Access Control": "کنترل دسترسی",
+  Authentication: "احراز هویت",
+  "Business Logic": "منطق کسب‌وکار",
+  "Cross-Site Request Forgery (CSRF)": "جعل درخواست بین‌سایتی (CSRF)",
+  "Cross-Site Scripting (XSS)": "اسکریپت‌نویسی بین‌سایتی (XSS)",
+  "File Upload": "آپلود فایل",
+  "Injection (SQL / NoSQL / Command)": "تزریق (SQL / NoSQL / کامند)",
+  "Insecure Deserialization": "ناامنی رمزگشایی سریال‌شده",
+  "Information Disclosure": "افشای اطلاعات",
+  "Open Redirect": "ریدایرکت باز",
+  "Race Condition": "شرط رقابت",
+  "Server-Side Request Forgery (SSRF)": "جعل درخواست سمت سرور (SSRF)",
+  "Sensitive Data Exposure": "افشای داده‌های حساس",
+  Misconfiguration: "پیکربندی نادرست",
+  "Broken Authorization (IDOR)": "شکست مجوزدهی (IDOR)",
+  Other: "سایر",
+};
+
+export const ASSET_TYPE_LABELS: Record<string, string> = {
+  WEB: "وب",
+  API: "ای‌پی‌آی",
+  MOBILE: "موبایل",
+  DESKTOP: "دسکتاپ",
+  HARDWARE: "سخت‌افزار",
+  OTHER: "سایر",
+};
+
 export const REPORT_STATUSES = [
   "NEW",
   "TRIAGED",
@@ -48,9 +113,9 @@ export const DEFAULT_SEVERITY_REWARDS: Record<SeverityValue, number> = {
 };
 
 export const DISCLOSURE_POLICIES = [
-  { value: "COORDINATED", label: "Coordinated disclosure" },
-  { value: "FULL", label: "Full disclosure" },
-  { value: "SAFE_HARBOR_ONLY", label: "Safe harbor only" },
+  { value: "COORDINATED", label: "افشای هماهنگ‌شده" },
+  { value: "FULL", label: "افشای کامل" },
+  { value: "SAFE_HARBOR_ONLY", label: "فقط بخش‌بندی امن (Safe Harbor)" },
 ] as const;
 
 export type AchievementDef = {
@@ -73,68 +138,68 @@ export type AchievementStats = {
 export const ACHIEVEMENTS: AchievementDef[] = [
   {
     key: "FIRST_REPORT",
-    title: "First Contact",
-    description: "Submit your first vulnerability report",
+    title: "اولین تماس",
+    description: "ارسال اولین گزارش آسیب‌پذیری",
     check: (s) => s.total >= 1,
   },
   {
     key: "FIRST_ACCEPT",
-    title: "Valid Find",
-    description: "Get your first report accepted",
+    title: "یافته معتبر",
+    description: "پذیرفته‌شدن اولین گزارش",
     check: (s) => s.accepted >= 1,
   },
   {
     key: "ACCEPTED_5",
-    title: "Consistent Hunter",
-    description: "Get 5 reports accepted",
+    title: "شکارچی پیگیر",
+    description: "پذیرفته‌شدن ۵ گزارش",
     check: (s) => s.accepted >= 5,
   },
   {
     key: "ACCEPTED_20",
-    title: "Serial Researcher",
-    description: "Get 20 reports accepted",
+    title: "پژوهشگر حرفه‌ای",
+    description: "پذیرفته‌شدن ۲۰ گزارش",
     check: (s) => s.accepted >= 20,
   },
   {
     key: "FIRST_CRITICAL",
-    title: "Critical Striker",
-    description: "Get a critical severity report accepted",
+    title: "ضربه‌زننده بحرانی",
+    description: "پذیرفته‌شدن یک گزارش بحرانی",
     check: (s) => s.critical >= 1,
   },
   {
     key: "CRITICAL_5",
-    title: "Critical Master",
-    description: "Get 5 critical severity reports accepted",
+    title: "استاد بحرانی",
+    description: "پذیرفته‌شدن ۵ گزارش بحرانی",
     check: (s) => s.critical >= 5,
   },
   {
     key: "REWARDED_1",
-    title: "Bounty Earned",
-    description: "Receive your first bounty reward",
+    title: "بانتی به‌دست‌آمده",
+    description: "دریافت اولین جایزه",
     check: (s) => s.rewarded >= 1,
   },
   {
     key: "REWARDED_10",
-    title: "Bounty Collector",
-    description: "Receive 10 bounty rewards",
+    title: "کلکسیونر جایزه",
+    description: "دریافت ۱۰ جایزه",
     check: (s) => s.rewarded >= 10,
   },
   {
     key: "HIGH_10",
-    title: "High Voltage",
-    description: "Get 10 high severity reports accepted",
+    title: "ولتاژ بالا",
+    description: "پذیرفته‌شدن ۱۰ گزارش با اهمیت بالا",
     check: (s) => s.high >= 10,
   },
   {
     key: "PROGRAMS_5",
-    title: "Multi-Program",
-    description: "Report to 5 different programs",
+    title: "چندبرنامه‌ای",
+    description: "گزارش‌دهی به ۵ برنامه مختلف",
     check: (s) => s.programs >= 5,
   },
   {
     key: "FIRST_BLOOD",
-    title: "First Blood",
-    description: "Be the first researcher accepted on a program",
+    title: "اولین خون",
+    description: "اولین پژوهشگر پذیرفته‌شده در یک برنامه",
     check: (s) => s.firstBlood >= 1,
   },
 ];

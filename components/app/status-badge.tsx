@@ -1,4 +1,4 @@
-import { STATUS_STYLES } from "@/lib/constants";
+import { STATUS_STYLES, STATUS_LABELS } from "@/lib/constants";
 
 export function StatusBadge({ status }: { status: string }) {
   return (
@@ -7,7 +7,7 @@ export function StatusBadge({ status }: { status: string }) {
         STATUS_STYLES[status] ?? STATUS_STYLES.NEW
       }`}
     >
-      {status.charAt(0) + status.slice(1).toLowerCase()}
+      {STATUS_LABELS[status] ?? status}
     </span>
   );
 }
