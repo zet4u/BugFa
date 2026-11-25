@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 240 8% 5%;
+    --foreground: 0 0% 96%;
+    --card: 240 7% 7.5%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 8% 6%;
+    --popover-foreground: 0 0% 96%;
+    --primary: 40 94% 55%;
+    --primary-foreground: 40 90% 6%;
+    --secondary: 240 5% 12%;
+    --secondary-foreground: 0 0% 92%;
+    --muted: 240 5% 11%;
+    --muted-foreground: 240 4% 60%;
+    --accent: 240 5% 14%;
+    --accent-foreground: 0 0% 95%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5% 15%;
+    --input: 240 5% 16%;
+    --ring: 40 94% 55%;
+    --radius: 0.5rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary/30 text-foreground;
+  }
+}
+
+@layer base {
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  :is(code, pre, kbd, samp, .font-mono) {
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+}
+
+@layer utilities {
+  .container-app {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .prose-invert-custom {
+    @apply text-sm leading-relaxed text-muted-foreground;
+  }
+  .reveal {
+    @apply opacity-0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .reveal-visible {
+    @apply opacity-100;
+    transform: translateY(0);
+  }
+  .skeleton {
+    background: linear-gradient(90deg, hsl(var(--muted)) 25%, hsl(var(--accent)) 50%, hsl(var(--muted)) 75%);
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+  .card-hover {
+    @apply transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_30px_rgb(0,0,0,0.3)];
+  }
+}

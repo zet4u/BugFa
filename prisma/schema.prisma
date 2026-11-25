@@ -1,0 +1,308 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  RESEARCHER
+  ORGANIZATION
+  ADMIN
+}
+
+enum ProgramStatus {
+  DRAFT
+  PUBLIC
+  PRIVATE
+  PAUSED
+}
+
+enum ReportStatus {
+  NEW
+  TRIAGED
+  ACCEPTED
+  REJECTED
+  DUPLICATE
+  RESOLVED
+  REWARDED
+}
+
+enum Severity {
+  CRITICAL
+  HIGH
+  MEDIUM
+  LOW
+  INFORMATIONAL
+}
+
+enum DisputeStatus {
+  OPEN
+  RESOLVED_SHARING_DECISION
+  RESOLVED_REJECTED
+  RESOLVED_ACCEPTED
+}
+
+enum NotificationType {
+  REPORT_STATUS
+  REPORT_COMMENT
+  REPORT_REWARD
+  ACHIEVEMENT
+  ORG_VERIFICATION
+  SYSTEM
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  passwordHash  String
+  name          String
+  username      String    @unique
+  role          Role      @default(RESEARCHER)
+  emailVerified DateTime?
+  avatarUrl     String?
+  bio           String?
+  country       String?
+  website       String?
+  twitter       String?
+  github        String?
+  company       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  ownedOrganizations   Organization[]        @relation("OrgOwner")
+  organizationMembers  OrganizationMember[]
+  reports              Report[]
+  comments             ReportComment[]
+  bookmarks            Bookmark[]
+  achievements         UserAchievement[]
+  notifications        Notification[]
+  attachments          Attachment[]
+  auditLogs            AuditLog[]
+  disputes             Dispute[]
+  tokens               AuthToken[]
+  forbidden            Boolean               @default(false)
+
+  @@index([role])
+  @@index([username])
+}
+
+model AuthToken {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String
+  token     String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+
+  @@index([userId, type])
+}
+
+model Organization {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  logoUrl     String?
+  description String?
+  website     String?
+  twitter     String?
+  verified    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  ownerId  String
+  owner    User    @relation("OrgOwner", fields: [ownerId], references: [id])
+  members  OrganizationMember[]
+  programs Program[]
+  teamInvites TeamInvite[]
+
+  @@index([ownerId])
+}
+
+model OrganizationMember {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String   @default("MEMBER")
+  createdAt      DateTime @default(now())
+
+  @@unique([organizationId, userId])
+}
+
+model TeamInvite {
+  id             String   @id @default(cuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String   @default("MEMBER")
+  token          String   @unique
+  acceptedAt     DateTime?
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId])
+}
+
+model Program {
+  id                    String        @id @default(cuid())
+  organizationId        String
+  organization          Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  title                 String
+  slug                  String        @unique
+  summary               String
+  description           String
+  logoUrl               String?
+  status                ProgramStatus @default(DRAFT)
+  featured              Boolean       @default(false)
+  inScope               Json
+  outOfScope            Json
+  categories            String[]
+  prohibited            String[]
+  rules                 String?
+  submissionRequirements String?
+  disclosurePolicy      String        @default("COORDINATED")
+  safeHarbor            Boolean       @default(true)
+  minBounty             Int           @default(0)
+  maxBounty             Int           @default(0)
+  severityRewards       Json
+  currency              String        @default("USD")
+  publishedAt           DateTime?
+  createdAt             DateTime      @default(now())
+  updatedAt             DateTime      @updatedAt
+
+  reports   Report[]
+  bookmarks Bookmark[]
+
+  @@index([organizationId, status])
+  @@index([status, featured])
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  programId String
+  program   Program  @relation(fields: [programId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, programId])
+}
+
+model Report {
+  id                String       @id @default(cuid())
+  programId         String
+  program           Program      @relation(fields: [programId], references: [id], onDelete: Cascade)
+  researcherId      String
+  researcher        User         @relation(fields: [researcherId], references: [id])
+  title             String
+  asset             String
+  category          String
+  severity          Severity
+  status            ReportStatus @default(NEW)
+  description       String
+  steps             String
+  impact            String
+  proofOfConcept    String?
+  remediation       String?
+  rewardAmount      Int?
+  currency          String       @default("USD")
+  points            Int          @default(0)
+  submittedAt       DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  triagedAt         DateTime?
+  resolvedAt        DateTime?
+
+  comments    ReportComment[]
+  attachments Attachment[]
+  dispute     Dispute?
+
+  @@index([programId, status])
+  @@index([researcherId, status])
+}
+
+model ReportComment {
+  id         String   @id @default(cuid())
+  reportId   String
+  report     Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  authorId   String
+  author     User     @relation(fields: [authorId], references: [id])
+  body       String
+  internal   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([reportId])
+}
+
+model Attachment {
+  id         String   @id @default(cuid())
+  reportId   String
+  report     Report   @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  uploaderId String
+  uploader   User     @relation(fields: [uploaderId], references: [id])
+  filename   String
+  mimeType   String
+  size       Int
+  storageKey String
+  createdAt  DateTime @default(now())
+
+  @@index([reportId])
+}
+
+model Dispute {
+  id          String        @id @default(cuid())
+  reportId    String        @unique
+  report      Report        @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  openedById  String
+  openedBy    User          @relation(fields: [openedById], references: [id])
+  reason      String
+  status      DisputeStatus @default(OPEN)
+  resolution  String?
+  resolvedAt  DateTime?
+  createdAt   DateTime      @default(now())
+
+  @@index([status])
+}
+
+model UserAchievement {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key       String
+  awardedAt DateTime @default(now())
+
+  @@unique([userId, key])
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      NotificationType
+  title     String
+  body      String?
+  link      String?
+  read      Boolean          @default(false)
+  createdAt DateTime         @default(now())
+
+  @@index([userId, read])
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation(fields: [actorId], references: [id], onDelete: SetNull)
+  action     String
+  targetType String?
+  targetId   String?
+  metadata   Json?
+  ip         String?
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([actorId])
+}
